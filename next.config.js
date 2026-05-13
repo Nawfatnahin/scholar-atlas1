@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // We remove 'output: export' because this project needs API routes and Dynamic Rendering (Auth/Dashboard)
   images: {
     unoptimized: true,
   },
