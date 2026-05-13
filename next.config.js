@@ -37,13 +37,17 @@ const nextConfig = {
     ]
   },
   async rewrites() {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    
+    // Defensive check: Ensure URL exists and starts with 'http'
+    if (!supabaseUrl || !supabaseUrl.startsWith('http')) {
       return [];
     }
+    
     return [
       {
         source: '/supabase/:path*',
-        destination: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/:path*`,
+        destination: `${supabaseUrl}/:path*`,
       },
     ]
   }
