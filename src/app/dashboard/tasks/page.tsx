@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { createClient } from "@/lib/supabase/server";
 import { TaskTracker } from "@/components/tasks/TaskTracker";
 import Link from "next/link";

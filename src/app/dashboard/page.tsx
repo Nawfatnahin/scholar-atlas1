@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { FileText, CalendarCheck, LayoutList, Home, ArrowRight, BookOpen, Clock, Crown } from "lucide-react";
