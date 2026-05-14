@@ -1,4 +1,4 @@
-export const NANASHI_MESSAGES = {
+export const JARVIS_MESSAGES = {
   morning: [
     "Systems online. Good morning, Mr. Nawfat. All nodes nominal. It's a privilege to start the day with you, Sir.",
     "Morning, Sir. The matrix is stable. I'm energized and ready for your directives, Mr. Nawfat.",
@@ -49,20 +49,20 @@ export const NANASHI_MESSAGES = {
   ]
 };
 
-export function getNanashiMessage(activityLevel: 'high' | 'idle' | 'normal'): string {
+export function getJarvisMessage(activityLevel: 'high' | 'idle' | 'normal'): string {
   const hour = new Date().getHours();
-  let timeCategory: keyof typeof NANASHI_MESSAGES;
+  let timeCategory: keyof typeof JARVIS_MESSAGES;
 
   if (hour >= 5 && hour < 12) timeCategory = 'morning';
   else if (hour >= 12 && hour < 17) timeCategory = 'afternoon';
   else if (hour >= 17 && hour < 21) timeCategory = 'evening';
   else timeCategory = 'night';
 
-  const categories: (keyof typeof NANASHI_MESSAGES)[] = [timeCategory, 'generic'];
+  const categories: (keyof typeof JARVIS_MESSAGES)[] = [timeCategory, 'generic'];
   if (activityLevel === 'high') categories.push('highActivity');
   else if (activityLevel === 'idle') categories.push('idle');
 
   const selectedCategory = categories[Math.floor(Math.random() * categories.length)];
-  const messages = NANASHI_MESSAGES[selectedCategory];
+  const messages = JARVIS_MESSAGES[selectedCategory];
   return messages[Math.floor(Math.random() * messages.length)];
 }

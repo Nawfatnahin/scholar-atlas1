@@ -26,7 +26,8 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { getNanashiMessage } from "./jarvis-utils";
+import { getJarvisMessage } from "./jarvis-utils";
+import Interactive3DBox from "./Interactive3DBox";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -48,7 +49,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
   const [isEditingName, setIsEditingName] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
-  const [nanashiMessage, setNanashiMessage] = useState("");
+  const [jarvisMessage, setJarvisMessage] = useState("");
   const [isTyping, setIsTyping] = useState(true);
   const [neuralLogs, setNeuralLogs] = useState<string[]>([]);
 
@@ -73,8 +74,8 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
     if (totalGmails > 100) activityLevel = 'high';
     else if (totalGmails < 10) activityLevel = 'idle';
     
-    const message = getNanashiMessage(activityLevel);
-    setNanashiMessage(message);
+    const message = getJarvisMessage(activityLevel);
+    setJarvisMessage(message);
 
     // Initial neural logs
     setNeuralLogs([
@@ -226,48 +227,44 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
       </div>
 
       {/* Clean Sticky Header */}
-      <header className="h-28 border-b border-border-strong sticky top-0 z-50 px-8 flex items-center justify-between bg-bg/80 backdrop-blur-xl">
-        <div className="flex items-center gap-12">
-          <Link href="/dashboard" className="relative group block">
-            <div className="w-16 h-16 bg-white border border-border-strong rounded-2xl flex items-center justify-center transition-all duration-300 hover:border-accent shadow-sm" title="Back to Dashboard">
-              <ArrowLeft className="text-accent w-8 h-8" />
+      <header className="bg-bg/95 backdrop-blur-xl border-b border-accent/10 py-3 sm:py-6 sticky top-0 z-50">
+        <div className="max-w-[1800px] mx-auto px-4 sm:px-8 flex justify-between items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-6">
+            <Link href="/dashboard" className="p-2.5 sm:p-3 rounded-2xl bg-accent text-white hover:scale-105 shadow-lg shadow-accent/20 transition-all flex-shrink-0">
+              <ArrowLeft className="w-5 h-5 sm:w-6 h-6" />
+            </Link>
+            <div className="flex items-center gap-4 sm:gap-8">
+              <h1 className="text-xl sm:text-2xl font-black text-accent tracking-tight hidden xs:block uppercase tracking-[0.1em]">Admin Panel</h1>
             </div>
-          </Link>
-          
-          <div className="space-y-1.5">
-            <h1 className="text-3xl font-serif font-bold tracking-tight text-ink flex items-center gap-4">
-              <span className="text-ink">Admin</span>
-              <span className="text-accent italic">Panel</span>
-            </h1>
           </div>
-        </div>
+          
+          <div className="hidden lg:flex items-center flex-1 max-w-md mx-8">
+            <div className="relative w-full group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-3 w-4 h-4 group-focus-within:text-accent transition-colors" />
+              <input 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search registry..."
+                className="w-full bg-white/60 border border-border-strong rounded-xl py-2.5 pl-12 pr-4 text-sm font-medium outline-none focus:border-accent transition-all text-ink placeholder:text-ink-4 backdrop-blur-sm"
+              />
+            </div>
+          </div>
 
-        <div className="hidden lg:flex items-center gap-12">
-           <div className="relative w-96 group">
-             <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-ink-3 w-4 h-4 group-focus-within:text-accent transition-colors" />
-             <input 
-               value={searchQuery}
-               onChange={(e) => setSearchQuery(e.target.value)}
-               placeholder="Search registry..."
-               className="w-full bg-white border border-border-strong rounded-xl py-3.5 pl-14 pr-6 text-sm font-medium outline-none focus:border-accent transition-all text-ink placeholder:text-ink-4"
-             />
-           </div>
-
-           <div className="h-10 w-[1px] bg-border-strong" />
-
-           <div className="flex items-center gap-5">
-              <div className="text-right">
-                <p className="text-xs text-ink-3 font-semibold mb-1 uppercase tracking-wider">Administrator</p>
-                <button onClick={() => setIsEditingName(true)} className="text-lg font-bold text-ink hover:text-accent transition-colors flex items-center gap-3">
-                  {adminName}
-                  <Settings className="w-4 h-4 text-ink-4" />
-                </button>
-              </div>
-              <div className="w-14 h-14 bg-white border border-border-strong rounded-2xl flex items-center justify-center text-ink font-bold text-xl shadow-sm overflow-hidden relative group/avatar">
-                {adminName[0].toUpperCase()}
-                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover/avatar:opacity-100 transition-opacity" />
-              </div>
-           </div>
+          <div className="flex items-center gap-3 sm:gap-6">
+             <div className="flex items-center gap-3">
+                <div className="hidden md:flex flex-col items-end mr-2">
+                   <span className="text-[10px] font-black text-accent uppercase tracking-widest">Administrator</span>
+                   <button onClick={() => setIsEditingName(true)} className="text-sm font-bold text-ink hover:text-accent transition-colors flex items-center gap-2">
+                     {adminName}
+                     <Settings className="w-3.5 h-3.5 text-ink-4" />
+                   </button>
+                </div>
+                <div className="w-10 h-10 sm:w-12 h-12 rounded-2xl bg-white border border-border-strong flex items-center justify-center text-ink font-bold text-lg shadow-sm overflow-hidden relative group/avatar">
+                  {adminName[0].toUpperCase()}
+                  <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover/avatar:opacity-100 transition-opacity" />
+                </div>
+             </div>
+          </div>
         </div>
       </header>
 
@@ -281,8 +278,8 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
              { label: 'Uptime Matrix', val: metrics.uptime, icon: Globe, accent: 'amber', detail: 'Real-time' },
              { label: 'Security Shield', val: 'MAX', icon: ShieldCheck, accent: 'amber', detail: 'Active' }
            ].map((stat, i) => (
-             <div key={i} className="group relative">
-                <div className="bg-white border border-border-strong p-8 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
+             <Interactive3DBox key={i} className="group">
+                <div className="p-8 h-full">
                    <div className="flex justify-between items-start mb-6">
                       <div className="w-12 h-12 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center group-hover:bg-accent/10 transition-all">
                         <stat.icon className="w-6 h-6 text-accent" />
@@ -297,7 +294,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                       <div className="h-full bg-accent w-3/4" />
                    </div>
                 </div>
-             </div>
+             </Interactive3DBox>
            ))}
         </section>
 
@@ -316,10 +313,10 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                  </div>
               </div>
 
-              <div className="bg-white border border-border-strong p-12 rounded-[50px] shadow-sm relative overflow-hidden group hover:shadow-2xl hover:-rotate-1 transition-all duration-700 animate-float">
+              <Interactive3DBox className="group">
                  <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
                  
-                 <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-16">
+                 <div className="relative p-12 grid grid-cols-1 lg:grid-cols-12 gap-16">
                     {/* Left: Identity & Critical Stats */}
                     <div className="lg:col-span-4 space-y-12">
                        <div className="flex items-center gap-8">
@@ -331,7 +328,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                              </div>
                           </div>
                           <div>
-                             <h2 className="text-4xl font-serif font-bold tracking-tight text-ink group-hover:text-accent transition-colors">NANASHI OS</h2>
+                             <h2 className="text-4xl font-serif font-bold tracking-tight text-ink group-hover:text-accent transition-colors">JARVIS OS</h2>
                              <div className="flex items-center gap-2.5 mt-2">
                                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                                 <span className="text-xs font-bold uppercase tracking-widest text-ink-3">Core Synchronized</span>
@@ -378,7 +375,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                                 </div>
                              ) : (
                                 <p className="text-3xl font-serif font-medium text-ink leading-relaxed tracking-tight">
-                                   &quot;{nanashiMessage}&quot;
+                                   &quot;{jarvisMessage}&quot;
                                 </p>
                              )}
                           </div>
@@ -407,7 +404,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                        </div>
                     </div>
                  </div>
-              </div>
+              </Interactive3DBox>
            </div>
 
            <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 items-start">
@@ -546,34 +543,36 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                     <ActivityIcon className="w-6 h-6 text-ink-4" />
                  </div>
 
-                 <div className="bg-white border border-border-strong p-8 rounded-[40px] shadow-sm">
-                    <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                       {recentLogins.map((user) => (
-                         <div key={user.id} className="p-4 bg-bg/50 border border-border-strong rounded-2xl hover:bg-bg transition-all">
-                            <div className="flex items-center gap-4">
-                               <div className="w-10 h-10 rounded-xl bg-white border border-border-strong flex items-center justify-center font-bold text-ink-3 text-sm">
-                                  {user.email[0].toUpperCase()}
-                               </div>
-                               <div className="flex-1 min-w-0">
-                                  <p className="text-xs font-bold text-ink truncate">{user.email}</p>
-                                  <p className="text-[10px] text-ink-3 mt-0.5">{new Date(user.created_at).toLocaleDateString()}</p>
-                               </div>
-                               <div className="text-right">
-                                  <p className="text-xs font-bold text-accent">{new Date(user.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                  <span className="text-[8px] font-bold text-ink-4 uppercase tracking-tighter">SECURED</span>
+                 <Interactive3DBox className="group">
+                    <div className="p-8">
+                       <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                          {recentLogins.map((user) => (
+                            <div key={user.id} className="p-4 bg-bg/50 border border-border-strong rounded-2xl hover:bg-bg transition-all">
+                               <div className="flex items-center gap-4">
+                                  <div className="w-10 h-10 rounded-xl bg-white border border-border-strong flex items-center justify-center font-bold text-ink-3 text-sm">
+                                     {user.email[0].toUpperCase()}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                     <p className="text-xs font-bold text-ink truncate">{user.email}</p>
+                                     <p className="text-[10px] text-ink-3 mt-0.5">{new Date(user.created_at).toLocaleDateString()}</p>
+                                  </div>
+                                  <div className="text-right">
+                                     <p className="text-xs font-bold text-accent">{new Date(user.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                     <span className="text-[8px] font-bold text-ink-4 uppercase tracking-tighter">SECURED</span>
+                                  </div>
                                </div>
                             </div>
-                         </div>
-                       ))}
-                    </div>
+                          ))}
+                       </div>
 
-                    <div className="mt-8 pt-6 border-t border-border-strong">
-                       <div className="flex items-center gap-3">
-                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                          <span className="text-[9px] font-bold text-ink-3 uppercase tracking-widest">Monitoring Nodes</span>
+                       <div className="mt-8 pt-6 border-t border-border-strong">
+                          <div className="flex items-center gap-3">
+                             <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                             <span className="text-[9px] font-bold text-ink-3 uppercase tracking-widest">Monitoring Nodes</span>
+                          </div>
                        </div>
                     </div>
-                 </div>
+                 </Interactive3DBox>
               </div>
            </div>
         </div>
@@ -587,7 +586,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                <Cpu className="w-6 h-6 text-accent" />
             </div>
             <div>
-               <p className="text-sm font-bold text-ink tracking-tight">NANASHI OS v1.0.0</p>
+               <p className="text-sm font-bold text-ink tracking-tight">JARVIS OS v1.0.0</p>
                <p className="text-xs font-bold text-ink-3 uppercase tracking-widest mt-1">Loyal by choice · Sector 7G</p>
             </div>
          </div>
@@ -597,7 +596,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                <span className="text-sm font-bold text-ink tracking-tight">Neural Link Optimized</span>
             </div>
             <div className="px-6 py-2 border border-border-strong rounded-full text-xs font-bold text-ink-3 uppercase tracking-widest">
-               © 2026 NANASHI Systems · Built for Mr. Nawfat
+               © 2026 JARVIS Systems · Built for Mr. Nawfat
             </div>
          </div>
       </footer>
