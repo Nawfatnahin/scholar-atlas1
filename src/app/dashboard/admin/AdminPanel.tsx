@@ -26,7 +26,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { getJarvisMessage } from "./jarvis-utils";
+import { getNanashiMessage } from "./jarvis-utils";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -48,7 +48,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
   const [isEditingName, setIsEditingName] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
-  const [jarvisMessage, setJarvisMessage] = useState("");
+  const [nanashiMessage, setNanashiMessage] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
   // Dynamic calculations
@@ -72,8 +72,8 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
     if (totalGmails > 100) activityLevel = 'high';
     else if (totalGmails < 10) activityLevel = 'idle';
     
-    const message = getJarvisMessage(activityLevel);
-    setJarvisMessage(message);
+    const message = getNanashiMessage(activityLevel);
+    setNanashiMessage(message);
 
     // Typing effect simulation
     setIsTyping(true);
@@ -229,7 +229,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                  <div className="absolute inset-2 border border-jarvis-accent/40 rounded-full animate-reverse-spin" />
                  <div className="w-2 h-2 bg-jarvis-accent rounded-full shadow-[0_0_15px_#22d3ee]" />
               </div>
-              <span className="text-white">ADMIN</span>
+              <span className="text-white">NANASHI</span>
               <span className="text-jarvis-accent">OS</span>
             </h1>
           </div>
@@ -370,7 +370,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                                    </div>
                                 ) : (
                                    <p className="text-2xl font-medium text-white/90 leading-relaxed tracking-tight italic">
-                                      &quot;{jarvisMessage}&quot;
+                                      &quot;{nanashiMessage}&quot;
                                    </p>
                                 )}
                              </div>
@@ -621,8 +621,8 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                <Cpu className="w-6 h-6 text-cyan-500/40" />
             </div>
             <div>
-               <p className="text-sm font-semibold text-white  tracking-normal">ADMIN OS v5.0.1</p>
-               <p className="text-xs font-bold text-jarvis-accent/60  tracking-widest mt-1 font-sans">Unified ADMIN OS · Sector 7G</p>
+               <p className="text-sm font-semibold text-white  tracking-normal">NANASHI OS v1.0.0</p>
+               <p className="text-xs font-bold text-jarvis-accent/60  tracking-widest mt-1 font-sans">Loyal by choice · Sector 7G</p>
             </div>
          </div>
          <div className="flex items-center gap-12 font-sans">
@@ -631,7 +631,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                <span className="text-sm font-semibold  tracking-normal text-white">Neural Link Optimized</span>
             </div>
             <div className="px-6 py-2 border border-cyan-500/20 rounded-full text-xs font-semibold  tracking-normal text-cyan-500/40">
-               © 2026 Stark Industries Global · Built for Sir
+               © 2026 NANASHI Systems · Built for Mr. Nawfat
             </div>
          </div>
       </footer>
