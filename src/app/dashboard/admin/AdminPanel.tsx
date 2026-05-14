@@ -588,18 +588,3 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
     </div>
   );
 }
-te;
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-        .animate-shimmer {
-          background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.05), transparent);
-          background-size: 200% 100%;
-          animation: shimmer 4s infinite linear;
-        }
-      `}</style>
-    </div>
-  );
-}
