@@ -22,9 +22,9 @@ module.exports = {
         "border-strong": "rgba(0, 0, 0, 0.08)",
         // Adding Jarvis colors as separate namespace
         jarvis: {
-          bg: "#050505",
-          "bg-warm": "#0A0A0C",
-          "bg-sidebar": "#0C0C0E",
+          bg: "#000000",
+          "bg-warm": "#030303",
+          "bg-sidebar": "#050505",
           ink: "#FFFFFF",
           "ink-2": "#94A3B8",
           "ink-3": "#64748B",
@@ -32,8 +32,8 @@ module.exports = {
           accent: "#06B6D4",
           "accent-blue": "#3B82F6",
           "accent-cyan": "#06B6D4",
-          "accent-light": "rgba(6, 182, 212, 0.1)",
-          "border-strong": "rgba(6, 182, 212, 0.15)",
+          "accent-light": "rgba(6, 182, 212, 0.15)",
+          "border-strong": "rgba(6, 182, 212, 0.2)",
           blue: "#0ea5e9",
         }
       },

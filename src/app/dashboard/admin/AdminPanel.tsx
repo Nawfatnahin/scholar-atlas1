@@ -196,11 +196,11 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
   if (!mounted) return null;
 
   return (
-    <div className="jarvis-theme min-h-screen overflow-x-hidden relative bg-[#020617]">
+    <div className="jarvis-theme min-h-screen overflow-x-hidden relative bg-black">
       
       {/* Advanced 3D Space Background Effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-         <div className="absolute inset-0 bg-gradient-to-tr from-cyan-950/20 via-black to-blue-950/20" />
+         <div className="absolute inset-0 bg-gradient-to-tr from-cyan-950/10 via-black to-blue-950/10" />
          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-cyan-500/5 blur-[120px] rounded-full animate-pulse-slow" />
          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/5 blur-[150px] rounded-full animate-pulse-slow [animation-delay:2s]" />
          
@@ -213,7 +213,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
       </div>
 
       {/* Holographic Sticky Header */}
-      <header className="h-28 border-b border-cyan-500/10 sticky top-0 z-50 px-8 flex items-center justify-between bg-black/40 backdrop-blur-3xl">
+      <header className="h-28 border-b border-cyan-500/10 sticky top-0 z-50 px-8 flex items-center justify-between bg-black/80 backdrop-blur-3xl">
         <div className="flex items-center gap-12">
           <Link href="/dashboard" className="relative group perspective-1000 block">
             <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center transform group-hover:-translate-x-2 transition-all duration-500 hover:border-jarvis-accent/50 shadow-[0_0_30px_rgba(0,0,0,0.5)]" title="Back to Dashboard">
@@ -277,7 +277,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
              <div key={i} className="group relative">
                 <div className="absolute inset-0 bg-jarvis-accent/5 blur-[40px] rounded-[40px] group-hover:bg-jarvis-accent/10 transition-all duration-700" />
                 
-                <div className="jarvis-box !p-8 backdrop-blur-3xl transform transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] group-hover:border-jarvis-accent/30 bg-black/40 border-cyan-500/10">
+                <div className="jarvis-box !p-8 backdrop-blur-3xl transform transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] group-hover:border-jarvis-accent/30 bg-black/80 border-cyan-500/10">
                    <div className="flex justify-between items-start mb-6">
                       <div className="w-12 h-12 rounded-xl bg-cyan-500/5 border border-cyan-500/10 flex items-center justify-center group-hover:scale-110 group-hover:border-jarvis-accent/40 transition-all">
                         <stat.icon className="w-6 h-6 text-cyan-500/60 group-hover:text-jarvis-accent transition-colors" />
@@ -303,7 +303,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
               <div className="group relative transition-all duration-700">
                  <div className="absolute -inset-1 bg-gradient-to-r from-jarvis-accent via-blue-500 to-purple-600 blur-2xl rounded-[50px] opacity-10 group-hover:opacity-20 transition-opacity animate-pulse-slow" />
                  
-                 <div className="jarvis-box !p-12 !rounded-[50px] backdrop-blur-3xl border-cyan-500/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group-hover:border-jarvis-accent/40 transition-all duration-500 bg-black/60">
+                 <div className="jarvis-box !p-12 !rounded-[50px] backdrop-blur-3xl border-cyan-500/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group-hover:border-jarvis-accent/40 transition-all duration-500 bg-black/90">
                     {/* Glowing corner accents */}
                     <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-jarvis-accent/20 rounded-tl-[50px] group-hover:border-jarvis-accent transition-colors" />
                     <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-jarvis-accent/20 rounded-br-[50px] group-hover:border-jarvis-accent transition-colors" />
@@ -355,7 +355,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                        </div>
 
                        <div className="lg:col-span-8 space-y-8">
-                          <div className="p-10 bg-black/40 border border-cyan-500/10 rounded-[40px] relative group-hover:border-jarvis-accent/20 transition-all min-h-[250px] flex items-center">
+                          <div className="p-10 bg-black/80 border border-cyan-500/10 rounded-[40px] relative group-hover:border-jarvis-accent/20 transition-all min-h-[250px] flex items-center">
                              <div className="absolute top-6 left-8 flex gap-2">
                                 <div className="w-2 h-2 rounded-full bg-red-500/40" />
                                 <div className="w-2 h-2 rounded-full bg-amber-500/40" />
@@ -427,7 +427,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                  {isAdding && (
                     <div className="relative animate-in slide-in-from-top-4 duration-500">
                        <div className="absolute inset-0 bg-jarvis-accent/10 blur-3xl rounded-[30px] pointer-events-none" />
-                       <form onSubmit={handleAddUser} className="relative bg-black/60 border border-cyan-500/20 p-8 rounded-[30px] backdrop-blur-2xl flex flex-col md:flex-row gap-4 shadow-2xl">
+                       <form onSubmit={handleAddUser} className="relative bg-black/90 border border-cyan-500/20 p-8 rounded-[30px] backdrop-blur-2xl flex flex-col md:flex-row gap-4 shadow-2xl">
                           <div className="flex-1 relative">
                              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-cyan-500/40 w-4 h-4" />
                              <input 
@@ -449,7 +449,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                  <div className="relative group/matrix">
                     <div className="absolute -inset-4 bg-jarvis-accent/5 blur-[80px] rounded-[50px] pointer-events-none" />
                     
-                    <div className="jarvis-box !p-0 !rounded-[40px] overflow-hidden backdrop-blur-3xl shadow-2xl group-hover/matrix:border-cyan-500/20 transition-all duration-700 bg-black/40 border-cyan-500/10">
+                    <div className="jarvis-box !p-0 !rounded-[40px] overflow-hidden backdrop-blur-3xl shadow-2xl group-hover/matrix:border-cyan-500/20 transition-all duration-700 bg-black/80 border-cyan-500/10">
                        <div className="overflow-x-auto">
                           <table className="w-full text-left border-collapse">
                              <thead>
@@ -579,7 +579,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                  <div className="relative group perspective-1000 transform-gpu transition-all duration-700">
                     <div className="absolute inset-x-4 -bottom-4 h-full bg-jarvis-accent/5 blur-3xl rounded-[50px] pointer-events-none" />
                     
-                    <div className="jarvis-box !p-8 !rounded-[40px] backdrop-blur-3xl shadow-2xl group-hover:border-jarvis-accent/20 transition-all duration-500 bg-black/40 border-cyan-500/10">
+                    <div className="jarvis-box !p-8 !rounded-[40px] backdrop-blur-3xl shadow-2xl group-hover:border-jarvis-accent/20 transition-all duration-500 bg-black/80 border-cyan-500/10">
                        <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
                           {recentLogins.map((user) => (
                             <div key={user.id} className="group/log relative p-4 bg-cyan-950/10 border border-cyan-500/5 rounded-2xl hover:bg-cyan-900/20 hover:border-jarvis-accent/20 transition-all duration-300">
@@ -615,7 +615,7 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
       </main>
 
       {/* Industrial Grade Footer */}
-      <footer className="mt-40 border-t border-cyan-500/10 py-16 px-12 flex flex-col md:flex-row items-center justify-between gap-10 opacity-30 hover:opacity-100 transition-all duration-700 bg-black/20">
+      <footer className="mt-40 border-t border-cyan-500/10 py-16 px-12 flex flex-col md:flex-row items-center justify-between gap-10 opacity-30 hover:opacity-100 transition-all duration-700 bg-black/40">
          <div className="flex items-center gap-8">
             <div className="w-12 h-12 bg-cyan-950/40 border border-cyan-500/20 rounded-2xl flex items-center justify-center animate-spin-slow">
                <Cpu className="w-6 h-6 text-cyan-500/40" />
