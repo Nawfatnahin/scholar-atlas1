@@ -37,11 +37,80 @@ const AddHolidaySchema = z.object({
 
 async function getAuthenticatedUser(supabase: any) {
   const { data: { user }, error } = await supabase.auth.getUser();
-  if (error || !user) throw new Error('Unauthorized');
+  if (error || !user) {
+    console.error('Authentication error:', error);
+    throw new Error('UNAUTHORIZED: Please ensure you are logged in, Sir.');
+  }
   return user;
 }
 
 // --- ACTIONS ---
+
+export async function addSubject(data: {
+  name: string;
+  courseCode?: string;
+  requiredThreshold: number;
+  personalTarget?: number | null;
+  classDays: string[];
+  semesterStartDate: string;
+  totalWeeks: number;
+}) {
+  try {
+    const supabase = await createClient();
+    const user = await getAuthenticatedUser(supabase);
+
+    const { data: subject, error } = await supabase
+      .from('subjects')
+      .insert({
+        name: data.name,
+        course_code: data.courseCode || null,
+        required_threshold: data.requiredThreshold,
+        personal_target: data.personalTarget || null,
+        schedule_days: data.classDays,
+        semester_start_date: data.semesterStartDate,
+        total_classes_planned: data.totalWeeks * data.classDays.length,
+        user_id: user.id,
+        color_tag: 'blue'
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Supabase insert error:', error);
+      throw new Error(`DATABASE_ERROR: ${error.message}`);
+    }
+
+    revalidatePath('/dashboard/attendance');
+    return { success: true, data: subject };
+  } catch (error: any) {
+    console.error('AddSubject exception:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteSubject(id: string) {
+  try {
+    const supabase = await createClient();
+    const user = await getAuthenticatedUser(supabase);
+
+    const { error } = await supabase
+      .from('subjects')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+
+    if (error) {
+      console.error('Supabase delete error:', error);
+      throw new Error(`DATABASE_ERROR: ${error.message}`);
+    }
+    
+    revalidatePath('/dashboard/attendance');
+    return { success: true };
+  } catch (error: any) {
+    console.error('DeleteSubject exception:', error);
+    return { success: false, error: error.message };
+  }
+}
 
 export async function markAttendance(input: z.infer<typeof MarkAttendanceSchema>) {
   const validated = MarkAttendanceSchema.parse(input);
