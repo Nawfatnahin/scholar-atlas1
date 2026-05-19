@@ -10,6 +10,8 @@ import {
   Flame,
   AlertCircle
 } from 'lucide-react';
+import { format } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
 import { SubjectAttendanceStats } from '@/lib/attendance/calculator';
 import { markAttendance, deleteSubject } from '@/app/dashboard/attendance/actions';
 import { AlertModal } from './AlertModal';

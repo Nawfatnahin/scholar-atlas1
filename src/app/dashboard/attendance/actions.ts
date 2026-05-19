@@ -232,8 +232,8 @@ export async function upsertSubjectSchedule(input: z.infer<typeof UpsertSubjectS
       total_classes_planned: validated.totalClassesPlanned,
       semester_start_date: validated.semesterStartDate,
       semester_end_date: validated.semesterEndDate,
-      schedule_days: validated.schedule_days,
-      schedule_time: validated.schedule_time
+      schedule_days: validated.scheduleDays,
+      schedule_time: validated.scheduleTime
     })
     .eq('id', validated.subjectId)
     .eq('user_id', user.id);
@@ -286,5 +286,82 @@ export async function updateSubject(id: string, data: any) {
     .eq('user_id', user.id);
 
   if (error) throw new Error(`Failed to update subject: ${error.message}`);
+  revalidatePath('/dashboard/attendance');
+}
+
+export async function getTodaysSessions() {
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) return [];
+
+    const today = new Date();
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const todayName = dayNames[today.getDay()];
+    const todayDate = today.toISOString().split('T')[0];
+
+    // Fetch subjects scheduled for today
+    const { data: subjects, error } = await supabase
+      .from('subjects')
+      .select('id, name, course_code, schedule_days, schedule_time, attendance_records(absence_type, class_date)')
+      .eq('user_id', user.id)
+      .contains('schedule_days', [todayName]);
+
+    if (error || !subjects) return [];
+
+    // Map to the ClassSession shape expected by the dashboard
+    return subjects.map((s: any) => {
+      const todayRecord = s.attendance_records?.find((r: any) => r.class_date === todayDate);
+      return {
+        id: `${s.id}_${todayDate}`,
+        status: todayRecord?.absence_type ?? 'upcoming',
+        date: todayDate,
+        subjects: {
+          name: s.name,
+          course_code: s.course_code ?? null,
+        }
+      };
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function updateSessionStatus(
+  sessionId: string,
+  status: 'present' | 'absent' | 'cancelled' | 'holiday' | 'unexcused'
+) {
+  // sessionId is in the format `{subjectId}_{date}`
+  const lastUnderscore = sessionId.lastIndexOf('_');
+  if (lastUnderscore === -1) throw new Error('Invalid session ID format');
+
+  const subjectId = sessionId.substring(0, lastUnderscore);
+  const classDate = sessionId.substring(lastUnderscore + 1);
+
+  const supabase = await createClient();
+  const user = await getAuthenticatedUser(supabase);
+
+  // Map dashboard status values to attendance record absence_type values
+  const absenceTypeMap: Record<string, string> = {
+    present: 'present',
+    absent: 'unexcused',
+    unexcused: 'unexcused',
+    cancelled: 'cancelled',
+    holiday: 'cancelled',
+  };
+
+  const absenceType = absenceTypeMap[status] ?? status;
+
+  const { error } = await supabase
+    .from('attendance_records')
+    .upsert({
+      subject_id: subjectId,
+      user_id: user.id,
+      class_date: classDate,
+      absence_type: absenceType,
+    }, { onConflict: 'subject_id, class_date' });
+
+  if (error) throw new Error(`Failed to update session: ${error.message}`);
+  revalidatePath('/dashboard');
   revalidatePath('/dashboard/attendance');
 }
