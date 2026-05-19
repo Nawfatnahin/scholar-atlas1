@@ -33,13 +33,14 @@ export default async function DashboardPage() {
 
   interface ClassSession {
     id: string;
-    status: 'present' | 'absent' | 'cancelled' | 'upcoming';
+    status: 'present' | 'absent' | 'unexcused' | 'cancelled' | 'upcoming' | 'holiday';
     date: string;
     subjects: {
       name: string;
       course_code: string | null;
     } | null;
   }
+
 
   // Fetch summary data for the dashboard with error handling
   let subjects: SubjectSummary[] = [];
