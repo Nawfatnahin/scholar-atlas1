@@ -4,6 +4,7 @@ import { TaskTracker } from "@/components/tasks/TaskTracker";
 import Link from "next/link";
 import { ArrowLeft, Home, LayoutList } from "lucide-react";
 import Footer from "@/components/Footer";
+import { InstructionButton } from "@/components/InstructionButton";
 
 export const metadata = {
   title: "Task Tracker - BackLogger Buddy",
@@ -43,10 +44,21 @@ export default async function TasksPage() {
             </div>
           </div>
           
-          <Link href="/dashboard" className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-ink-2 hover:bg-stone-50 transition-all">
-            <Home className="w-4 h-4" />
-            <span>Dashboard</span>
-          </Link>
+          <div className="flex items-center gap-4">
+            <InstructionButton 
+              title="Task Tracker"
+              description="Manage your assignments, projects, and deadlines in one central place."
+              options={[
+                { title: "Add Tasks", description: "Create new tasks with specific deadlines, priority levels, and link them to your subjects." },
+                { title: "Organize & Prioritize", description: "Filter tasks by status (To Do, In Progress, Done) and sort them by priority or deadline." },
+                { title: "Track Progress", description: "Toggle task status as you work to keep your backlog clean and visually see your progress." }
+              ]}
+            />
+            <Link href="/dashboard" className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-ink-2 hover:bg-stone-50 transition-all">
+              <Home className="w-4 h-4" />
+              <span>Dashboard</span>
+            </Link>
+          </div>
         </div>
       </header>
 

@@ -4,6 +4,7 @@ import { AttendanceTracker } from "@/components/attendance/AttendanceTracker";
 import Link from "next/link";
 import { ArrowLeft, Home, CalendarCheck } from "lucide-react";
 import Footer from "@/components/Footer";
+import { InstructionButton } from "@/components/InstructionButton";
 
 export const metadata = {
   title: "Attendance Tracker — BackLogger Buddy",
@@ -53,10 +54,22 @@ export default async function AttendancePage() {
             </div>
           </div>
           
-          <Link href="/dashboard" className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-ink-2 hover:bg-white border border-transparent hover:border-border-strong shadow-sm transition-all">
-            <Home className="w-4 h-4" />
-            <span>Dashboard</span>
-          </Link>
+          <div className="flex items-center gap-4">
+            <InstructionButton 
+              title="Attendance Tracker"
+              description="Keep track of your classes, manage your attendance percentage, and plan for upcoming holidays."
+              options={[
+                { title: "Mark Present/Absent", description: "Click on any subject to log your daily attendance easily. Your overall percentage will update instantly." },
+                { title: "Holiday Manager", description: "Add global holidays or subject-specific cancellations to automatically adjust your required attendance." },
+                { title: "What-If Simulator", description: "Simulate future attendance to see how skipping or attending classes affects your overall percentage." },
+                { title: "Attendance Trends", description: "View a visual representation of your attendance history over time to spot patterns." }
+              ]}
+            />
+            <Link href="/dashboard" className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-ink-2 hover:bg-white border border-transparent hover:border-border-strong shadow-sm transition-all">
+              <Home className="w-4 h-4" />
+              <span>Dashboard</span>
+            </Link>
+          </div>
         </div>
       </header>
 
