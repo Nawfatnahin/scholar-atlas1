@@ -202,7 +202,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({
             <p className="text-base font-black text-ink">{stats.attended}</p>
           </div>
           <div className="flex-1 p-2.5 rounded-xl bg-white border border-border-strong">
-            <p className="text-[9px] font-black text-ink-3 uppercase tracking-widest mb-0.5">Min Threshold</p>
+            <p className="text-[9px] font-black text-ink-3 uppercase tracking-widest mb-0.5">Minimum</p>
             <p className="text-base font-black text-ink-3">{stats.requiredThreshold}%</p>
           </div>
         </div>

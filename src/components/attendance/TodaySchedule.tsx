@@ -39,10 +39,6 @@ export const TodaySchedule: React.FC<TodayScheduleProps> = ({ subjects }) => {
 
   return (
     <div className="bg-white/70 backdrop-blur-xl rounded-[40px] p-8 border border-border-strong shadow-[0_20px_50px_rgba(0,0,0,0.04)] mb-10 overflow-hidden relative">
-      <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
-        <Clock className="w-24 h-24 text-[#92400e]" />
-      </div>
-
       <div className="relative z-10">
         <h3 className="text-sm font-black text-[#92400e] uppercase tracking-[0.3em] mb-4">
           Today — {format(today, 'EEEE, MMMM do')}

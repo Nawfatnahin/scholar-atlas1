@@ -51,11 +51,18 @@ export function calculateStats(
   const threshold = subject.personal_target ?? subject.required_threshold
   const targetPct = threshold / 100
 
-  // Safe Skips: (attended) / (totalClasses + x) >= targetPct
-  // x <= (attended / targetPct) - totalClasses
-  const safeSkipsLeft = totalClasses > 0 
-    ? Math.max(0, Math.floor((attended - targetPct * totalClasses) / targetPct))
-    : null
+  let safeSkipsLeft: number | null = null;
+  if (subject.total_classes_planned && subject.total_classes_planned > 0) {
+    // If we know the total classes for the semester, calculate the true skip allowance
+    const requiredAttendance = Math.ceil(targetPct * subject.total_classes_planned);
+    const maxAllowedAbsences = subject.total_classes_planned - requiredAttendance;
+    safeSkipsLeft = Math.max(0, maxAllowedAbsences - absent);
+  } else {
+    // Immediate safe skips: (attended) / (totalClasses + x) >= targetPct
+    safeSkipsLeft = totalClasses > 0 
+      ? Math.max(0, Math.floor((attended - targetPct * totalClasses) / targetPct))
+      : null;
+  }
 
   // Classes Needed to Recover: (attended + x) / (totalClasses + x) >= targetPct
   // x >= (targetPct * totalClasses - attended) / (1 - targetPct)
