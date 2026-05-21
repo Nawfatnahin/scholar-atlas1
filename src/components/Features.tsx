@@ -64,10 +64,6 @@ export default function Features() {
       
       <div className="max-w-[1440px] mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="group inline-flex items-center gap-2.5 bg-white/40 backdrop-blur-2xl px-4 py-1.5 md:px-6 md:py-2.5 rounded-full border border-white/50 shadow-[0_0_20px_rgba(146,64,14,0.15),0_0_2px_rgba(146,64,14,0.1)] hover:shadow-[0_0_35px_rgba(146,64,14,0.25),0_0_5px_rgba(146,64,14,0.2)] hover:-translate-y-0.5 transition-all duration-500 cursor-default mb-10">
-            <span className="w-1.5 h-1.5 md:w-2.5 md:h-2.5 rounded-full bg-accent shadow-[0_0_12px_rgba(146,64,14,0.7)]" />
-            <span className="text-[10px] md:text-[12px] font-bold text-ink uppercase tracking-[0.25em] leading-none">Platform Features</span>
-          </div>
           <h2 className="font-display text-[32px] sm:text-[40px] lg:text-[64px] font-extrabold leading-[1.05] tracking-tight text-ink mb-6">
             Features for the <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-accent">focused student</span>
