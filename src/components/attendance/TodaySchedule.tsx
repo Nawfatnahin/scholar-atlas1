@@ -63,17 +63,17 @@ export const TodaySchedule: React.FC<TodayScheduleProps> = ({ subjects }) => {
                 <div className="flex gap-2">
                   <button 
                     onClick={() => handleQuickMark(subject.id, 'present')}
-                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-green-500/20 text-green-400 border border-green-500/20 rounded-xl hover:bg-green-500 hover:text-white transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-green-100 text-green-700 rounded-xl hover:bg-green-600 hover:text-white transition-all font-bold"
                   >
                     <Check className="w-4 h-4" />
-                    <span className="text-xs font-black uppercase">Present</span>
+                    <span className="text-xs uppercase">Present</span>
                   </button>
                   <button 
                     onClick={() => handleQuickMark(subject.id, 'unexcused')}
-                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl hover:bg-red-500 hover:text-white transition-all"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-stone-100 text-ink-3 rounded-xl hover:bg-red-600 hover:text-white transition-all font-bold"
                   >
                     <X className="w-4 h-4" />
-                    <span className="text-xs font-black uppercase">Absent</span>
+                    <span className="text-xs uppercase">Absent</span>
                   </button>
                 </div>
               </div>

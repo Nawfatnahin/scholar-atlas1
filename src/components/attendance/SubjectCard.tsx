@@ -267,21 +267,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({
           </div>
         )}
 
-        {/* Actions */}
-        <div className="flex gap-2 mb-6">
-          <button 
-            onClick={() => handleMark('present')}
-            className="flex-1 py-3 bg-green-500 hover:bg-green-600 text-white rounded-2xl font-bold transition-all active:scale-95 shadow-lg shadow-green-500/20 text-sm"
-          >
-            Present
-          </button>
-          <button 
-            onClick={() => handleMark('unexcused')}
-            className="flex-1 py-3 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-2xl font-bold transition-all active:scale-95 text-sm"
-          >
-            Absent
-          </button>
-        </div>
+
 
         <button 
           onClick={() => setIsExpanded(!isExpanded)}
