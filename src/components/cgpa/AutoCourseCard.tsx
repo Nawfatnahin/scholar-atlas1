@@ -41,6 +41,8 @@ export function AutoCourseCard({
 }: AutoCourseCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Local editable state
   const [localCourse, setLocalCourse] = useState<AutoCourse>({ ...course });
@@ -208,6 +210,12 @@ export function AutoCourseCard({
   };
 
   const handleDelete = async () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setTimeout(() => setConfirmDelete(false), 3000);
+      return;
+    }
+    setIsDeleting(true);
     try {
       const res = await deleteAutoCourse(course.id);
       if (res.success) {
@@ -218,6 +226,9 @@ export function AutoCourseCard({
       }
     } catch (err: any) {
       toast.error(err.message);
+    } finally {
+      setIsDeleting(false);
+      setConfirmDelete(false);
     }
   };
 
@@ -235,11 +246,11 @@ export function AutoCourseCard({
   return (
     <div className="bg-white/70 backdrop-blur-xl rounded-[32px] border border-border-strong shadow-[0_10px_30px_rgba(0,0,0,0.03)] overflow-hidden">
       {/* Card Header */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between p-6 sm:p-8 hover:bg-stone-50/50 transition-colors text-left"
-      >
-        <div className="flex items-center gap-4 min-w-0">
+      <div className="w-full flex items-center justify-between p-6 sm:p-8">
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex-1 flex items-center gap-4 min-w-0 text-left hover:opacity-80 transition-opacity"
+        >
           <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
             !breakdown.targetAchievable ? 'bg-red-100' :
             breakdown.targetAlreadyAchieved ? 'bg-emerald-100' :
@@ -260,8 +271,8 @@ export function AutoCourseCard({
               {Number(localCourse.credit_hours).toFixed(1)} credits · Target: {Number(localCourse.target_grade_point).toFixed(2)}
             </p>
           </div>
-        </div>
-        <div className="flex items-center gap-3 shrink-0 ml-4">
+        </button>
+        <div className="flex items-center gap-2 shrink-0 ml-4">
           {breakdown.targetAlreadyAchieved ? (
             <span className="hidden sm:inline px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest">Achieved</span>
           ) : !breakdown.targetAchievable ? (
@@ -271,9 +282,24 @@ export function AutoCourseCard({
               Need {Math.max(0, breakdown.requiredExamPercentage).toFixed(1)}%
             </span>
           )}
-          {expanded ? <ChevronUp className="w-5 h-5 text-ink-3" /> : <ChevronDown className="w-5 h-5 text-ink-3" />}
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            title={confirmDelete ? 'Click again to confirm deletion' : 'Delete course'}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 ${
+              confirmDelete
+                ? 'bg-red-600 text-white shadow-lg shadow-red-500/20 animate-pulse'
+                : 'text-red-400 hover:bg-red-50 hover:text-red-600'
+            } disabled:opacity-50`}
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">{isDeleting ? 'Removing...' : confirmDelete ? 'Confirm?' : 'Delete'}</span>
+          </button>
+          <button onClick={() => setExpanded(!expanded)} className="p-2 rounded-xl hover:bg-stone-100 transition-colors">
+            {expanded ? <ChevronUp className="w-5 h-5 text-ink-3" /> : <ChevronDown className="w-5 h-5 text-ink-3" />}
+          </button>
         </div>
-      </button>
+      </div>
 
       {/* Expanded Content */}
       {expanded && (
