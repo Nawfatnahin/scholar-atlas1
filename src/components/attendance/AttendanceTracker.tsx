@@ -262,75 +262,75 @@ export function AttendanceTracker({ initialSubjects, initialHolidays }: Attendan
       {/* Add/Edit Subject Modal */}
       {(isAdding || editingSubject) && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in">
-          <form onSubmit={handleAddSubject} className="bg-white dark:bg-zinc-900 w-full max-w-2xl rounded-[40px] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border-b-8 border-stone-200 dark:border-zinc-800">
-            <div className="px-10 py-8 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/50">
+          <form onSubmit={handleAddSubject} className="relative w-full max-w-2xl bg-bg rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col max-h-[90vh] border-b-8 border-[#92400e]/10">
+            <div className="px-10 py-8 border-b border-border-strong flex justify-between items-center bg-white/50">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-zinc-900 shadow-lg">
+                <div className="w-12 h-12 rounded-2xl bg-[#92400e] flex items-center justify-center text-white shadow-lg shadow-[#92400e]/20">
                   <Layout className="w-6 h-6" />
                 </div>
-                <h3 className="text-2xl font-black text-zinc-900 dark:text-zinc-100">
+                <h3 className="text-2xl font-black text-ink">
                   {editingSubject ? "Module Configuration" : "New Monitoring Track"}
                 </h3>
               </div>
-              <button type="button" onClick={() => { setIsAdding(false); setEditingSubject(null); }} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors">
-                <X className="w-6 h-6 text-zinc-400" />
+              <button type="button" onClick={() => { setIsAdding(false); setEditingSubject(null); }} className="p-2 hover:bg-white rounded-xl transition-colors">
+                <X className="w-6 h-6 text-ink-3" />
               </button>
             </div>
 
             <div className="p-10 space-y-8 overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] flex items-center gap-2"><Info className="w-3 h-3" /> Subject Name</label>
-                  <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="e.g. Data Structures" className="w-full px-6 py-4 rounded-2xl border-2 border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-bold outline-none focus:border-cyan-500 transition-all" required />
+                  <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest flex items-center gap-2"><Info className="w-3 h-3" /> Subject Name</label>
+                  <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="e.g. Data Structures" className="w-full px-6 py-4 rounded-2xl border-2 border-border-strong bg-white font-bold text-ink outline-none focus:border-[#92400e] transition-all" required />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] flex items-center gap-2"><Hash className="w-3 h-3" /> Course Code</label>
-                  <input type="text" value={formData.courseCode} onChange={(e) => setFormData({...formData, courseCode: e.target.value})} placeholder="Optional" className="w-full px-6 py-4 rounded-2xl border-2 border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-bold outline-none focus:border-cyan-500 transition-all" />
+                  <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest flex items-center gap-2"><Hash className="w-3 h-3" /> Course Code</label>
+                  <input type="text" value={formData.courseCode} onChange={(e) => setFormData({...formData, courseCode: e.target.value})} placeholder="Optional" className="w-full px-6 py-4 rounded-2xl border-2 border-border-strong bg-white font-bold text-ink outline-none focus:border-[#92400e] transition-all" />
                 </div>
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] flex items-center gap-2"><Calendar className="w-3 h-3" /> Active Schedule Days</label>
+                <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest flex items-center gap-2"><Calendar className="w-3 h-3" /> Active Schedule Days</label>
                 <div className="flex flex-wrap gap-2">
                   {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
                     <button key={day} type="button" onClick={() => {
                       const days = formData.classDays.includes(day) ? formData.classDays.filter(d => d !== day) : [...formData.classDays, day];
                       setFormData({...formData, classDays: days});
-                    }} className={`px-5 py-3 rounded-xl text-[11px] font-black transition-all border-b-4 ${formData.classDays.includes(day) ? 'bg-cyan-500 text-white border-cyan-700/50 shadow-lg shadow-cyan-500/20' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 border-zinc-200 dark:border-zinc-700'}`}>{day.slice(0, 3).toUpperCase()}</button>
+                    }} className={`px-5 py-3 rounded-xl text-[11px] font-black transition-all border-b-4 ${formData.classDays.includes(day) ? 'bg-[#92400e] text-white border-[#78350f] shadow-lg shadow-[#92400e]/20' : 'bg-white text-ink-3 border-border-strong hover:text-ink hover:bg-stone-50'}`}>{day.slice(0, 3).toUpperCase()}</button>
                   ))}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Threshold %</label>
-                  <input type="number" value={formData.requiredThreshold} onChange={(e) => setFormData({...formData, requiredThreshold: parseFloat(e.target.value)})} className="w-full px-4 py-3.5 rounded-xl border-2 border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-bold outline-none focus:border-cyan-500 transition-all" />
+                  <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest">Threshold %</label>
+                  <input type="number" value={formData.requiredThreshold} onChange={(e) => setFormData({...formData, requiredThreshold: parseFloat(e.target.value)})} className="w-full px-4 py-3.5 rounded-xl border-2 border-border-strong bg-white font-bold text-ink outline-none focus:border-[#92400e] transition-all" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Personal %</label>
-                  <input type="number" value={formData.personalTarget || ''} onChange={(e) => setFormData({...formData, personalTarget: e.target.value ? parseFloat(e.target.value) : null})} placeholder="75" className="w-full px-4 py-3.5 rounded-xl border-2 border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-bold outline-none focus:border-cyan-500 transition-all" />
+                  <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest">Personal %</label>
+                  <input type="number" value={formData.personalTarget || ''} onChange={(e) => setFormData({...formData, personalTarget: e.target.value ? parseFloat(e.target.value) : null})} placeholder="75" className="w-full px-4 py-3.5 rounded-xl border-2 border-border-strong bg-white font-bold text-ink outline-none focus:border-[#92400e] transition-all" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Total Planned</label>
-                  <input type="number" value={formData.totalWeeks * formData.classDays.length} readOnly className="w-full px-4 py-3.5 rounded-xl border-2 border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 font-bold text-zinc-400 cursor-not-allowed" />
+                  <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest">Total Planned</label>
+                  <input type="number" value={formData.totalWeeks * formData.classDays.length} readOnly className="w-full px-4 py-3.5 rounded-xl border-2 border-border-strong bg-white/50 font-bold text-ink-3 cursor-not-allowed" />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Start Date</label>
-                  <input type="date" value={formData.semesterStartDate} onChange={(e) => setFormData({...formData, semesterStartDate: e.target.value})} className="w-full px-4 py-3.5 rounded-xl border-2 border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-bold outline-none focus:border-cyan-500 transition-all" required />
+                  <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest">Start Date</label>
+                  <input type="date" value={formData.semesterStartDate} onChange={(e) => setFormData({...formData, semesterStartDate: e.target.value})} className="w-full px-4 py-3.5 rounded-xl border-2 border-border-strong bg-white font-bold text-ink outline-none focus:border-[#92400e] transition-all" required />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Semester Duration (Weeks)</label>
-                  <input type="number" value={formData.totalWeeks} onChange={(e) => setFormData({...formData, totalWeeks: parseInt(e.target.value)})} className="w-full px-4 py-3.5 rounded-xl border-2 border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 font-bold outline-none focus:border-cyan-500 transition-all" required />
+                  <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest">Semester Duration (Weeks)</label>
+                  <input type="number" value={formData.totalWeeks} onChange={(e) => setFormData({...formData, totalWeeks: parseInt(e.target.value)})} className="w-full px-4 py-3.5 rounded-xl border-2 border-border-strong bg-white font-bold text-ink outline-none focus:border-[#92400e] transition-all" required />
                 </div>
               </div>
             </div>
 
-            <div className="px-10 py-8 bg-zinc-50/50 dark:bg-zinc-800/50 border-t border-zinc-100 dark:border-zinc-800 flex justify-end gap-4">
-              <button type="button" onClick={() => { setIsAdding(false); setEditingSubject(null); }} className="px-8 py-4 text-xs font-black text-zinc-400 hover:text-zinc-900 dark:hover:text-white uppercase tracking-widest transition-colors">Cancel</button>
-              <button type="submit" disabled={isPending} className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.3em] hover:scale-105 transition-all disabled:opacity-50 shadow-xl shadow-black/10 active:scale-95 border-b-4 border-black/20 dark:border-zinc-200/50">{isPending ? "Configuring..." : (editingSubject ? "Update Track" : "Initialize Track")}</button>
+            <div className="px-10 py-8 bg-white/50 border-t border-border-strong flex justify-end gap-4">
+              <button type="button" onClick={() => { setIsAdding(false); setEditingSubject(null); }} className="px-8 py-4 text-xs font-black text-ink-3 hover:text-ink uppercase tracking-widest transition-colors">Cancel</button>
+              <button type="submit" disabled={isPending} className="bg-[#92400e] text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.3em] hover:bg-[#78350f] transition-all disabled:opacity-50 shadow-xl shadow-[#92400e]/20 active:scale-95">{isPending ? "Configuring..." : (editingSubject ? "Update Track" : "Initialize Track")}</button>
             </div>
           </form>
         </div>
