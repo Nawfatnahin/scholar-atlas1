@@ -1,26 +1,22 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calculator, Cpu, Target, Save } from 'lucide-react';
+import { Target, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import type {
   GradeScale,
-  ManualCourse,
   AutoCourse,
   AttendanceSubject,
   CGPASettings,
 } from '@/lib/cgpa/cgpa-types';
 import { saveGlobalTarget } from '@/app/dashboard/cgpa/actions';
 import { GradeScaleEditor } from './GradeScaleEditor';
-import { ManualCGPACounter } from './ManualCGPACounter';
 import { AutoCGPACounter } from './AutoCGPACounter';
-
-type TabType = 'manual' | 'auto';
 
 interface CGPAManagerProps {
   initialSettings: CGPASettings | null;
   initialGradeScales: GradeScale[];
-  initialManualCourses: ManualCourse[];
+  initialManualCourses: any[];
   initialAutoCourses: AutoCourse[];
   attendanceSubjects: AttendanceSubject[];
 }
@@ -28,16 +24,13 @@ interface CGPAManagerProps {
 export function CGPAManager({
   initialSettings,
   initialGradeScales,
-  initialManualCourses,
   initialAutoCourses,
   attendanceSubjects,
 }: CGPAManagerProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('manual');
   const [targetCGPA, setTargetCGPA] = useState(initialSettings?.target_cgpa || 3.50);
   const [targetInput, setTargetInput] = useState(String(initialSettings?.target_cgpa || 3.50));
   const [isSavingTarget, setIsSavingTarget] = useState(false);
   const [gradeScales, setGradeScales] = useState<GradeScale[]>(initialGradeScales);
-  const [manualCourses, setManualCourses] = useState<ManualCourse[]>(initialManualCourses);
   const [autoCourses, setAutoCourses] = useState<AutoCourse[]>(initialAutoCourses);
 
   const handleSaveTarget = async () => {
@@ -111,49 +104,14 @@ export function CGPAManager({
       {/* Grade Scale Editor */}
       <GradeScaleEditor scales={gradeScales} onScalesChange={setGradeScales} />
 
-      {/* Tab Switcher */}
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-        <button
-          onClick={() => setActiveTab('manual')}
-          className={`flex items-center justify-center gap-3 px-8 py-5 rounded-[24px] font-black text-sm uppercase tracking-widest transition-all active:scale-95 flex-1 sm:flex-none ${
-            activeTab === 'manual'
-              ? 'bg-[#92400e] text-white shadow-xl shadow-[#92400e]/20'
-              : 'bg-white border border-border-strong text-ink-3 hover:text-ink hover:shadow-md'
-          }`}
-        >
-          <Calculator className="w-5 h-5" />
-          Manual Counter
-        </button>
-        <button
-          onClick={() => setActiveTab('auto')}
-          className={`flex items-center justify-center gap-3 px-8 py-5 rounded-[24px] font-black text-sm uppercase tracking-widest transition-all active:scale-95 flex-1 sm:flex-none ${
-            activeTab === 'auto'
-              ? 'bg-[#92400e] text-white shadow-xl shadow-[#92400e]/20'
-              : 'bg-white border border-border-strong text-ink-3 hover:text-ink hover:shadow-md'
-          }`}
-        >
-          <Cpu className="w-5 h-5" />
-          Auto Counter
-        </button>
-      </div>
-
-      {/* Active Tab Content */}
-      {activeTab === 'manual' ? (
-        <ManualCGPACounter
-          courses={manualCourses}
-          targetCGPA={targetCGPA}
-          gradeScales={gradeScales}
-          onCoursesChange={setManualCourses}
-        />
-      ) : (
-        <AutoCGPACounter
-          courses={autoCourses}
-          targetCGPA={targetCGPA}
-          gradeScales={gradeScales}
-          attendanceSubjects={attendanceSubjects}
-          onCoursesChange={setAutoCourses}
-        />
-      )}
+      {/* Auto Counter — always visible */}
+      <AutoCGPACounter
+        courses={autoCourses}
+        targetCGPA={targetCGPA}
+        gradeScales={gradeScales}
+        attendanceSubjects={attendanceSubjects}
+        onCoursesChange={setAutoCourses}
+      />
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { InstructionButton } from "@/components/InstructionButton";
 
 export const metadata = {
   title: "CGPA Manager — BackLogger Buddy",
-  description: "Dual-engine CGPA calculator with assessment prediction and exam score forecasting.",
+  description: "Smart CGPA calculator with assessment prediction and exam score forecasting.",
 };
 
 export default async function CGPAPage() {
@@ -95,11 +95,10 @@ export default async function CGPAPage() {
           <div className="flex items-center gap-3 sm:gap-4">
             <InstructionButton 
               title="CGPA Manager"
-              description="Track and predict your cumulative GPA with dual calculation engines."
+              description="Track and predict your cumulative GPA with smart assessment data."
               options={[
-                { title: "Manual Counter", description: "Enter your completed courses and grade points to calculate your current CGPA. Supports inline editing and live recalculation." },
                 { title: "Auto Counter", description: "Input your assessment data (class tests, assignments, attendance) and the system predicts what you need in your final exam to hit your target." },
-                { title: "Grade Scale", description: "Define your university's numeric grade scale (e.g., 80+ = 4.00). This scale is used across both counters for grade point lookups." },
+                { title: "Grade Scale", description: "Define your university's numeric grade scale (e.g., 80+ = 4.00). This scale is used for all grade point lookups." },
                 { title: "Exam Prediction", description: "After entering your CT marks, assignment scores, and attendance, see exactly what percentage you need in your written exam." },
               ]}
             />
