@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, CalendarCheck, LayoutList, Shield, Zap, Globe } from "lucide-react";
+import { FileText, CalendarCheck, LayoutList, Shield, Zap, Globe, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { useSubscription } from "@/components/SubscriptionProvider";
 
@@ -25,6 +25,15 @@ export default function Features() {
       shadow: "shadow-indigo-500/20",
       requiresAuth: true,
       href: "/dashboard/tasks"
+    },
+    {
+      title: "CGPA Manager",
+      description: "Dual-engine CGPA calculator with target forecasting and interactive grade tracking.",
+      icon: GraduationCap,
+      color: "from-orange-600 to-orange-800",
+      shadow: "shadow-orange-600/20",
+      requiresAuth: true,
+      href: "/dashboard/cgpa"
     },
     {
       title: "Secure PDF Tools",
