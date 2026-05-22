@@ -40,6 +40,7 @@ export default function Footer() {
                 <Link href={user ? "/tools/pdf" : "/signup"} className="text-[14px] text-ink-2 hover:text-ink transition-colors">PDF Tools</Link>
                 <Link href={user ? "/dashboard/attendance" : "/signup"} className="text-[14px] text-ink-2 hover:text-ink transition-colors">Attendance</Link>
                 <Link href={user ? "/dashboard/tasks" : "/signup"} className="text-[14px] text-ink-2 hover:text-ink transition-colors">Task Tracker</Link>
+                <Link href={user ? "/dashboard/cgpa" : "/signup"} className="text-[14px] text-ink-2 hover:text-ink transition-colors">CGPA Manager</Link>
                 <Link href="/#pricing" className="text-[14px] text-ink-2 hover:text-ink transition-colors">Pricing</Link>
               </div>
             </div>

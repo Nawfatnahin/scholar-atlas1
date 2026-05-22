@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { FileText, CalendarCheck, LayoutList, Home, ArrowRight, BookOpen, Clock, Crown } from "lucide-react";
+import { FileText, CalendarCheck, LayoutList, Home, ArrowRight, BookOpen, Clock, Crown, GraduationCap } from "lucide-react";
 import DashboardGreeting from "@/components/dashboard/DashboardGreeting";
 import TodaysClasses from "@/components/dashboard/TodaysClasses";
 import SignOutButton from "@/components/dashboard/SignOutButton";
@@ -141,7 +141,7 @@ export default async function DashboardPage() {
             <TodaysClasses initialSessions={todaysSessions} />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {/* PDF Tools */}
             <Link href="/tools/pdf" className="group relative bg-white/70 backdrop-blur-xl p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong shadow-sm hover:shadow-[0_40px_80px_rgba(146,64,14,0.08)] hover:-translate-y-2 transition-all duration-500 overflow-hidden">
               <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-amber-500/5 blur-[30px] sm:blur-[40px] rounded-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16 group-hover:bg-amber-500/10 transition-colors" />
@@ -190,6 +190,25 @@ export default async function DashboardPage() {
               <p className="text-ink-2 text-sm sm:text-base leading-relaxed mb-6 sm:mb-10 font-medium">High performance Kanban board to organize and crush your academic goals.</p>
               <div className="flex items-center gap-3 text-blue-700 font-black text-[12px] sm:text-sm uppercase tracking-widest">
                 <span>{user ? "Manage Workflow" : "Login to Manage"}</span>
+                <ArrowRight className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-2 transition-transform" />
+              </div>
+            </Link>
+
+            {/* CGPA Manager */}
+            <Link href={user ? "/dashboard/cgpa" : "/login"} className="group relative bg-white/70 backdrop-blur-xl p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong shadow-sm hover:shadow-[0_40px_80px_rgba(124,58,237,0.08)] hover:-translate-y-2 transition-all duration-500 overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-violet-500/5 blur-[30px] sm:blur-[40px] rounded-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16 group-hover:bg-violet-500/10 transition-colors" />
+              {!user && (
+                <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px] z-10 flex items-center justify-center">
+                  <div className="bg-[#92400e] text-white px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest shadow-lg">Login Required</div>
+                </div>
+              )}
+              <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-[18px] sm:rounded-[24px] bg-violet-100 flex items-center justify-center mb-6 sm:mb-8 shadow-inner shadow-violet-900/5 group-hover:scale-110 transition-transform">
+                <GraduationCap className="w-6 sm:w-8 h-6 sm:h-8 text-violet-700" />
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-ink mb-2 sm:mb-3 tracking-tight">CGPA Manager</h3>
+              <p className="text-ink-2 text-sm sm:text-base leading-relaxed mb-6 sm:mb-10 font-medium">Dual engine CGPA calculator with assessment prediction and exam score forecasting.</p>
+              <div className="flex items-center gap-3 text-violet-700 font-black text-[12px] sm:text-sm uppercase tracking-widest">
+                <span>{user ? "Track CGPA" : "Login to Track"}</span>
                 <ArrowRight className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-2 transition-transform" />
               </div>
             </Link>
