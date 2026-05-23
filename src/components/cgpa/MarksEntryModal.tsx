@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {
   X,
   FlaskConical,
@@ -216,7 +217,12 @@ export function MarksEntryModal({
     }
   };
 
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
         {/* Backdrop */}
@@ -583,6 +589,7 @@ export function MarksEntryModal({
           </div>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
