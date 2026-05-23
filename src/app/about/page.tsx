@@ -83,11 +83,6 @@ export default function AboutPage() {
       <main className="flex-1 max-w-[920px] mx-auto px-6 py-20 sm:py-32 relative z-10">
         {/* Section 1: Hero */}
         <section className="mb-32 text-center sm:text-left">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-accent/20 to-orange-500/20 text-accent text-[11px] font-black uppercase tracking-[0.2em] border border-accent/30 shadow-[0_0_20px_rgba(146,64,14,0.1)] mb-8">
-            <Sparkles size={14} className="animate-pulse" />
-            <span>Redefining Academic Clarity</span>
-          </div>
-          
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-4 mb-8 justify-center sm:justify-start">
             <h1 className="text-5xl sm:text-8xl font-black tracking-tighter uppercase leading-[0.8] mb-2">
               Scholar <span className="text-accent italic font-serif lowercase tracking-normal">Atlas</span>
