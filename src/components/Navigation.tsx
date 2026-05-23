@@ -42,7 +42,6 @@ export default function Navigation() {
           <Link href="/#how" className="text-sm font-semibold text-ink-2 hover:text-accent transition-colors">How it works</Link>
           <Link href="/#pricing" className="text-sm font-semibold text-ink-2 hover:text-accent transition-colors">Pricing</Link>
           <Link href="/about" className="text-sm font-semibold text-ink-2 hover:text-accent transition-colors">About</Link>
-          <Link href="/tools/pdf" className="text-sm font-semibold text-ink-2 hover:text-accent transition-colors">PDF Tools</Link>
         </div>
         
         <div className="hidden md:flex items-center gap-4">
