@@ -196,7 +196,10 @@ export default function SemesterProgressWidget() {
   const progress = semesterProgress();
 
   return (
-    <div className="w-full bg-white dark:bg-stone-900 border border-border-strong rounded-3xl p-6 mb-8">
+    <div className="w-full bg-white dark:bg-stone-900 border border-border-strong rounded-3xl p-6 mb-8 relative overflow-hidden">
+      {/* Decorative Brand Accent */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-3xl rounded-full -mr-16 -mt-16 pointer-events-none" />
+
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <div>

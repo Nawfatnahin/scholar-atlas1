@@ -1,6 +1,6 @@
 # Security Implementation Guide
 
-I have implemented several security improvements for Backlogger Buddy. To finalize the setup, you need to configure some environment variables and database rules.
+I have implemented several security improvements for Scholar Atlas. To finalize the setup, you need to configure some environment variables and database rules.
 
 ## 1. Cloudflare Turnstile
 I have added Turnstile bot protection to Login, Signup, and PDF tools.

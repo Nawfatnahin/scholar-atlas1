@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { InstructionButton } from "@/components/InstructionButton";
 
 export const metadata = {
-  title: "Task Tracker - BackLogger Buddy",
+  title: "Task Tracker - Scholar Atlas",
 };
 
 export default async function TasksPage() {

@@ -13,7 +13,7 @@ export default function HowItWorks() {
         </h2>
         
         <p className="text-[18px] text-ink-2 text-center max-w-[520px] mx-auto mb-14 leading-[1.65]">
-          No complex onboarding. No tutorial videos. BackLogger Buddy is built to be understood in a single glance.
+          No complex onboarding. No tutorial videos. Scholar Atlas is built to be understood in a single glance.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative">

@@ -19,7 +19,7 @@ export async function createClient() {
         detectSessionInUrl: true,
       },
       cookieOptions: {
-        name: 'sb-backlogger-buddy'
+        name: 'sb-scholar-atlas'
       },
       cookies: {
         getAll() {

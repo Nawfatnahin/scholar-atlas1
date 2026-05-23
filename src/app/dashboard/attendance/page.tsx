@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { InstructionButton } from "@/components/InstructionButton";
 
 export const metadata = {
-  title: "Attendance Tracker — BackLogger Buddy",
+  title: "Attendance Tracker — Scholar Atlas",
 };
 
 export default async function AttendancePage() {

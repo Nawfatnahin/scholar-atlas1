@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
     supabaseAnonKey,
     {
       cookieOptions: {
-        name: 'sb-backlogger-buddy'
+        name: 'sb-scholar-atlas'
       },
       cookies: {
         getAll() {

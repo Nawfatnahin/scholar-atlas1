@@ -33,7 +33,7 @@ export default function Navigation() {
               <path d="M10 2L3 7v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V7l-7-5z" />
             </svg>
           </div>
-          <span className="text-xl font-bold text-ink">BackLogger Buddy</span>
+          <span className="text-xl font-bold text-ink">Scholar Atlas</span>
         </Link>
 
         {/* Desktop Nav */}

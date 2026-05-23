@@ -1,5 +1,5 @@
 /**
- * Backlogger Buddy Constants
+ * Scholar Atlas Constants
  */
 
 export const ADMIN_EMAILS = [

@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import { ADMIN_EMAILS } from "@/lib/constants";
 
 export const metadata = {
-  title: "CGPA Manager — BackLogger Buddy",
+  title: "CGPA Manager — Scholar Atlas",
   description: "Smart CGPA calculator with assessment prediction and exam score forecasting.",
 };
 

@@ -27,7 +27,7 @@ export function createClient() {
     supabaseKey,
     {
       cookieOptions: {
-        name: 'sb-backlogger-buddy'
+        name: 'sb-scholar-atlas'
       }
     }
   );
@@ -44,7 +44,7 @@ export function createClient() {
         detectSessionInUrl: true,
       },
       cookieOptions: {
-        name: 'sb-backlogger-buddy'
+        name: 'sb-scholar-atlas'
       }
     }
   )

@@ -21,7 +21,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "BackLogger Buddy — Your Academic Command Center",
+  title: "Scholar Atlas — Your Academic Command Center",
   description: "All in one platform designed to help you balance your procrastination and progress.",
 };
 

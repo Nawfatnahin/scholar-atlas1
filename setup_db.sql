@@ -1,4 +1,4 @@
--- Backlogger Buddy: Master Database Setup
+-- Scholar Atlas: Master Database Setup
 -- This script combines all necessary tables and migrations for a fresh setup.
 
 -- 1. Usage Statistics (Analytics)

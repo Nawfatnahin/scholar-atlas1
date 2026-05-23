@@ -28,7 +28,7 @@ export default function Footer() {
                     <path d="M10 2L3 7v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V7l-7-5z" />
                   </svg>
                 </div>
-                BackLogger Buddy
+                Scholar Atlas
               </Link>
               <p className="text-[13px] text-ink-3 leading-[1.6] max-w-[280px]">
                 The academic command center for university students. Fast, focused and free to start.
@@ -47,7 +47,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-border-strong text-[13px] text-ink-3 gap-3">
-            <span>© 2026 BackLogger Buddy. All rights reserved.</span>
+            <span>© 2026 Scholar Atlas. All rights reserved.</span>
           </div>
         </div>
       </footer>

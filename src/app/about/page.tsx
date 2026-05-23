@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { format } from "date-fns";
 import { APP_VERSION } from "@/lib/version";
@@ -11,7 +13,11 @@ import {
   ArrowRight, 
   ArrowLeft,
   CheckCircle2,
-  Calendar
+  Calendar,
+  Sparkles,
+  Zap,
+  ShieldCheck,
+  Cpu
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -65,60 +71,106 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-bg font-body flex flex-col">
+    <div className="min-h-screen bg-bg font-body flex flex-col relative overflow-hidden text-ink">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" />
+      
       <Navigation />
       
-      <main className="flex-1 max-w-[860px] mx-auto px-6 py-16 sm:py-24">
+      <main className="flex-1 max-w-[920px] mx-auto px-6 py-20 sm:py-32 relative z-10">
         {/* Section 1: Hero */}
-        <section className="mb-24 text-center sm:text-left">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 justify-center sm:justify-start">
-            <h1 className="text-4xl sm:text-6xl font-black text-ink tracking-tighter uppercase">
-              BackLogger <span className="text-accent">Buddy</span>
+        <section className="mb-32 text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] font-black uppercase tracking-[0.2em] border border-accent/20 mb-8">
+            <Sparkles size={12} />
+            <span>Redefining Academic Clarity</span>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row sm:items-baseline gap-4 mb-8 justify-center sm:justify-start">
+            <h1 className="text-5xl sm:text-7xl font-black tracking-tighter uppercase leading-[0.85]">
+              Scholar <span className="text-accent italic font-serif lowercase tracking-normal">Atlas</span>
             </h1>
-            <div className="flex justify-center">
-              <span className="px-3 py-1 rounded-full bg-accent/10 text-accent text-[11px] font-black uppercase tracking-widest border border-accent/20">
-                v{APP_VERSION.current}
-              </span>
+            <span className="text-ink-3 font-bold text-lg opacity-40">v{APP_VERSION.current}</span>
+          </div>
+          
+          <p className="text-2xl sm:text-3xl font-bold text-ink-2 mb-10 leading-tight italic font-serif max-w-2xl">
+            Built by Nawfat, for students navigating the edge of academic chaos.
+          </p>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left max-w-3xl">
+            <div className="p-6 bg-white/40 backdrop-blur-md rounded-2xl border border-white/60 shadow-sm">
+              <Zap className="text-accent mb-3" size={24} />
+              <p className="text-ink-2 text-sm leading-relaxed font-medium">
+                Scholar Atlas was forged from a singular frustration: existing tools are too slow, too noisy, and too invasive. I needed a tactical map, not a spreadsheet.
+              </p>
+            </div>
+            <div className="p-6 bg-white/40 backdrop-blur-md rounded-2xl border border-white/60 shadow-sm">
+              <ShieldCheck className="text-green-600 mb-3" size={24} />
+              <p className="text-ink-2 text-sm leading-relaxed font-medium">
+                Everything runs in your browser. Your data never leaves your machine. Privacy isn&apos;t a feature here; it&apos;s the foundation of the entire architecture.
+              </p>
             </div>
           </div>
-          <p className="text-xl sm:text-2xl font-bold text-ink-2 mb-8 leading-tight italic font-serif">
-            Built by a student, for students who are barely keeping up.
-          </p>
-          <p className="text-lg text-ink-3 leading-relaxed max-w-2xl font-medium">
-            BackLogger Buddy started as a personal tool to stop missing attendance 
-            targets and losing track of assignment deadlines. It grew into a 
-            full academic command center — free, private, and built to run 
-            entirely in the browser.
-          </p>
         </section>
 
-        {/* Section 2: Motivation */}
-        <section className="mb-24">
-          <h2 className="text-[11px] font-bold text-ink-4 uppercase tracking-[0.2em] mb-10">Why this exists</h2>
-          <div className="max-w-[680px] space-y-6 text-lg text-ink-2 leading-relaxed font-medium">
-            <p>
-              I built this because I was tired of being a "backlogger" myself. There's a specific kind of anxiety that comes with realizing you've missed too many classes or that a high-stakes project is due tomorrow and you haven't even seen the brief. I needed a way to visualize my academic health without the overhead of complex, bloated enterprise tools.
-            </p>
-            <p>
-              Existing academic trackers either felt like they were designed for the university administration rather than the student, or they required uploading sensitive data to mysterious servers. I wanted something fast, local, and honest. I'm Nawfat, and I believe tools should empower you, not distract you with ads or sell your habits to the highest bidder.
-            </p>
-            <p>
-              The decision to make BackLogger Buddy free and open was simple: every student deserves a command center that doesn't cost a meal's worth of subscription fees. Whether you're aiming for a perfect 4.0 or just trying to survive the semester, this is for you. I'm constantly refining the logic and adding features based on what actually helps me stay afloat.
-            </p>
-            <p>
-              Success for this project isn't about user counts or metrics. It's about that moment when you check your dashboard, see you have a "skip budget" for a morning class, and get that extra hour of sleep without the guilt. It's about turning academic chaos into a manageable, even enjoyable, workflow.
-            </p>
+        {/* Section 2: Motivation (The "Atlas" Mindset) */}
+        <section className="mb-32">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="h-px flex-1 bg-border-strong" />
+            <h2 className="text-[11px] font-bold text-ink-4 uppercase tracking-[0.3em]">The Motivation</h2>
+            <div className="h-px flex-1 bg-border-strong" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div className="md:col-span-7 space-y-8">
+              <div className="group relative">
+                <div className="absolute -left-4 top-0 bottom-0 w-1 bg-accent/20 rounded-full group-hover:bg-accent transition-colors" />
+                <p className="text-xl text-ink-2 leading-relaxed font-medium pl-4">
+                  I&apos;ve always been driven by efficiency. I loathe redundant clicks and bloated interfaces that feel like they were designed in the early 2000s. As a student, I found myself constantly calculating "skip budgets" and "minimum marks" manually because no app treated academic life as a dynamic, evolving environment.
+                </p>
+              </div>
+              <p className="text-lg text-ink-3 leading-relaxed font-medium">
+                My approach to building Scholar Atlas reflects my own behavior: direct, goal-oriented, and slightly obsessed with visual harmony. I don&apos;t just want to track data; I want to see the future of my semester. I want to know exactly where I stand at 3:00 AM before a deadline.
+              </p>
+            </div>
+
+            <div className="md:col-span-5 flex flex-col gap-6">
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-[40px] border border-amber-200/50 shadow-inner">
+                <h4 className="text-xs font-black text-amber-900 uppercase tracking-widest mb-4">Philosophy</h4>
+                <ul className="space-y-4">
+                  {[
+                    "Zero latency interaction",
+                    "Local-first data storage",
+                    "Aesthetic as a utility",
+                    "Open-source transparency"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm font-bold text-amber-800/80">
+                      <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div className="bg-stone-900 p-8 rounded-[40px] text-white shadow-xl shadow-stone-900/20">
+                <Cpu className="text-accent mb-4" size={28} />
+                <p className="text-xs font-medium text-stone-400 leading-relaxed italic">
+                  &quot;I believe a tool is only as good as the friction it removes. Scholar Atlas is my attempt to automate the mental load of being a student.&quot;
+                </p>
+                <p className="text-sm font-black mt-4 uppercase tracking-[0.2em] text-accent">— Nawfat</p>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* Section 3: Features */}
-        <section className="mb-24">
-          <h2 className="text-[11px] font-bold text-ink-4 uppercase tracking-[0.2em] mb-10">What it does</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section className="mb-32">
+          <h2 className="text-[11px] font-bold text-ink-4 uppercase tracking-[0.3em] mb-12 text-center">System Capabilities</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {features.map((f, i) => (
-              <div key={i} className="bg-white/60 backdrop-blur-xl p-8 rounded-[32px] border border-border-strong shadow-sm hover:shadow-md transition-all">
-                <div className={`w-12 h-12 rounded-2xl ${f.bg} flex items-center justify-center mb-6 shadow-inner`}>
-                  <f.icon className={`w-6 h-6 ${f.color}`} />
+              <div key={i} className="bg-white/40 backdrop-blur-xl p-8 rounded-[32px] border border-border-strong hover:border-accent/30 transition-all group">
+                <div className={`w-14 h-14 rounded-2xl ${f.bg} flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform`}>
+                  <f.icon className={`w-7 h-7 ${f.color}`} />
                 </div>
                 <h3 className="text-lg font-black text-ink mb-2 uppercase tracking-tight">{f.name}</h3>
                 <p className="text-sm text-ink-3 leading-relaxed font-medium">{f.description}</p>
@@ -128,19 +180,22 @@ export default function AboutPage() {
         </section>
 
         {/* Section 4: Changelog */}
-        <section className="mb-24">
-          <h2 className="text-[11px] font-bold text-ink-4 uppercase tracking-[0.2em] mb-10">What&apos;s new</h2>
-          <div className="bg-white/60 backdrop-blur-xl p-8 sm:p-10 rounded-[40px] border border-border-strong shadow-sm">
-            <div className="mb-8">
-              <h3 className="text-2xl font-black text-ink">Version {currentRelease.version}</h3>
-              <p className="text-sm text-ink-3 font-bold uppercase tracking-widest mt-1">
-                Released on {format(new Date(currentRelease.date), "MMMM d, yyyy")}
+        <section className="mb-32">
+          <h2 className="text-[11px] font-bold text-ink-4 uppercase tracking-[0.3em] mb-12">The Roadmap</h2>
+          <div className="bg-white/60 backdrop-blur-xl p-8 sm:p-12 rounded-[48px] border border-border-strong shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16" />
+            
+            <div className="mb-10">
+              <h3 className="text-3xl font-black tracking-tight">Version {currentRelease.version}</h3>
+              <p className="text-sm text-ink-3 font-bold uppercase tracking-widest mt-2">
+                Deployed {format(new Date(currentRelease.date), "MMMM d, yyyy")}
               </p>
             </div>
-            <ul className="space-y-4">
+            
+            <div className="space-y-6">
               {currentRelease.changes.map((change, i) => (
-                <li key={i} className="flex items-start gap-4">
-                  <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter mt-1 shrink-0 ${
+                <div key={i} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-white/40 transition-colors">
+                  <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shrink-0 ${
                     change.type === 'NEW' ? 'bg-green-100 text-green-700' :
                     change.type === 'IMPROVED' ? 'bg-blue-100 text-blue-700' :
                     change.type === 'FIXED' ? 'bg-amber-100 text-amber-700' :
@@ -148,26 +203,19 @@ export default function AboutPage() {
                   }`}>
                     {change.type}
                   </span>
-                  <span className="text-sm text-ink-2 font-medium">{change.description}</span>
-                </li>
+                  <span className="text-base text-ink-2 font-bold tracking-tight">{change.description}</span>
+                </div>
               ))}
-            </ul>
-            {/* 
-            <div className="mt-10 pt-8 border-t border-border-strong">
-              <Link href="/about/changelog" className="text-[11px] font-black text-accent uppercase tracking-widest hover:underline flex items-center gap-2">
-                Full version history <ArrowRight size={14} />
-              </Link>
             </div>
-            */}
           </div>
         </section>
 
         {/* Section 5: Stack */}
-        <section className="mb-24">
-          <h2 className="text-[11px] font-bold text-ink-4 uppercase tracking-[0.2em] mb-8 text-center sm:text-left">Stack</h2>
-          <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
-            {["Next.js 14", "Supabase", "TypeScript", "Tailwind CSS", "Vercel"].map((tech, i) => (
-              <span key={i} className="px-4 py-2 rounded-xl bg-white border border-border-strong text-xs font-bold text-ink-3 uppercase tracking-widest shadow-sm">
+        <section className="mb-32 text-center">
+          <h2 className="text-[10px] font-black text-ink-4 uppercase tracking-[0.4em] mb-10">Core Technologies</h2>
+          <div className="flex flex-wrap gap-4 justify-center">
+            {["Next.js 15", "Supabase", "TypeScript", "Tailwind CSS", "Vercel"].map((tech, i) => (
+              <span key={i} className="px-6 py-3 rounded-2xl bg-white/50 backdrop-blur-sm border border-border-strong text-xs font-black text-ink-3 uppercase tracking-[0.2em] shadow-sm hover:border-accent/50 transition-colors">
                 {tech}
               </span>
             ))}
@@ -175,22 +223,32 @@ export default function AboutPage() {
         </section>
 
         {/* Section 6: Footer CTA */}
-        <section className="text-center py-16 border-t border-border-strong">
-          <p className="text-lg font-bold text-ink-3 mb-8 italic font-serif">
-            Free to use. No ads. No tracking.
+        <section className="text-center py-24 border-t border-border-strong bg-white/30 backdrop-blur-sm rounded-[60px]">
+          <p className="text-2xl font-bold text-ink-2 mb-10 italic font-serif max-w-md mx-auto leading-tight">
+            Ready to chart your course through the semester?
           </p>
-          <div className="flex flex-col items-center gap-6">
-            <Link href="/signup" className="px-10 py-4 rounded-2xl bg-accent text-white font-black uppercase tracking-widest hover:bg-accent/90 hover:scale-105 transition-all shadow-lg shadow-accent/20 active:scale-95">
-              Get Started
+          <div className="flex flex-col items-center gap-8">
+            <Link href="/signup" className="px-12 py-5 rounded-2xl bg-stone-900 text-white font-black uppercase tracking-[0.2em] hover:bg-stone-800 hover:scale-105 transition-all shadow-xl shadow-stone-900/20 active:scale-95 text-xs">
+              Initialize Atlas
             </Link>
-            <Link href="/" className="text-xs font-bold text-ink-3 uppercase tracking-widest hover:text-ink transition-colors flex items-center gap-2">
-              <ArrowLeft size={14} /> Back to home
+            <Link href="/" className="text-[10px] font-black text-ink-4 uppercase tracking-[0.3em] hover:text-accent transition-colors flex items-center gap-2">
+              <ArrowLeft size={14} /> Return to Base
             </Link>
           </div>
         </section>
       </main>
 
       <Footer />
+      
+      <style jsx>{`
+        .font-serif {
+          font-family: var(--font-lora), serif;
+        }
+        .font-black {
+          font-family: var(--font-space-grotesk), sans-serif;
+          font-weight: 900;
+        }
+      `}</style>
     </div>
   );
 }

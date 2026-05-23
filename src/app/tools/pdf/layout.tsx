@@ -4,7 +4,7 @@ import { ActionHistorySidebar } from "@/components/pdf/ActionHistorySidebar";
 import { ArrowLeft, Home, FileText } from "lucide-react";
 
 export const metadata = {
-  title: "PDF Tools - BackLogger Buddy",
+  title: "PDF Tools - Scholar Atlas",
   description: "Fast, secure, and client-side PDF manipulation tools for students.",
 };
 
