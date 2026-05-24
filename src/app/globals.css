@@ -46,8 +46,12 @@
 }
 
 @layer components {
-  .card-glass {
-    @apply bg-bg-surface/70 backdrop-blur-xl border border-border-strong shadow-sm dark:bg-bg-elevated/70;
+  .glass-card {
+    @apply bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_10px_25px_rgba(0,0,0,0.02),inset_0_1px_1px_white] transition-all duration-500 ease-out dark:bg-bg-elevated dark:bg-opacity-70 dark:border-border-strong;
+  }
+  
+  .glass-card:hover {
+    @apply shadow-[0_15px_30px_rgba(0,0,0,0.05),inset_0_1px_1px_white] -translate-y-1 border-accent/20 dark:border-accent/30;
   }
 
   .nav-glass {
