@@ -37,7 +37,7 @@ export default function HowItWorks() {
               c: "bg-amber-500 shadow-[0_4px_12px_rgba(245,158,11,0.4)]"
             }
           ].map((step, i) => (
-            <div key={i} className="text-center px-6 py-8 glass-card rounded-[24px] relative z-10 transition-all duration-400 hover:-translate-y-2 hover:shadow-[0_30px_40px_-10px_rgba(0,0,0,0.12),0_15px_15px_-10px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8)]">
+            <div key={i} className="text-center px-8 py-10 bg-white dark:bg-bg-surface/40 border border-border-strong/50 rounded-[32px] relative z-10 transition-all duration-400 hover:-translate-y-2 shadow-[0_12px_32px_rgba(0,0,0,0.02),inset_0_-2px_4px_rgba(0,0,0,0.02),inset_0_2px_0_rgba(255,255,255,0.9)] hover:shadow-[0_30px_50px_-10px_rgba(0,0,0,0.06),0_15px_15px_-10px_rgba(0,0,0,0.03)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.3)]">
               <div className={`w-14 h-14 rounded-full text-white font-display text-[20px] font-extrabold flex items-center justify-center mx-auto mb-6 relative z-10 ring-8 ring-accent-light ${step.c}`}>
                 {step.n}
               </div>

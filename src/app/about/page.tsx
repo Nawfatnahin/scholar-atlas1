@@ -87,7 +87,7 @@ export default function AboutPage() {
             <h1 className="text-5xl sm:text-8xl font-black tracking-tighter uppercase leading-[0.8] mb-2">
               Scholar <span className="text-accent italic font-serif lowercase tracking-normal">Atlas</span>
             </h1>
-            <div className="flex items-center gap-2 px-3 py-1 bg-ink text-bg rounded-lg shadow-lg rotate-2 sm:translate-y-[-10px]">
+            <div className="flex items-center gap-2 px-3 py-1 bg-ink text-white rounded-lg shadow-lg rotate-2 sm:translate-y-[-10px]">
                <span className="text-xs font-black uppercase tracking-tighter">Current</span>
                <span className="text-sm font-bold opacity-80">v{APP_VERSION.current}</span>
             </div>
@@ -156,7 +156,7 @@ export default function AboutPage() {
                 </ul>
               </div>
               
-              <div className="bg-ink p-10 rounded-[48px] text-bg shadow-2xl shadow-ink/20 relative group overflow-hidden">
+              <div className="bg-ink p-10 rounded-[48px] text-white shadow-2xl shadow-ink/20 relative group overflow-hidden">
                 <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
                 <Cpu className="text-accent mb-6 animate-pulse" size={32} />
                 <p className="text-sm font-medium leading-relaxed italic opacity-80">
@@ -276,7 +276,7 @@ export default function AboutPage() {
                </p>
 
                <div className="flex flex-col items-center gap-8 pt-4">
-                 <Link href="/signup" className="group/btn relative px-16 py-6 rounded-[32px] bg-ink text-bg font-black uppercase tracking-[0.3em] text-sm overflow-hidden shadow-2xl hover:scale-105 active:scale-95 transition-all duration-500">
+                 <Link href="/signup" className="group/btn relative px-16 py-6 rounded-[32px] bg-ink text-white font-black uppercase tracking-[0.3em] text-sm overflow-hidden shadow-2xl hover:scale-105 active:scale-95 transition-all duration-500">
                    <div className="absolute inset-0 bg-gradient-to-r from-accent to-orange-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" />
                    <span className="relative z-10">Initialize Atlas</span>
                  </Link>

@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       colors: {
         bg: {
+          DEFAULT: 'var(--bg-base)',
           base: 'var(--bg-base)',
           surface: 'var(--bg-surface)',
           elevated: 'var(--bg-elevated)',

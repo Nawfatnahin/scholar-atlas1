@@ -148,7 +148,7 @@ export default async function DashboardPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {/* PDF Tools */}
-            <Link href="/tools/pdf" className="group relative bg-bg-surface/70 backdrop-blur-xl p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong shadow-sm hover:shadow-[0_40px_80px_rgba(146,64,14,0.08)] hover:-translate-y-2 transition-all duration-500 overflow-hidden dark:bg-bg-elevated/70">
+            <Link href="/tools/pdf" className="group relative bg-white dark:bg-bg-elevated/70 p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong/60 shadow-[0_8px_30px_rgba(0,0,0,0.02),inset_0_-2px_4px_rgba(0,0,0,0.01),inset_0_2px_0_rgba(255,255,255,0.95)] hover:shadow-[0_30px_60px_rgba(146,64,14,0.06)] hover:-translate-y-2 transition-all duration-500 overflow-hidden">
               <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-amber-500/5 blur-[30px] sm:blur-[40px] rounded-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16 group-hover:bg-amber-500/10 transition-colors" />
               <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-[18px] sm:rounded-[24px] bg-amber-100 flex items-center justify-center mb-6 sm:mb-8 shadow-inner shadow-amber-900/5 group-hover:scale-110 transition-transform dark:bg-amber-900/20">
                 <FileText className="w-6 sm:w-8 h-6 sm:h-8 text-amber-700 dark:text-amber-500" />
@@ -162,7 +162,7 @@ export default async function DashboardPage() {
             </Link>
 
             {/* Attendance */}
-            <Link href={user ? "/dashboard/attendance" : "/login"} className="group relative bg-bg-surface/70 backdrop-blur-xl p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong shadow-sm hover:shadow-[0_40px_80px_rgba(22,163,74,0.08)] hover:-translate-y-2 transition-all duration-500 overflow-hidden dark:bg-bg-elevated/70">
+            <Link href={user ? "/dashboard/attendance" : "/login"} className="group relative bg-white dark:bg-bg-elevated/70 p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong/60 shadow-[0_8px_30px_rgba(0,0,0,0.02),inset_0_-2px_4px_rgba(0,0,0,0.01),inset_0_2px_0_rgba(255,255,255,0.95)] hover:shadow-[0_30px_60px_rgba(22,163,74,0.06)] hover:-translate-y-2 transition-all duration-500 overflow-hidden">
               <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-green-500/5 blur-[30px] sm:blur-[40px] rounded-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16 group-hover:bg-green-500/10 transition-colors" />
               {!user && (
                 <div className="absolute inset-0 bg-bg-base/40 backdrop-blur-[2px] z-10 flex items-center justify-center">
@@ -181,7 +181,7 @@ export default async function DashboardPage() {
             </Link>
 
             {/* Task Tracker */}
-            <Link href={user ? "/dashboard/tasks" : "/login"} className="group relative bg-bg-surface/70 backdrop-blur-xl p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong shadow-sm hover:shadow-[0_40px_80px_rgba(37,99,235,0.08)] hover:-translate-y-2 transition-all duration-500 overflow-hidden dark:bg-bg-elevated/70">
+            <Link href={user ? "/dashboard/tasks" : "/login"} className="group relative bg-white dark:bg-bg-elevated/70 p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong/60 shadow-[0_8px_30px_rgba(0,0,0,0.02),inset_0_-2px_4px_rgba(0,0,0,0.01),inset_0_2px_0_rgba(255,255,255,0.95)] hover:shadow-[0_30px_60px_rgba(37,99,235,0.06)] hover:-translate-y-2 transition-all duration-500 overflow-hidden">
               <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-blue-500/5 blur-[30px] sm:blur-[40px] rounded-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16 group-hover:bg-blue-500/10 transition-colors" />
               {!user && (
                 <div className="absolute inset-0 bg-bg-base/40 backdrop-blur-[2px] z-10 flex items-center justify-center">
@@ -200,7 +200,7 @@ export default async function DashboardPage() {
             </Link>
 
             {/* CGPA Manager */}
-            <Link href={user ? "/dashboard/cgpa" : "/login"} className="group relative bg-bg-surface/70 backdrop-blur-xl p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong shadow-sm hover:shadow-[0_40px_80px_rgba(124,58,237,0.08)] hover:-translate-y-2 transition-all duration-500 overflow-hidden dark:bg-bg-elevated/70">
+            <Link href={user ? "/dashboard/cgpa" : "/login"} className="group relative bg-white dark:bg-bg-elevated/70 p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong/60 shadow-[0_8px_30px_rgba(0,0,0,0.02),inset_0_-2px_4px_rgba(0,0,0,0.01),inset_0_2px_0_rgba(255,255,255,0.95)] hover:shadow-[0_30px_60px_rgba(124,58,237,0.06)] hover:-translate-y-2 transition-all duration-500 overflow-hidden">
               <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-violet-500/5 blur-[30px] sm:blur-[40px] rounded-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16 group-hover:bg-violet-500/10 transition-colors" />
               {!user && (
                 <div className="absolute inset-0 bg-bg-base/40 backdrop-blur-[2px] z-10 flex items-center justify-center">

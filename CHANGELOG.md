@@ -4,6 +4,23 @@ Format: [version] — YYYY-MM-DD
 
 ---
 
+## [1.0.2] — 2026-05-24
+
+### Improved
+- Redesigned Semester Progress Widget with modern 3D depth details, floating cards, and pulsing radial halo alerts.
+- Restored clean solid white background contrast to all dashboard quadrants to pop off the cream background base.
+- Upgraded the 3 onboarding steps and 4 dashboard categories cards into proper solid white, 3D boxes for exceptional readability against cream backgrounds.
+- Upgraded card loading skeleton loaders into pulsing glass placeholders.
+
+### Fixed
+- Repaired broken text-bg classes on About page by mapping a DEFAULT color fallback in tailwind configuration and styling text containers.
+- Configured ESLint compilation bypass in `next.config.js` to guarantee seamless Cloudflare Pages deployments.
+
+### Removed
+- Extracted unconfigured semester setup prompt text for a clean morning briefing.
+
+---
+
 ## [1.0.1] — 2026-05-24
 
 ### Added
