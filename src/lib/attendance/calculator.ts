@@ -90,15 +90,15 @@ export function calculateStats(
     projectedFinalPercentage = ((attended + remainingClasses * currentRate) / totalPlanned) * 100
   }
 
-  const isInDangerZone = currentPercentage < (subject.required_threshold + 5)
+  const isInDangerZone = currentPercentage < (threshold + 5)
   const isLastSafeAbsence = safeSkipsLeft === 1
 
   let healthStatus: 'safe' | 'caution' | 'danger' | 'unreachable' = 'safe'
   if (isGoalUnreachable) {
     healthStatus = 'unreachable'
-  } else if (currentPercentage < subject.required_threshold || safeSkipsLeft === 0) {
+  } else if (currentPercentage < threshold || safeSkipsLeft === 0) {
     healthStatus = 'danger'
-  } else if (currentPercentage < (subject.required_threshold + 5) || safeSkipsLeft === 1) {
+  } else if (currentPercentage < (threshold + 5) || safeSkipsLeft === 1) {
     healthStatus = 'caution'
   }
 

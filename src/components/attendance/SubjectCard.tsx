@@ -184,7 +184,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({
             <span className="text-text-primary">
               {stats.currentPercentage.toFixed(1)}%
             </span>
-            <span className="text-text-tertiary text-xs">Min: {stats.requiredThreshold}%</span>
+            <span className="text-text-tertiary text-xs">Target: {stats.requiredThreshold}%</span>
           </div>
           <div className="relative h-2.5 bg-border-subtle rounded-full overflow-hidden">
             <div 
@@ -212,7 +212,7 @@ export const SubjectCard: React.FC<SubjectCardProps> = ({
             <p className="text-base font-black text-text-primary">{stats.attended}</p>
           </div>
           <div className="flex-1 p-2.5 rounded-xl bg-bg-base border border-border-strong dark:bg-bg-surface">
-            <p className="text-[9px] font-black text-text-tertiary uppercase tracking-widest mb-0.5">Minimum</p>
+            <p className="text-[9px] font-black text-text-tertiary uppercase tracking-widest mb-0.5">Target</p>
             <p className="text-base font-black text-text-tertiary">{stats.requiredThreshold}%</p>
           </div>
         </div>

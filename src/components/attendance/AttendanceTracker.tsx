@@ -38,8 +38,7 @@ export function AttendanceTracker({ initialSubjects, initialHolidays }: Attendan
   const [formData, setFormData] = useState({
     name: '',
     courseCode: '',
-    requiredThreshold: 75,
-    personalTarget: null as number | null,
+    personalTarget: 75,
     classDays: [] as string[],
     semesterStartDate: format(new Date(), 'yyyy-MM-dd'),
     totalWeeks: 15,
@@ -80,8 +79,8 @@ export function AttendanceTracker({ initialSubjects, initialHolidays }: Attendan
       const res = await addSubject({
         name: formData.name,
         courseCode: formData.courseCode,
-        requiredThreshold: Number(formData.requiredThreshold),
-        personalTarget: formData.personalTarget ? Number(formData.personalTarget) : null,
+        requiredThreshold: Number(formData.personalTarget),
+        personalTarget: Number(formData.personalTarget),
         classDays: formData.classDays,
         semesterStartDate: formData.semesterStartDate,
         totalWeeks: Number(formData.totalWeeks)
@@ -93,8 +92,7 @@ export function AttendanceTracker({ initialSubjects, initialHolidays }: Attendan
         setFormData({
           name: '',
           courseCode: '',
-          requiredThreshold: 75,
-          personalTarget: null,
+          personalTarget: 75,
           classDays: [],
           semesterStartDate: format(new Date(), 'yyyy-MM-dd'),
           totalWeeks: 15,
@@ -302,13 +300,9 @@ export function AttendanceTracker({ initialSubjects, initialHolidays }: Attendan
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-text-tertiary uppercase tracking-widest">Threshold %</label>
-                  <input type="number" value={formData.requiredThreshold} onChange={(e) => setFormData({...formData, requiredThreshold: parseFloat(e.target.value)})} className="w-full px-4 py-3.5 rounded-xl border-2 border-border-strong bg-bg-base font-bold text-text-primary outline-none focus:border-accent transition-all dark:bg-bg-elevated" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-text-tertiary uppercase tracking-widest">Personal %</label>
-                  <input type="number" value={formData.personalTarget || ''} onChange={(e) => setFormData({...formData, personalTarget: e.target.value ? parseFloat(e.target.value) : null})} placeholder="75" className="w-full px-4 py-3.5 rounded-xl border-2 border-border-strong bg-bg-base font-bold text-text-primary outline-none focus:border-accent transition-all dark:bg-bg-elevated" />
+                <div className="space-y-2 col-span-2">
+                  <label className="text-[10px] font-black text-text-tertiary uppercase tracking-widest flex items-center gap-2"><Layout className="w-3 h-3" /> Target Attendance %</label>
+                  <input type="number" value={formData.personalTarget} onChange={(e) => setFormData({...formData, personalTarget: parseFloat(e.target.value)})} placeholder="75" className="w-full px-4 py-3.5 rounded-xl border-2 border-border-strong bg-bg-base font-bold text-text-primary outline-none focus:border-accent transition-all dark:bg-bg-elevated" required />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-text-tertiary uppercase tracking-widest">Total Planned</label>
