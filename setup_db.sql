@@ -15,31 +15,40 @@ CREATE TABLE IF NOT EXISTS public.subjects (
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   course_code TEXT,
-  target_percentage INTEGER DEFAULT 75,
-  semester_start_date DATE,
-  total_weeks INTEGER DEFAULT 15,
-  classes_per_day INTEGER DEFAULT 1,
-  class_days TEXT[] DEFAULT '{}',
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  required_threshold NUMERIC(5,2) NOT NULL DEFAULT 75.00,
+  personal_target NUMERIC(5,2) DEFAULT NULL,
+  total_classes_planned INTEGER DEFAULT NULL,
+  semester_start_date DATE DEFAULT NULL,
+  semester_end_date DATE DEFAULT NULL,
+  schedule_days TEXT[] DEFAULT '{}',
+  schedule_time TIME DEFAULT NULL,
+  color_tag TEXT NOT NULL DEFAULT 'blue',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  CONSTRAINT chk_threshold CHECK (required_threshold BETWEEN 0 AND 100),
+  CONSTRAINT chk_personal CHECK (personal_target IS NULL OR personal_target BETWEEN 0 AND 100)
 );
 
--- 3. Attendance Logs (Legacy/Simple)
-CREATE TABLE IF NOT EXISTS public.attendance_logs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  subject_id UUID NOT NULL REFERENCES public.subjects(id) ON DELETE CASCADE,
-  status TEXT NOT NULL CHECK (status IN ('present', 'absent')),
-  date DATE NOT NULL DEFAULT CURRENT_DATE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- 4. Class Sessions (Automated Schedule)
-CREATE TABLE IF NOT EXISTS public.class_sessions (
+-- 3. Attendance Records
+CREATE TABLE IF NOT EXISTS public.attendance_records (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   subject_id UUID NOT NULL REFERENCES public.subjects(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  absence_type TEXT NOT NULL DEFAULT 'unexcused' CHECK (absence_type IN ('present', 'unexcused', 'medical', 'excused', 'cancelled')),
+  note TEXT DEFAULT NULL,
+  class_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  week_number INTEGER GENERATED ALWAYS AS (EXTRACT(WEEK FROM class_date)) STORED,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  CONSTRAINT unique_subject_class_date UNIQUE (subject_id, class_date)
+);
+
+-- 4. Holidays
+CREATE TABLE IF NOT EXISTS public.holidays (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
   date DATE NOT NULL,
-  status TEXT NOT NULL CHECK (status IN ('present', 'absent', 'cancelled', 'upcoming', 'holiday')) DEFAULT 'upcoming',
-  is_extra BOOLEAN DEFAULT false,
+  scope TEXT NOT NULL DEFAULT 'global' CHECK (scope IN ('global', 'subject')),
+  subject_id UUID REFERENCES public.subjects(id) ON DELETE CASCADE DEFAULT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -74,8 +83,8 @@ CREATE TABLE IF NOT EXISTS public.subscriptions (
 -- RLS Configuration
 ALTER TABLE public.usage_stats ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subjects ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.attendance_logs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.class_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.attendance_records ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.holidays ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.waitlist ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
@@ -95,20 +104,14 @@ BEGIN
         CREATE POLICY "Users can manage own subjects" ON public.subjects FOR ALL USING (auth.uid() = user_id);
     END IF;
 
-    -- attendance_logs
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Users can manage own attendance logs' AND tablename = 'attendance_logs') THEN
-        CREATE POLICY "Users can manage own attendance logs" ON public.attendance_logs FOR ALL USING (
-          EXISTS (
-            SELECT 1 FROM public.subjects
-            WHERE subjects.id = attendance_logs.subject_id
-            AND subjects.user_id = auth.uid()
-          )
-        );
+    -- attendance_records
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Users can manage own attendance records' AND tablename = 'attendance_records') THEN
+        CREATE POLICY "Users can manage own attendance records" ON public.attendance_records FOR ALL USING (auth.uid() = user_id);
     END IF;
 
-    -- class_sessions
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Users can manage own sessions' AND tablename = 'class_sessions') THEN
-        CREATE POLICY "Users can manage own sessions" ON public.class_sessions FOR ALL USING (auth.uid() = user_id);
+    -- holidays
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Users manage own holidays' AND tablename = 'holidays') THEN
+        CREATE POLICY "Users manage own holidays" ON public.holidays FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
     END IF;
 
     -- tasks
@@ -134,8 +137,9 @@ BEGIN
 END $$;
 
 -- Indexes
-CREATE INDEX IF NOT EXISTS idx_class_sessions_subject_id ON public.class_sessions(subject_id);
-CREATE INDEX IF NOT EXISTS idx_class_sessions_user_id ON public.class_sessions(user_id);
-CREATE INDEX IF NOT EXISTS idx_class_sessions_date ON public.class_sessions(date);
+CREATE INDEX IF NOT EXISTS idx_attendance_records_subject_id ON public.attendance_records(subject_id);
+CREATE INDEX IF NOT EXISTS idx_attendance_records_user_id ON public.attendance_records(user_id);
+CREATE INDEX IF NOT EXISTS idx_attendance_records_class_date ON public.attendance_records(class_date DESC);
 CREATE INDEX IF NOT EXISTS idx_subjects_user_id ON public.subjects(user_id);
 CREATE INDEX IF NOT EXISTS idx_tasks_user_id ON public.tasks(user_id);
+CREATE INDEX IF NOT EXISTS idx_holidays_user_id ON public.holidays(user_id);
