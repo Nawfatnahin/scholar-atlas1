@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { useSubscription } from "@/components/SubscriptionProvider";
 
@@ -9,6 +10,8 @@ export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, loading, logout } = useSubscription();
+  const pathname = usePathname();
+  const isFirstPage = pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -27,14 +30,34 @@ export default function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shadow-md transition-transform group-hover:scale-110">
-            <svg viewBox="0 0 20 20" className="w-4 h-4 fill-white">
-              <path d="M10 2L3 7v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V7l-7-5z" />
+        {isFirstPage ? (
+          <Link href="/" className="flex items-center gap-1.5 group">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#8B4513"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-8 h-8 transition-transform group-hover:scale-110 text-[#8B4513]"
+            >
+              <path d="M12 12m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+              <path d="M18.816 13.58c2.292 2.138 3.546 4 3.092 4.9c-.745 1.46 -5.783 -.259 -11.255 -3.838c-5.47 -3.579 -9.304 -7.664 -8.56 -9.123c.464 -.91 2.926 -.444 5.803 .805" />
             </svg>
-          </div>
-          <span className="text-xl font-bold text-ink">Scholar Atlas</span>
-        </Link>
+            <span className="text-xl font-normal text-ink">Scholar</span>
+            <span className="text-xl font-bold text-[#8B4513]">Atlas</span>
+          </Link>
+        ) : (
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shadow-md transition-transform group-hover:scale-110">
+              <svg viewBox="0 0 20 20" className="w-4 h-4 fill-white">
+                <path d="M10 2L3 7v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V7l-7-5z" />
+              </svg>
+            </div>
+            <span className="text-xl font-bold text-ink">Scholar Atlas</span>
+          </Link>
+        )}
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">

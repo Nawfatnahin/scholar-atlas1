@@ -501,7 +501,7 @@ export function MarksEntryModal({
                     <p className="text-xs font-medium text-red-600 mt-1">
                       You would need{' '}
                       <span className="font-black text-red-700">
-                        {breakdown?.requiredExamPercentage.toFixed(1)}%
+                        {((breakdown?.requiredExamPercentage / 100) * breakdown.examWeight).toFixed(1)} / {breakdown.examWeight}
                       </span>{' '}
                       in the exam — which exceeds 100%. Sir, this goal cannot be reached with the current marks.
                     </p>
@@ -523,10 +523,12 @@ export function MarksEntryModal({
                     <p className="text-base font-black text-[#78350f]">
                       You need{' '}
                       <span className="text-2xl text-[#92400e]">
-                        {breakdown?.requiredExamPercentage.toFixed(1)}% 
-                        <span className="text-base font-bold text-[#92400e]/80 ml-2">({((breakdown?.requiredExamPercentage / 100) * 100).toFixed(1)} / 100 absolute)</span>
+                        {Math.max(0, (breakdown.requiredExamPercentage / 100) * breakdown.examWeight).toFixed(1)} / {breakdown.examWeight}
                       </span>{' '}
                       in the Written Exam
+                    </p>
+                    <p className="text-xs font-medium text-[#92400e]/70 mt-1">
+                      (equivalent to {breakdown.requiredExamPercentage.toFixed(1)}% of exam weight)
                     </p>
                     <p className="text-xs font-medium text-[#92400e]/70 mt-1">
                       to achieve your target grade point of{' '}
@@ -554,7 +556,7 @@ export function MarksEntryModal({
                       {(breakdown?.requiredExamPercentage ?? 0) >= 80 && (
                         <p className="text-xs font-black text-amber-600 flex items-center gap-1">
                           <AlertTriangle className="w-3.5 h-3.5" />
-                          High exam score required — aim for above {breakdown?.requiredExamPercentage.toFixed(0)}%.
+                          High exam score required — aim for above {Math.max(0, (breakdown.requiredExamPercentage / 100) * breakdown.examWeight).toFixed(1)} / {breakdown.examWeight}.
                         </p>
                       )}
                       {(breakdown?.requiredExamPercentage ?? 0) < 60 && (

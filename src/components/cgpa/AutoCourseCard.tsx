@@ -137,7 +137,7 @@ export function AutoCourseCard({
             <span className="hidden sm:inline px-3 py-1 rounded-full bg-red-50 text-red-700 text-[10px] font-black uppercase tracking-widest">At Risk</span>
           ) : (
             <span className="hidden sm:inline px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-black uppercase tracking-widest">
-              Need {Math.max(0, breakdown.requiredExamPercentage).toFixed(1)}%
+              Need {Math.max(0, (breakdown.requiredExamPercentage / 100) * breakdown.examWeight).toFixed(1)} / {breakdown.examWeight}
             </span>
           )}
           <button
@@ -233,11 +233,11 @@ export function AutoCourseCard({
                   !breakdown.targetAchievable ? 'text-red-700' :
                   'text-violet-700'
                 }`}>
-                  {breakdown.targetAlreadyAchieved ? '0%' :
-                   !breakdown.targetAchievable ? '>100%' :
-                   `${breakdown.requiredExamPercentage.toFixed(1)}%`}
+                  {breakdown.targetAlreadyAchieved ? `0.0 / ${breakdown.examWeight}` :
+                   !breakdown.targetAchievable ? `>${breakdown.examWeight} / ${breakdown.examWeight}` :
+                   `${Math.max(0, (breakdown.requiredExamPercentage / 100) * breakdown.examWeight).toFixed(1)} / ${breakdown.examWeight}`}
                 </p>
-                <p className="text-[10px] font-bold text-ink-3">Absolute: {breakdown.targetAlreadyAchieved ? '0' : !breakdown.targetAchievable ? 'N/A' : ((breakdown.requiredExamPercentage / 100) * 100).toFixed(1)} / 100</p>
+                <p className="text-[10px] font-bold text-ink-3">Percentage: {breakdown.targetAlreadyAchieved ? '0%' : !breakdown.targetAchievable ? 'N/A' : `${breakdown.requiredExamPercentage.toFixed(1)}%`}</p>
               </div>
               <div>
                 <p className="text-[10px] font-black text-ink-4 uppercase tracking-widest">Predicted GP</p>
