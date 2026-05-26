@@ -4,8 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { calculateStats, AttendanceRecord, Subject } from "@/lib/attendance/calculator";
+import { ADMIN_EMAILS, PRO_EMAILS } from "@/lib/constants";
 
 // --- SCHEMAS ---
+
 
 const MarkAttendanceSchema = z.object({
   subjectId: z.string().uuid(),
@@ -59,6 +61,30 @@ export async function addSubject(data: {
   try {
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
+
+    // Enforce 10 subjects limit for free tier
+    const { data: sub } = await supabase.from('subscriptions').select('*').eq('email', user.email).maybeSingle();
+    const isAdmin = user.email ? ADMIN_EMAILS.includes(user.email) : false;
+    const isProHardcoded = user.email ? PRO_EMAILS.includes(user.email) : false;
+    
+    let isPro = sub?.plan === 'pro' || isProHardcoded;
+    if (isPro && sub?.premium_until) {
+      if (new Date(sub.premium_until) < new Date()) {
+        isPro = false;
+      }
+    }
+
+    if (!isPro && !isAdmin) {
+      const { count } = await supabase
+        .from('subjects')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+
+      if (count !== null && count >= 10) {
+        throw new Error('Limit reached: Free tier users can only track up to 10 subjects. Upgrade to Pro for unlimited subjects!');
+      }
+    }
+
 
     const payload = {
       name: String(data.name).trim(),
