@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import AdminPanel from "./AdminPanel";
-import { getAllSubscriptions } from "./actions";
+import { getAllSubscriptions, getActiveCode, getAllWaitlistUsers, getAllProAccessList } from "./actions";
 import { ADMIN_EMAILS } from "@/lib/constants";
 
 export default async function AdminPage() {
@@ -12,12 +12,20 @@ export default async function AdminPage() {
     redirect("/dashboard");
   }
 
-  const subscriptions = await getAllSubscriptions();
+  const [subscriptions, codeInfo, waitlistUsers, proAccessList] = await Promise.all([
+    getAllSubscriptions(),
+    getActiveCode(),
+    getAllWaitlistUsers(),
+    getAllProAccessList(),
+  ]);
 
   return (
     <AdminPanel 
       initialSubscriptions={subscriptions} 
-      ownerEmail={user.email!} 
+      ownerEmail={user.email!}
+      initialCodeInfo={codeInfo}
+      initialWaitlist={waitlistUsers}
+      initialProAccessList={proAccessList}
     />
   );
 }

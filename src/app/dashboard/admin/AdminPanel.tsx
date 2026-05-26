@@ -19,9 +19,18 @@ import {
   ArrowRight,
   Settings,
   Sparkles,
-  Activity as ActivityIcon
+  Activity as ActivityIcon,
+  Key,
+  RefreshCw,
+  Copy,
+  Clock,
+  CheckCircle2,
+  Lock,
+  Unlock,
+  ListChecks,
+  UserCheck
 } from "lucide-react";
-import { toggleProStatus, deleteSubscription } from "./actions";
+import { toggleProStatus, deleteSubscription, generateAccessCode, getActiveCode, getAllWaitlistUsers, getAllProAccessList } from "./actions";
 import { toast } from "sonner";
 import Link from "next/link";
 import { clsx, type ClassValue } from "clsx";
@@ -41,7 +50,42 @@ interface Subscription {
   created_at: string;
 }
 
-export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initialSubscriptions: Subscription[], ownerEmail: string }) {
+interface ActiveCodeInfo {
+  code?: string;
+  usesCount?: number;
+  maxUses?: number;
+  expiresAt?: string;
+  createdAt?: string;
+  cooldownDaysLeft?: number;
+  canGenerate?: boolean;
+}
+
+interface WaitlistUser {
+  id: string;
+  email: string;
+  created_at: string;
+}
+
+interface ProAccessUser {
+  id: string;
+  email: string;
+  code_used: string;
+  granted_at: string;
+}
+
+export default function AdminPanel({
+  initialSubscriptions,
+  ownerEmail,
+  initialCodeInfo,
+  initialWaitlist,
+  initialProAccessList,
+}: {
+  initialSubscriptions: Subscription[];
+  ownerEmail: string;
+  initialCodeInfo: ActiveCodeInfo | null;
+  initialWaitlist: WaitlistUser[];
+  initialProAccessList: ProAccessUser[];
+}) {
   const [subscriptions, setSubscriptions] = useState(initialSubscriptions || []);
   const [newEmail, setNewEmail] = useState("");
   const [isAdding, setIsAdding] = useState(false);
@@ -52,6 +96,15 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
   const [jarvisMessage, setJarvisMessage] = useState("");
   const [isTyping, setIsTyping] = useState(true);
   const [neuralLogs, setNeuralLogs] = useState<string[]>([]);
+
+  // Code Generator State
+  const [codeInfo, setCodeInfo] = useState<ActiveCodeInfo | null>(initialCodeInfo);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
+
+  // Waitlist & Pro Access State
+  const [waitlistUsers, setWaitlistUsers] = useState<WaitlistUser[]>(initialWaitlist || []);
+  const [proAccessUsers, setProAccessUsers] = useState<ProAccessUser[]>(initialProAccessList || []);
 
   // Dynamic calculations
   const totalGmails = (subscriptions || []).length;
@@ -69,7 +122,6 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
   useEffect(() => {
     setMounted(true);
     
-    // Determine activity level
     let activityLevel: 'high' | 'idle' | 'normal' = 'normal';
     if (totalGmails > 100) activityLevel = 'high';
     else if (totalGmails < 10) activityLevel = 'idle';
@@ -77,18 +129,15 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
     const message = getJarvisMessage(activityLevel);
     setJarvisMessage(message);
 
-    // Initial neural logs
     setNeuralLogs([
       "Neural sync established.",
       "Matrix population: " + totalGmails + " nodes.",
       "Security protocol: Active."
     ]);
 
-    // Typing effect simulation
     setIsTyping(true);
     const timer = setTimeout(() => setIsTyping(false), 2000);
 
-    // Simulate metric updates and neural logs
     const metricInterval = setInterval(() => {
       const newCpu = Math.floor(Math.random() * 15) + 5;
       const newRam = Math.floor(Math.random() * 10) + 40;
@@ -99,7 +148,6 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
         uptime: "99.99" + (Math.floor(Math.random() * 9) + 1) + "%"
       }));
 
-      // Add a random neural log
       const logs = [
         `CPU throughput: ${newCpu}%`,
         `Memory allocation shifted to ${newRam}%`,
@@ -213,6 +261,54 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
     } catch {
       toast.error(`Critical error.`);
     }
+  };
+
+  const handleGenerateCode = async () => {
+    setIsGenerating(true);
+    try {
+      const result = await generateAccessCode();
+      if (result.success && result.code) {
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + 3);
+        setCodeInfo({
+          code: result.code,
+          usesCount: 0,
+          maxUses: 20,
+          expiresAt: expiresAt.toISOString(),
+          createdAt: new Date().toISOString(),
+          cooldownDaysLeft: 3,
+          canGenerate: false,
+        });
+        toast.success("New access code generated.");
+      } else if (result.cooldownDaysLeft) {
+        toast.error(`Cooldown active. ${result.cooldownDaysLeft} day(s) remaining.`);
+      } else {
+        toast.error(result.error || "Failed to generate code.");
+      }
+    } catch {
+      toast.error("Code generation failed.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleCopyCode = () => {
+    if (!codeInfo?.code) return;
+    navigator.clipboard.writeText(codeInfo.code);
+    setCodeCopied(true);
+    setTimeout(() => setCodeCopied(false), 2000);
+  };
+
+  const getCodeExpiryDisplay = () => {
+    if (!codeInfo?.expiresAt) return null;
+    const exp = new Date(codeInfo.expiresAt);
+    const now = new Date();
+    const diff = exp.getTime() - now.getTime();
+    if (diff <= 0) return "Expired";
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(hours / 24);
+    if (days > 0) return `${days}d ${hours % 24}h remaining`;
+    return `${hours}h remaining`;
   };
 
   if (!mounted) return null;
@@ -410,6 +506,243 @@ export default function AdminPanel({ initialSubscriptions, ownerEmail }: { initi
                     </div>
                  </div>
               </Interactive3DBox>
+           </div>
+
+           {/* ── ACCESS CODE GENERATOR ── */}
+           <div className="w-full">
+              <div className="flex justify-between items-center gap-6 mb-8">
+                 <div className="space-y-2">
+                    <h2 className="text-4xl font-serif font-bold text-ink tracking-tight flex items-center gap-4">
+                       <Key className="w-10 h-10 text-accent" />
+                       Access Code Generator
+                    </h2>
+                    <p className="text-ink-3 font-bold uppercase tracking-widest text-[10px]">8-Character Pro Access Codes · 3-Day Cooldown · 20-Use Limit</p>
+                 </div>
+              </div>
+
+              <Interactive3DBox className="group">
+                 <div className="p-10 grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    {/* Left: Code Display */}
+                    <div className="space-y-8">
+                       <div className="space-y-3">
+                          <p className="text-[10px] font-black uppercase tracking-widest text-ink-3">Current Active Code</p>
+                          {codeInfo?.code ? (
+                             <div className="relative group/code">
+                                <div className="bg-bg border-2 border-accent/20 rounded-2xl p-6 flex items-center justify-between gap-4">
+                                   <span className="font-mono text-3xl font-black text-accent tracking-[0.3em] select-all">
+                                      {codeInfo.code}
+                                   </span>
+                                   <button
+                                      onClick={handleCopyCode}
+                                      className="p-3 rounded-xl bg-accent/5 border border-accent/10 hover:bg-accent/10 transition-all active:scale-95"
+                                   >
+                                      {codeCopied ? (
+                                         <CheckCircle2 className="w-5 h-5 text-green-500" />
+                                      ) : (
+                                         <Copy className="w-5 h-5 text-accent" />
+                                      )}
+                                   </button>
+                                </div>
+                             </div>
+                          ) : (
+                             <div className="bg-bg border-2 border-dashed border-border-strong rounded-2xl p-6 flex items-center justify-center">
+                                <span className="text-ink-4 text-sm font-bold uppercase tracking-widest">No Active Code</span>
+                             </div>
+                          )}
+                       </div>
+
+                       {/* Code Stats */}
+                       <div className="grid grid-cols-2 gap-4">
+                          <div className="bg-bg border border-border-strong rounded-2xl p-5 space-y-2">
+                             <p className="text-[10px] font-black uppercase tracking-widest text-ink-3">Uses</p>
+                             <div className="flex items-end gap-2">
+                                <span className="text-3xl font-serif font-black text-ink">{codeInfo?.usesCount ?? 0}</span>
+                                <span className="text-base text-ink-3 font-bold mb-1">/ {codeInfo?.maxUses ?? 20}</span>
+                             </div>
+                             <div className="h-1.5 w-full bg-accent/5 rounded-full overflow-hidden">
+                                <div 
+                                   className="h-full bg-accent transition-all duration-700 rounded-full"
+                                   style={{ width: `${((codeInfo?.usesCount ?? 0) / (codeInfo?.maxUses ?? 20)) * 100}%` }}
+                                />
+                             </div>
+                          </div>
+                          <div className="bg-bg border border-border-strong rounded-2xl p-5 space-y-2">
+                             <p className="text-[10px] font-black uppercase tracking-widest text-ink-3">Expiry</p>
+                             <div className="flex items-center gap-2">
+                                <Clock className="w-4 h-4 text-accent flex-shrink-0" />
+                                <span className="text-sm font-bold text-ink">{getCodeExpiryDisplay() ?? "—"}</span>
+                             </div>
+                             {codeInfo?.expiresAt && (
+                                <p className="text-[10px] text-ink-4">{new Date(codeInfo.expiresAt).toLocaleDateString()}</p>
+                             )}
+                          </div>
+                       </div>
+                    </div>
+
+                    {/* Right: Generate & Status */}
+                    <div className="space-y-8 flex flex-col justify-between">
+                       <div className="space-y-6">
+                          <div className={cn(
+                             "p-5 rounded-2xl border flex items-start gap-4",
+                             codeInfo?.canGenerate
+                                ? "bg-green-50 border-green-200"
+                                : "bg-amber-50 border-amber-200"
+                          )}>
+                             {codeInfo?.canGenerate ? (
+                                <Unlock className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                             ) : (
+                                <Lock className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                             )}
+                             <div>
+                                <p className={cn(
+                                   "text-xs font-black uppercase tracking-widest",
+                                   codeInfo?.canGenerate ? "text-green-700" : "text-amber-700"
+                                )}>
+                                   {codeInfo?.canGenerate ? "Ready to Generate" : "Cooldown Active"}
+                                </p>
+                                <p className={cn(
+                                   "text-[11px] mt-1",
+                                   codeInfo?.canGenerate ? "text-green-600" : "text-amber-600"
+                                )}>
+                                   {codeInfo?.canGenerate
+                                      ? "No active cooldown. A new code can be issued."
+                                      : `${codeInfo?.cooldownDaysLeft ?? 3} day(s) remaining before next code can be generated.`
+                                   }
+                                </p>
+                             </div>
+                          </div>
+
+                          <div className="space-y-3 text-[11px] text-ink-3 font-medium">
+                             <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                Codes are 8-character alphanumeric
+                             </div>
+                             <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                Each code expires after 3 days
+                             </div>
+                             <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                Maximum 20 uses per code
+                             </div>
+                             <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                                Grants permanent Pro access to user
+                             </div>
+                          </div>
+                       </div>
+
+                       <button
+                          onClick={handleGenerateCode}
+                          disabled={isGenerating || !codeInfo?.canGenerate}
+                          className={cn(
+                             "w-full py-5 px-8 rounded-2xl font-black text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-3 shadow-sm active:scale-95",
+                             codeInfo?.canGenerate && !isGenerating
+                                ? "bg-accent text-white hover:bg-accent/90 shadow-accent/20"
+                                : "bg-border-strong text-ink-4 cursor-not-allowed"
+                          )}
+                       >
+                          {isGenerating ? (
+                             <RefreshCw className="w-5 h-5 animate-spin" />
+                          ) : (
+                             <Key className="w-5 h-5" />
+                          )}
+                          {isGenerating ? "Generating..." : "Generate New Code"}
+                       </button>
+                    </div>
+                 </div>
+              </Interactive3DBox>
+           </div>
+
+           {/* ── WAITLIST USERS & PRO ACCESS LIST ── */}
+           <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
+              {/* Waitlist Users */}
+              <div className="space-y-6">
+                 <div className="flex justify-between items-center">
+                    <div className="space-y-2">
+                       <h2 className="text-4xl font-serif font-bold text-ink tracking-tight flex items-center gap-4">
+                          <ListChecks className="w-10 h-10 text-accent" />
+                          Waitlist Users
+                       </h2>
+                       <p className="text-ink-3 font-bold uppercase tracking-widest text-[10px]">{waitlistUsers.length} Users Registered</p>
+                    </div>
+                 </div>
+                 <Interactive3DBox className="group">
+                    <div className="p-8">
+                       {waitlistUsers.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
+                             <Mail className="w-12 h-12 text-ink-4" />
+                             <p className="text-ink-4 text-sm font-bold uppercase tracking-widest">No waitlist users yet</p>
+                          </div>
+                       ) : (
+                          <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                             {waitlistUsers.map((u) => (
+                               <div key={u.id} className="p-4 bg-bg/50 border border-border-strong rounded-2xl hover:bg-bg transition-all">
+                                  <div className="flex items-center gap-4">
+                                     <div className="w-10 h-10 rounded-xl bg-white border border-border-strong flex items-center justify-center font-bold text-ink-3 text-sm">
+                                        {u.email[0].toUpperCase()}
+                                     </div>
+                                     <div className="flex-1 min-w-0">
+                                        <p className="text-xs font-bold text-ink truncate">{u.email}</p>
+                                        <p className="text-[10px] text-ink-3 mt-0.5">{new Date(u.created_at).toLocaleDateString()}</p>
+                                     </div>
+                                     <Mail className="w-4 h-4 text-ink-4 flex-shrink-0" />
+                                  </div>
+                               </div>
+                             ))}
+                          </div>
+                       )}
+                       <div className="mt-6 pt-5 border-t border-border-strong flex items-center gap-3">
+                          <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+                          <span className="text-[9px] font-bold text-ink-3 uppercase tracking-widest">Live Waitlist Feed</span>
+                       </div>
+                    </div>
+                 </Interactive3DBox>
+              </div>
+
+              {/* Pro Access List */}
+              <div className="space-y-6">
+                 <div className="flex justify-between items-center">
+                    <div className="space-y-2">
+                       <h2 className="text-4xl font-serif font-bold text-ink tracking-tight flex items-center gap-4">
+                          <UserCheck className="w-10 h-10 text-accent" />
+                          Pro Access List
+                       </h2>
+                       <p className="text-ink-3 font-bold uppercase tracking-widest text-[10px]">{proAccessUsers.length} Code Redemptions</p>
+                    </div>
+                 </div>
+                 <Interactive3DBox className="group">
+                    <div className="p-8">
+                       {proAccessUsers.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
+                             <Crown className="w-12 h-12 text-ink-4" />
+                             <p className="text-ink-4 text-sm font-bold uppercase tracking-widest">No redemptions yet</p>
+                          </div>
+                       ) : (
+                          <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                             {proAccessUsers.map((u) => (
+                               <div key={u.id} className="p-4 bg-bg/50 border border-border-strong rounded-2xl hover:bg-bg transition-all">
+                                  <div className="flex items-center gap-4">
+                                     <div className="w-10 h-10 rounded-xl bg-accent/5 border border-accent/10 flex items-center justify-center font-bold text-accent text-sm">
+                                        <Crown className="w-4 h-4" />
+                                     </div>
+                                     <div className="flex-1 min-w-0">
+                                        <p className="text-xs font-bold text-ink truncate">{u.email}</p>
+                                        <p className="text-[10px] text-ink-3 mt-0.5">Code: <span className="font-mono text-accent">{u.code_used}</span> · {new Date(u.granted_at).toLocaleDateString()}</p>
+                                     </div>
+                                     <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
+                                  </div>
+                               </div>
+                             ))}
+                          </div>
+                       )}
+                       <div className="mt-6 pt-5 border-t border-border-strong flex items-center gap-3">
+                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                          <span className="text-[9px] font-bold text-ink-3 uppercase tracking-widest">Permanent Pro Access Records</span>
+                       </div>
+                    </div>
+                 </Interactive3DBox>
+              </div>
            </div>
 
            <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 items-start">
