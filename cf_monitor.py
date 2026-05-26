@@ -9,7 +9,7 @@ import datetime
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 TARGET_URL = "https://backlogger-academic.pages.dev"
-COMMIT_MARKER = "0ab3850"
+COMMIT_MARKER = "5710e05"
 CHECK_INTERVAL = 20
 MAX_WAIT_MINUTES = 15
 

@@ -27,11 +27,10 @@ export async function addTask(title: string, priority: 'low' | 'medium' | 'high'
     const { count } = await supabase
       .from("tasks")
       .select("*", { count: 'exact', head: true })
-      .eq("user_id", user.id)
-      .neq("status", "done"); // Only count active tasks
+      .eq("user_id", user.id);
     
     if (count !== null && count >= MAX_FREE_TASKS) {
-      throw new Error(`Limit reached: You can only have up to ${MAX_FREE_TASKS} active tasks. Upgrade to Pro for unlimited!`);
+      throw new Error(`Limit reached: You can only have up to ${MAX_FREE_TASKS} total tasks. Upgrade to Pro for unlimited!`);
     }
   }
 
