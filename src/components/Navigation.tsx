@@ -116,6 +116,10 @@ export default function Navigation() {
           <span>Pricing</span>
           <span className="text-ink-4">→</span>
         </Link>
+        <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="text-base font-bold py-3.5 border-b border-border-strong/50 flex items-center justify-between text-ink hover:text-accent transition-colors">
+          <span>About</span>
+          <span className="text-ink-4">→</span>
+        </Link>
         <Link href="/tools/pdf" onClick={() => setMobileMenuOpen(false)} className="text-base font-bold py-3.5 border-b border-border-strong/50 flex items-center justify-between text-ink hover:text-accent transition-colors">
           <span>PDF Tools</span>
           <span className="text-ink-4">→</span>
