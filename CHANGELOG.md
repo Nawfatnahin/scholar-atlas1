@@ -2,6 +2,16 @@
 All notable changes to Scholar Atlas are documented here.
 Format: [version] — YYYY-MM-DD
 
+## [2.0.2] — 2026-05-27
+
+### Added
+- **Space-efficient UserBadge mobile layout**: Created an elegant, compact user badge layout visible only on phone/tablet viewport widths, displaying a high-contrast icon badge alongside concise uppercase tier labels ("ADMIN", "PRO", or "FREE") and a pulsing green dot active indicator.
+
+### Improved
+- **Premium Dark Mode support**: hard-coded bespoke CSS color classes in the UserBadge component for perfect color contrast across mobile and desktop interfaces in dark mode.
+
+---
+
 ## [2.0.1] — 2026-05-27
 
 ### Added

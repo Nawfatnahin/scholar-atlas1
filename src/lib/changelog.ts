@@ -14,6 +14,15 @@ export interface VersionEntry {
 
 export const CHANGELOG: VersionEntry[] = [
   {
+    version: "2.0.2",
+    date: "2026-05-27",
+    summary: "Responsive UserBadge mobile layout and dark mode styling updates",
+    changes: [
+      { type: "NEW", description: "Created an elegant, space-efficient UserBadge mobile layout visible only on phone/tablet viewport widths" },
+      { type: "IMPROVED", description: "Refined both mobile and desktop badges with full CSS dark mode support for perfect color contrast" },
+    ],
+  },
+  {
     version: "2.0.1",
     date: "2026-05-27",
     summary: "Restored Dashboard SemesterProgressWidget overview counts and progress bar",
