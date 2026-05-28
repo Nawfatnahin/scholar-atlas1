@@ -3,8 +3,18 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { ADMIN_EMAILS, PRO_EMAILS, MAX_FREE_TASKS } from "@/lib/constants";
+import { headers } from "next/headers";
+import { mutationRateLimit, getIp } from "@/lib/ratelimit";
+import { taskSchema } from "@/lib/validations";
 
 export async function addTask(title: string, priority: 'low' | 'medium' | 'high', subjectId?: string, dueDate?: string) {
+  const headersList = await headers();
+  const ip = getIp(headersList);
+  const { success } = await mutationRateLimit.limit(ip);
+  if (!success) throw new Error("Too many requests. Please try again later.");
+
+  const validation = taskSchema.safeParse({ title, status: 'todo', priority, due_date: dueDate });
+  if (!validation.success) throw new Error(validation.error.errors[0].message);
   const supabase = await createClient();
   const { data: authData } = await supabase.auth.getUser();
   const user = authData?.user;
@@ -48,6 +58,14 @@ export async function addTask(title: string, priority: 'low' | 'medium' | 'high'
 }
 
 export async function updateTaskStatus(id: string, status: 'todo' | 'in-progress' | 'done') {
+  const headersList = await headers();
+  const ip = getIp(headersList);
+  const { success } = await mutationRateLimit.limit(ip);
+  if (!success) throw new Error("Too many requests. Please try again later.");
+
+  const validation = taskSchema.pick({ status: true }).safeParse({ status });
+  if (!validation.success) throw new Error(validation.error.errors[0].message);
+
   const supabase = await createClient();
   const { error } = await supabase.from("tasks").update({ status }).eq("id", id);
   if (error) throw error;
@@ -55,6 +73,11 @@ export async function updateTaskStatus(id: string, status: 'todo' | 'in-progress
 }
 
 export async function deleteTask(id: string) {
+  const headersList = await headers();
+  const ip = getIp(headersList);
+  const { success } = await mutationRateLimit.limit(ip);
+  if (!success) throw new Error("Too many requests. Please try again later.");
+
   const supabase = await createClient();
   const { error } = await supabase.from("tasks").delete().eq("id", id);
   if (error) throw error;

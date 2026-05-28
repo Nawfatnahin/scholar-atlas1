@@ -1,5 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from 'next/server';
+import { globalRateLimit, getIp } from "@/lib/ratelimit";
+import { z } from "zod";
+import { formatZodError } from "@/lib/validations";
+
+const waitlistSchema = z.object({
+  email: z.string().email("Invalid email format"),
+});
 
 /**
  * API route for Pro Plan waitlist signups.
@@ -7,11 +14,23 @@ import { NextResponse } from 'next/server';
  */
 export async function POST(request: Request) {
   try {
-    const { email } = await request.json();
-
-    if (!email || !email.includes('@')) {
-      return NextResponse.json({ error: 'Invalid email address' }, { status: 400 });
+    const ip = getIp(request);
+    const { success } = await globalRateLimit.limit(ip);
+    if (!success) {
+      return new NextResponse(JSON.stringify({ error: 'Too many requests' }), {
+        status: 429,
+        headers: { 'Retry-After': '60' },
+      });
     }
+
+    const body = await request.json();
+    const validation = waitlistSchema.safeParse(body);
+
+    if (!validation.success) {
+      return NextResponse.json(formatZodError(validation.error), { status: 400 });
+    }
+    
+    const { email } = validation.data;
 
     const supabase = await createClient();
     

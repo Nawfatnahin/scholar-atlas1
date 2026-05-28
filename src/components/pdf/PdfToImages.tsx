@@ -8,6 +8,7 @@ import JSZip from "jszip";
 import { usePdfSessionLimit } from "@/hooks/usePdfSessionLimit";
 import { useSubscription } from "@/components/SubscriptionProvider";
 import { LimitModal } from "./LimitModal";
+import { validatePdfServerSide } from "@/app/tools/pdf/actions";
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 
@@ -36,6 +37,14 @@ export function PdfToImages() {
       const file = acceptedFiles[0];
       if (!isPro && file.size > MAX_FILE_SIZE) {
         toast.error("File size exceeds the 50MB limit for free users. Upgrade to Pro for unlimited size.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await validatePdfServerSide(formData);
+      if (!res.success) {
+        toast.error(res.error);
         return;
       }
 

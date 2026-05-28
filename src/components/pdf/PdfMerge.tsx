@@ -25,6 +25,7 @@ import { PDFDocument } from "pdf-lib";
 import { usePdfSessionLimit } from "@/hooks/usePdfSessionLimit";
 import { useSubscription } from "@/components/SubscriptionProvider";
 import { LimitModal } from "./LimitModal";
+import { validatePdfServerSide } from "@/app/tools/pdf/actions";
 
 const MAX_TOTAL_SIZE = 50 * 1024 * 1024; // 50MB
 
@@ -94,7 +95,7 @@ export function PdfMerge() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "application/pdf": [".pdf"] },
-    onDrop: (acceptedFiles, rejectedFiles) => {
+    onDrop: async (acceptedFiles, rejectedFiles) => {
       if (!canPerformAction) {
         triggerLimitModal();
         return;
@@ -111,7 +112,19 @@ export function PdfMerge() {
         return;
       }
 
-      const newPdfs = acceptedFiles.map(file => ({
+      const validPdfs = [];
+      for (const file of acceptedFiles) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await validatePdfServerSide(formData);
+        if (!res.success) {
+          toast.error(res.error);
+        } else {
+          validPdfs.push(file);
+        }
+      }
+
+      const newPdfs = validPdfs.map(file => ({
         id: Math.random().toString(36).substring(2, 15),
         file
       }));

@@ -5,6 +5,16 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { calculateStats, AttendanceRecord, Subject } from "@/lib/attendance/calculator";
 import { ADMIN_EMAILS, PRO_EMAILS } from "@/lib/constants";
+import { headers } from "next/headers";
+import { mutationRateLimit, getIp } from "@/lib/ratelimit";
+
+// --- HELPER FOR RATE LIMITING ---
+async function checkRateLimit() {
+  const headersList = await headers();
+  const ip = getIp(headersList);
+  const { success } = await mutationRateLimit.limit(ip);
+  if (!success) throw new Error("Too many requests. Please try again later.");
+}
 
 // --- SCHEMAS ---
 
@@ -59,6 +69,7 @@ export async function addSubject(data: {
   pastRecords?: Array<{ classDate: string; absenceType: 'present' | 'unexcused' }>;
 }) {
   try {
+    await checkRateLimit();
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
 
@@ -140,6 +151,7 @@ export async function addSubject(data: {
 
 export async function deleteSubject(id: string) {
   try {
+    await checkRateLimit();
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
 
@@ -161,6 +173,7 @@ export async function deleteSubject(id: string) {
 }
 
 export async function markAttendance(input: z.infer<typeof MarkAttendanceSchema>) {
+  await checkRateLimit();
   const validated = MarkAttendanceSchema.parse(input);
   const supabase = await createClient();
   const user = await getAuthenticatedUser(supabase);
@@ -227,6 +240,7 @@ export async function updateAttendanceRecord(input: {
   absenceType?: string;
   note?: string;
 }) {
+  await checkRateLimit();
   const supabase = await createClient();
   const user = await getAuthenticatedUser(supabase);
 
@@ -246,6 +260,7 @@ export async function updateAttendanceRecord(input: {
 export async function bulkMarkAttendance(input: {
   records: Array<{ subjectId: string; classDate: string; absenceType: string; note?: string }>
 }) {
+  await checkRateLimit();
   const supabase = await createClient();
   const user = await getAuthenticatedUser(supabase);
 
@@ -266,6 +281,7 @@ export async function bulkMarkAttendance(input: {
 }
 
 export async function upsertSubjectSchedule(input: z.infer<typeof UpsertSubjectScheduleSchema>) {
+  await checkRateLimit();
   const validated = UpsertSubjectScheduleSchema.parse(input);
   const supabase = await createClient();
   const user = await getAuthenticatedUser(supabase);
@@ -289,6 +305,7 @@ export async function upsertSubjectSchedule(input: z.infer<typeof UpsertSubjectS
 }
 
 export async function addHoliday(input: z.infer<typeof AddHolidaySchema>) {
+  await checkRateLimit();
   const validated = AddHolidaySchema.parse(input);
   const supabase = await createClient();
   const user = await getAuthenticatedUser(supabase);
@@ -308,6 +325,7 @@ export async function addHoliday(input: z.infer<typeof AddHolidaySchema>) {
 }
 
 export async function deleteHoliday(id: string) {
+  await checkRateLimit();
   const supabase = await createClient();
   const user = await getAuthenticatedUser(supabase);
 
@@ -322,6 +340,7 @@ export async function deleteHoliday(id: string) {
 }
 
 export async function updateSubject(id: string, data: any) {
+  await checkRateLimit();
   const supabase = await createClient();
   const user = await getAuthenticatedUser(supabase);
 
@@ -337,6 +356,7 @@ export async function updateSubject(id: string, data: any) {
 
 export async function deleteAttendanceRecord(recordId: string) {
   try {
+    await checkRateLimit();
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
 
@@ -406,6 +426,8 @@ export async function updateSessionStatus(
 
   const subjectId = sessionId.substring(0, lastUnderscore);
   const classDate = sessionId.substring(lastUnderscore + 1);
+
+  await checkRateLimit();
 
   const supabase = await createClient();
   const user = await getAuthenticatedUser(supabase);

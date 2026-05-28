@@ -3,6 +3,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { headers } from "next/headers";
+import { mutationRateLimit, globalRateLimit, getIp } from "@/lib/ratelimit";
 
 // --- SCHEMAS ---
 
@@ -85,6 +87,11 @@ async function getAuthenticatedUser(supabase: any) {
 
 export async function saveGlobalTarget(targetCgpa: number) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
 
@@ -112,6 +119,11 @@ export async function saveGlobalTarget(targetCgpa: number) {
 
 export async function saveGradeScale(input: z.infer<typeof SaveGradeScaleSchema>) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const validated = SaveGradeScaleSchema.parse(input);
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
@@ -156,6 +168,11 @@ export async function saveGradeScale(input: z.infer<typeof SaveGradeScaleSchema>
 
 export async function deleteGradeScale(id: string) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
 
@@ -178,6 +195,11 @@ export async function deleteGradeScale(id: string) {
 
 export async function saveManualCourse(input: z.infer<typeof SaveManualCourseSchema>) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const validated = SaveManualCourseSchema.parse(input);
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
@@ -219,6 +241,11 @@ export async function saveManualCourse(input: z.infer<typeof SaveManualCourseSch
 
 export async function deleteManualCourse(id: string) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
 
@@ -241,6 +268,11 @@ export async function deleteManualCourse(id: string) {
 
 export async function saveAutoCourse(input: z.infer<typeof SaveAutoCourseSchema>) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const validated = SaveAutoCourseSchema.parse(input);
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
@@ -293,6 +325,11 @@ export async function saveAutoCourse(input: z.infer<typeof SaveAutoCourseSchema>
 
 export async function deleteAutoCourse(id: string) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
 
@@ -318,6 +355,11 @@ export async function saveClassTests(
   tests: z.infer<typeof ClassTestSchema>[]
 ) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const validatedTests = tests.map((t) => ClassTestSchema.parse(t));
     const supabase = await createClient();
     await getAuthenticatedUser(supabase);
@@ -437,6 +479,11 @@ export async function fetchAttendanceSubjects() {
 
 export async function saveSemesterSetup(input: z.infer<typeof SemesterSetupSchema>) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const validated = SemesterSetupSchema.parse(input);
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
@@ -466,6 +513,11 @@ export async function saveSemesterSetup(input: z.infer<typeof SemesterSetupSchem
 
 export async function updatePreviousGPA(semesterNumber: number, gpa: number | null) {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const validated = UpdatePreviousGPASchema.parse({ semester_number: semesterNumber, gpa });
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
@@ -505,6 +557,11 @@ export async function updatePreviousGPA(semesterNumber: number, gpa: number | nu
 
 export async function resetSemesterSetup() {
   try {
+    const headersList = await headers();
+    const ip = getIp(headersList);
+    const { success } = await mutationRateLimit.limit(ip);
+    if (!success) return { success: false, error: "Too many requests. Please try again later." };
+
     const supabase = await createClient();
     const user = await getAuthenticatedUser(supabase);
 
