@@ -2,6 +2,13 @@
 All notable changes to Scholar Atlas are documented here.
 Format: [version] — YYYY-MM-DD
 
+## [2.0.3] — 2026-05-28
+
+### Removed
+- **PDF Tools from mobile view**: Removed the PDF Tools navigation entry from the mobile screen menu overlay to streamline and simplify the three-line mobile dashboard experience.
+
+---
+
 ## [2.0.2] — 2026-05-27
 
 ### Added

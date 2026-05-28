@@ -14,6 +14,14 @@ export interface VersionEntry {
 
 export const CHANGELOG: VersionEntry[] = [
   {
+    version: "2.0.3",
+    date: "2026-05-28",
+    summary: "Removed PDF Tools link from mobile navigation menu",
+    changes: [
+      { type: "REMOVED", description: "Removed PDF Tools navigation option from the three-line mobile menu list to optimize mobile UX layout" },
+    ],
+  },
+  {
     version: "2.0.2",
     date: "2026-05-27",
     summary: "Responsive UserBadge mobile layout and dark mode styling updates",
