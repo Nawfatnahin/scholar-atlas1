@@ -30,8 +30,18 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files — NEVER commit these!
+# SUPABASE_SERVICE_ROLE_KEY must stay server-side only
+.env
+.env.local
+.env.production
+.env.production.local
+.env.test.local
+.env*.local
+
+# Security: private keys and credentials (added per remediation guide)
+*.key
+.aws/
 
 # vercel
 .vercel
@@ -39,9 +49,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-.vercel
-.env*.local
 
 # OpenNext
 .open-next

@@ -67,7 +67,15 @@ export async function updateTaskStatus(id: string, status: 'todo' | 'in-progress
   if (!validation.success) throw new Error(validation.error.errors[0].message);
 
   const supabase = await createClient();
-  const { error } = await supabase.from("tasks").update({ status }).eq("id", id);
+  // Security: getUser() verifies session server-side; ownership enforced via user_id filter
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError || !authData?.user) throw new Error("Not authenticated");
+
+  const { error } = await supabase
+    .from("tasks")
+    .update({ status })
+    .eq("id", id)
+    .eq("user_id", authData.user.id); // Ownership check
   if (error) throw error;
   revalidatePath("/dashboard/tasks");
 }
@@ -79,7 +87,15 @@ export async function deleteTask(id: string) {
   if (!success) throw new Error("Too many requests. Please try again later.");
 
   const supabase = await createClient();
-  const { error } = await supabase.from("tasks").delete().eq("id", id);
+  // Security: getUser() verifies session server-side; ownership enforced via user_id filter
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError || !authData?.user) throw new Error("Not authenticated");
+
+  const { error } = await supabase
+    .from("tasks")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", authData.user.id); // Ownership check
   if (error) throw error;
   revalidatePath("/dashboard/tasks");
 }

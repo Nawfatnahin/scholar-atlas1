@@ -47,10 +47,21 @@ export const taskSchema = z.object({
   due_date: z.string().datetime({ offset: true }).or(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)).optional().nullable(),
 });
 
-// CGPA
+// CGPA — strengthened per remediation guide
 export const cgpaGradeSchema = z.object({
-  grade: z.string(), // further validation against scale inside route if necessary, or check standard strings
-  credit_hours: z.number().positive(),
+  // Grade points must be within 0.0–4.0 range (standard GPA scale)
+  grade: z.string()
+    .min(1, "Grade is required")
+    .max(10, "Grade value too long")
+    .regex(/^[A-Za-z0-9.+\-]+$/, "Invalid grade format"),
+  credit_hours: z.number()
+    .positive("Credit hours must be positive")
+    .min(0.5, "Credit hours must be at least 0.5")
+    .max(10, "Credit hours cannot exceed 10"),
+  grade_point: z.number()
+    .min(0, "Grade point cannot be negative")
+    .max(4.0, "Grade point cannot exceed 4.0")
+    .optional(),
 });
 
 // Shared response helper for Zod errors
@@ -61,3 +72,4 @@ export function formatZodError(error: z.ZodError) {
     field: firstError.path.join("."),
   };
 }
+
