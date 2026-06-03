@@ -88,10 +88,10 @@ export function CGPAManager({
                   type="number"
                   value={targetInput}
                   onChange={(e) => setTargetInput(e.target.value)}
-                  className="w-20 px-3 py-2 rounded-xl border-2 border-border-subtle bg-bg-surface font-black text-lg text-accent outline-none focus:border-accent transition-all text-center dark:bg-bg-elevated"
+                  className="w-24 px-3 py-2 rounded-xl border-2 border-border-subtle bg-bg-surface font-black text-lg text-accent outline-none focus:border-accent transition-all text-center dark:bg-bg-elevated"
                   min="0"
                   max="4"
-                  step="0.01"
+                  step="any"
                 />
               </div>
             </div>
