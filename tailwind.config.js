@@ -55,10 +55,10 @@ module.exports = {
         }
       },
       fontFamily: {
-        display: ["var(--font-lora)", "serif"],
-        body: ["var(--font-inter)", "system-ui", "sans-serif"],
-        sans: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
-        serif: ["var(--font-lora)", "serif"],
+        display: ["var(--font-playfair)", "serif"],
+        body: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        sans: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        serif: ["var(--font-playfair)", "serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
       },
       animation: {
