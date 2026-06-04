@@ -37,15 +37,9 @@ export default function ChangelogPage() {
           {CHANGELOG.map((entry, i) => (
             <section key={entry.version} className="relative pl-8 sm:pl-12 border-l border-border-strong group">
               {/* Timeline Dot */}
-              {entry.version !== "1.3" && (
-                <div className="absolute -left-1.5 top-0 w-3 h-3 rounded-full bg-border-strong group-hover:bg-accent transition-colors border-4 border-bg box-content" />
-              )}
+              <div className="absolute -left-1.5 top-0 w-3 h-3 rounded-full bg-border-strong group-hover:bg-accent transition-colors border-4 border-bg box-content" />
               
-              <div className={`p-8 rounded-[32px] transition-all duration-500 ${
-                entry.version === "1.3"
-                  ? "bg-gradient-to-br from-white/80 to-white/40 dark:from-bg-elevated/80 dark:to-bg-base/40 border border-transparent bg-clip-padding relative shadow-[0_30px_60px_rgba(249,115,22,0.08)] dark:shadow-[0_30px_60px_rgba(253,29,29,0.12)] before:absolute before:inset-0 before:rounded-[32px] before:p-[2px] before:bg-gradient-to-r before:from-accent/40 before:via-accent-soft/40 before:to-accent-deep/40 dark:before:from-[#833AB4]/60 dark:before:via-[#FD1D1D]/60 dark:before:to-[#F77737]/60 before:-z-10 before:content-[''] group-hover:-translate-y-1"
-                  : "bg-white/40 backdrop-blur-xl border border-border-strong shadow-sm group-hover:border-accent/30"
-              }`}>
+              <div className="bg-white/40 backdrop-blur-xl p-8 rounded-[32px] border border-border-strong shadow-sm group-hover:border-accent/30 transition-all">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                   <div>
                     <div className="flex items-center gap-3 mb-1">

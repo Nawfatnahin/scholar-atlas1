@@ -50,8 +50,7 @@ export default function AboutPage() {
           {/* Header Section */}
           <header className="mb-24 sm:mb-40 max-w-5xl">
             <div className="mb-8">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-accent/10 border border-accent/25 rounded-full text-xs font-mono font-semibold tracking-wide text-accent">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-slow"></span>
+              <span className="inline-flex items-center px-4 py-2 bg-gradient-to-br from-white/90 to-white/60 dark:from-bg-elevated/90 dark:to-bg-base/60 border border-transparent bg-clip-padding relative shadow-[0_4px_12px_rgba(249,115,22,0.06)] dark:shadow-[0_4px_12px_rgba(253,29,29,0.08)] before:absolute before:inset-0 before:rounded-xl before:p-[1px] before:bg-gradient-to-r before:from-accent/40 before:to-accent-soft/40 dark:before:from-[#833AB4]/60 dark:before:to-[#FD1D1D]/60 before:-z-10 before:content-[''] rounded-xl text-xs font-mono font-bold tracking-wide text-accent dark:text-[#FD1D1D] hover:scale-105 transition-all duration-300">
                 Version {APP_VERSION.current}
               </span>
             </div>
