@@ -5,6 +5,7 @@ import {
   Plus, X, Save, Cpu, TrendingUp, TrendingDown,
   FlaskConical, ClipboardList, CalendarCheck, FileText,
   Settings2, GraduationCap, Layers, Lock,
+  ToggleLeft, ToggleRight, Link2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { AutoCourse, GradeScale, AttendanceSubject, SemesterSetup } from '@/lib/cgpa/cgpa-types';
@@ -67,6 +68,8 @@ export function AutoCGPACounter({
     assignment_total_marks: '',
     assignment_weight: '',
     attendance_linked: false,
+    attendance_course_id: '',
+    attendance_total_marks: '',
     attendance_threshold_percentage: '75',
     attendance_weight: '',
     exam_weight: '',
@@ -244,7 +247,10 @@ export function AutoCGPACounter({
         assignment_obtained: 0,
         assignment_weight: Number(newCourse.assignment_weight) || 0,
         attendance_linked: newCourse.attendance_linked,
-        attendance_total_marks: 0,
+        attendance_course_id: newCourse.attendance_linked && newCourse.attendance_course_id
+          ? newCourse.attendance_course_id
+          : undefined,
+        attendance_total_marks: Number(newCourse.attendance_total_marks) || 0,
         attendance_threshold_percentage: Number(newCourse.attendance_threshold_percentage) || 75,
         attendance_weight: Number(newCourse.attendance_weight) || 0,
         exam_weight: Number(newCourse.exam_weight) || 0,
@@ -257,7 +263,8 @@ export function AutoCGPACounter({
         setNewCourse({
           course_name: '', course_code: '', credit_hours: '3', target_grade_point: '',
           ct_total: '', ct_best_of: '', ct_weight: '', assignment_total_marks: '', assignment_weight: '',
-          attendance_linked: false, attendance_threshold_percentage: '75', attendance_weight: '', exam_weight: '',
+          attendance_linked: false, attendance_course_id: '', attendance_total_marks: '',
+          attendance_threshold_percentage: '75', attendance_weight: '', exam_weight: '',
         });
         window.location.reload();
       } else {
@@ -493,11 +500,105 @@ export function AutoCGPACounter({
               </div>
             </div>
             <div className="space-y-3 p-4 bg-green-50/50 dark:bg-green-950/20 rounded-2xl border border-green-100 dark:border-green-900/40">
-              <div className="flex items-center gap-2"><CalendarCheck className="w-4 h-4 text-green-700 dark:text-green-400"/><h5 className="text-xs font-black text-green-800 dark:text-green-400 uppercase">Attendance</h5></div>
-              <div className="grid grid-cols-2 gap-2">
-                <div><label className="text-[10px] font-bold text-stone-400 dark:text-zinc-500">Threshold %</label><input type="number" placeholder="75" value={newCourse.attendance_threshold_percentage} onChange={e => setNewCourse({...newCourse, attendance_threshold_percentage: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-bold text-stone-800 dark:text-white" /></div>
-                <div><label className="text-[10px] font-bold text-stone-400 dark:text-zinc-500">Weight %</label><input type="number" placeholder="0" value={newCourse.attendance_weight} onChange={e => setNewCourse({...newCourse, attendance_weight: e.target.value})} className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-bold text-stone-800 dark:text-white" /></div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CalendarCheck className="w-4 h-4 text-green-700 dark:text-green-400"/>
+                  <h5 className="text-xs font-black text-green-800 dark:text-green-400 uppercase">Attendance</h5>
+                </div>
+                {/* Link toggle — only shown when weight > 0 */}
+                {Number(newCourse.attendance_weight) > 0 && attendanceSubjects.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setNewCourse(prev => ({
+                      ...prev,
+                      attendance_linked: !prev.attendance_linked,
+                      attendance_course_id: !prev.attendance_linked ? prev.attendance_course_id : '',
+                    }))}
+                    className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider transition-colors"
+                  >
+                    {newCourse.attendance_linked ? (
+                      <><ToggleRight className="w-4 h-4 text-green-600" /><span className="text-green-700 dark:text-green-400">Linked</span></>
+                    ) : (
+                      <><ToggleLeft className="w-4 h-4 text-stone-400" /><span className="text-stone-400">Link Tracker</span></>
+                    )}
+                  </button>
+                )}
               </div>
+
+              {/* Core marks + threshold + weight row */}
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-zinc-500">Total Marks</label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    value={newCourse.attendance_total_marks}
+                    onChange={e => setNewCourse({...newCourse, attendance_total_marks: e.target.value})}
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-bold text-stone-800 dark:text-white"
+                    min="0"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-zinc-500">Threshold %</label>
+                  <input
+                    type="number"
+                    placeholder="75"
+                    value={newCourse.attendance_threshold_percentage}
+                    onChange={e => setNewCourse({...newCourse, attendance_threshold_percentage: e.target.value})}
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-bold text-stone-800 dark:text-white"
+                    min="0" max="100"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-zinc-500">Weight %</label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    value={newCourse.attendance_weight}
+                    onChange={e => setNewCourse({...newCourse, attendance_weight: e.target.value})}
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-bold text-stone-800 dark:text-white"
+                    min="0" max="100"
+                  />
+                </div>
+              </div>
+
+              {/* Attendance Tracker Subject Linker */}
+              {newCourse.attendance_linked && Number(newCourse.attendance_weight) > 0 && (
+                <div className="space-y-1 pt-1">
+                  <label className="text-[10px] font-bold text-stone-400 dark:text-zinc-500 flex items-center gap-1">
+                    <Link2 className="w-3 h-3" /> Link to Attendance Tracker Subject
+                  </label>
+                  {attendanceSubjects.length > 0 ? (
+                    <select
+                      value={newCourse.attendance_course_id}
+                      onChange={e => setNewCourse({...newCourse, attendance_course_id: e.target.value})}
+                      className="w-full px-3 py-2 rounded-lg border border-green-200 dark:border-green-900/60 bg-white dark:bg-zinc-800 text-sm font-bold text-stone-800 dark:text-white outline-none focus:border-green-500 transition-all"
+                    >
+                      <option value="">Select subject…</option>
+                      {attendanceSubjects.map(s => (
+                        <option key={s.id} value={s.id}>
+                          {s.name}{s.course_code ? ` (${s.course_code})` : ''} — {s.attendance_percentage.toFixed(1)}%
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <p className="text-[11px] text-stone-400 dark:text-zinc-500 font-medium">
+                      No subjects found in Attendance Tracker. Add some there first.
+                    </p>
+                  )}
+                  {newCourse.attendance_course_id && (() => {
+                    const linked = attendanceSubjects.find(s => s.id === newCourse.attendance_course_id);
+                    return linked ? (
+                      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-950/40 border border-green-100 dark:border-green-900/30">
+                        <CalendarCheck className="w-3.5 h-3.5 text-green-600 shrink-0" />
+                        <span className="text-xs font-bold text-green-700 dark:text-green-400">
+                          Live attendance: {linked.attendance_percentage.toFixed(1)}%
+                        </span>
+                      </div>
+                    ) : null;
+                  })()}
+                </div>
+              )}
             </div>
             <div className="space-y-3 p-4 bg-violet-50/50 dark:bg-violet-950/20 rounded-2xl border border-violet-100 dark:border-violet-900/40">
               <div className="flex items-center gap-2"><FileText className="w-4 h-4 text-violet-700 dark:text-violet-400"/><h5 className="text-xs font-black text-violet-800 dark:text-violet-400 uppercase">Written Exam</h5></div>
