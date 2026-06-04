@@ -259,6 +259,15 @@ export default function AdminPanel({
   });
 
   useEffect(() => {
+    document.documentElement.classList.add('admin-theme');
+    document.body.classList.add('admin-theme');
+    return () => {
+      document.documentElement.classList.remove('admin-theme');
+      document.body.classList.remove('admin-theme');
+    };
+  }, []);
+
+  useEffect(() => {
     setMounted(true);
     
     let activityLevel: 'high' | 'idle' | 'normal' = 'normal';
@@ -469,7 +478,7 @@ export default function AdminPanel({
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative bg-bg text-ink font-body">
+    <div className="admin-theme min-h-screen overflow-x-hidden relative bg-bg text-ink font-body">
       
       {/* Subtle Background Decoration */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
