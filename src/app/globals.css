@@ -89,7 +89,12 @@ html, body {
   }
   
   .glass-card:hover {
-    @apply shadow-[0_15px_30px_rgba(0,0,0,0.05),inset_0_1px_1px_white] -translate-y-1 border-accent/20 dark:border-accent/30;
+    @apply shadow-[0_15px_30px_rgba(0,0,0,0.05),inset_0_1px_1px_white] -translate-y-1;
+    border-color: rgba(224, 122, 60, 0.2);
+  }
+
+  .dark .glass-card:hover {
+    border-color: rgba(224, 122, 60, 0.3) !important;
   }
 
   .nav-glass {
@@ -97,8 +102,12 @@ html, body {
   }
 
   .btn-primary {
-    @apply bg-accent text-white px-6 py-3 rounded-xl font-bold shadow-sm hover:bg-accent/90 transition-all active:scale-[0.98] disabled:opacity-50;
+    @apply bg-accent text-white px-6 py-3 rounded-xl font-bold shadow-sm transition-all active:scale-[0.98] disabled:opacity-50;
     @apply touch-manipulation;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--accent-deep);
   }
 
   .btn-secondary {
