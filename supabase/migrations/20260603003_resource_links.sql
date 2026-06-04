@@ -1,7 +1,7 @@
 CREATE TABLE public.resource_links (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  subject_id UUID NOT NULL REFERENCES public.subjects(id) ON DELETE CASCADE,
+  subject_id UUID REFERENCES public.subjects(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
   url TEXT NOT NULL,
   type TEXT DEFAULT 'link'

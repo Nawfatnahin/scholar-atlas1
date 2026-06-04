@@ -8,6 +8,8 @@ import SignOutButton from "@/components/dashboard/SignOutButton";
 import UserBadge from "@/components/dashboard/UserBadge";
 import DarkModeToggle from "@/components/ui/DarkModeToggle";
 import { getTodaysSessions } from "./attendance/actions";
+import { getGlobalResourceLinks } from "./resources/actions";
+import DashboardResourceLinks from "@/components/dashboard/DashboardResourceLinks";
 import { ADMIN_EMAILS } from "@/lib/constants";
 
 export const dynamic = 'force-dynamic';
@@ -47,13 +49,15 @@ export default async function DashboardPage() {
   let subjects: SubjectSummary[] = [];
   let tasks: TaskSummary[] = [];
   let todaysSessions: ClassSession[] = [];
+  let globalLinks: any[] = [];
 
   if (user) {
     try {
-      const [subjectsRes, tasksRes, todaysSessionsRes] = await Promise.all([
+      const [subjectsRes, tasksRes, todaysSessionsRes, globalLinksData] = await Promise.all([
         supabase.from('subjects').select('id, name, target_percentage, class_sessions(status)').in('class_sessions.status', ['present', 'absent']),
         supabase.from('tasks').select('id').eq('status', 'todo'),
         getTodaysSessions(),
+        getGlobalResourceLinks(),
       ]);
 
       if (subjectsRes.error) console.error("Error fetching subjects:", subjectsRes.error);
@@ -62,6 +66,7 @@ export default async function DashboardPage() {
       subjects = (subjectsRes.data as unknown as SubjectSummary[]) || [];
       tasks = tasksRes.data || [];
       todaysSessions = (todaysSessionsRes as unknown as ClassSession[]) || [];
+      globalLinks = globalLinksData || [];
     } catch (err) {
       console.error("Critical dashboard fetch error:", err);
     }
@@ -219,37 +224,8 @@ export default async function DashboardPage() {
           </div>
 
           <div className="mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
-            <div className="bg-bg-surface/80 backdrop-blur-xl p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong shadow-[0_10px_30px_rgba(0,0,0,0.02)] dark:bg-bg-elevated/80">
-              <div className="flex items-center justify-between mb-8 sm:mb-10">
-                <h3 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight flex items-center gap-3">
-                  <BookOpen className="w-5 sm:w-6 h-5 sm:h-6 text-accent" />
-                  Analytics Overview
-                </h3>
-                <span className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-accent/5 text-accent text-[9px] sm:text-[10px] font-black uppercase tracking-widest">Real time</span>
-              </div>
-              {stats.length > 0 ? (
-                <div className="space-y-4 sm:space-y-6">
-                  {stats.slice(0, 4).map((s, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 sm:p-4 rounded-2xl sm:rounded-3xl hover:bg-bg-base transition-colors">
-                      <span className="text-sm sm:text-base font-bold text-text-secondary truncate max-w-[140px] sm:max-w-none">{s.name}</span>
-                      <div className="flex items-center gap-3 sm:gap-4">
-                        <div className="w-20 sm:w-32 h-1.5 sm:h-2 bg-border-subtle rounded-full overflow-hidden hidden xs:block">
-                          <div className={`h-full ${s.percentage < 75 ? 'bg-red-500' : 'bg-green-500'} dark:opacity-85`} style={{ width: `${s.percentage}%` }} />
-                        </div>
-                        <span className={`text-base sm:text-lg font-black min-w-[50px] sm:min-w-[60px] text-right ${s.percentage < 75 ? 'text-red-600 dark:text-[#DC5050]' : 'text-green-600 dark:text-green-400'}`}>
-                          {s.percentage}%
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="py-10 text-center">
-                  <p className="text-base sm:text-lg text-text-tertiary font-medium">No active subjects detected.</p>
-                  <Link href="/dashboard/attendance" className="text-accent font-black text-xs sm:text-sm uppercase tracking-widest hover:underline mt-4 inline-block">Initialize Tracker</Link>
-                </div>
-              )}
-            </div>
+            <DashboardResourceLinks initialLinks={globalLinks} />
+
 
             <div className="bg-bg-surface/80 backdrop-blur-xl p-6 sm:p-10 rounded-[30px] sm:rounded-[50px] border border-border-strong shadow-[0_10px_30px_rgba(0,0,0,0.02)] dark:bg-bg-elevated/80">
               <h3 className="text-xl sm:text-2xl font-black text-text-primary mb-8 sm:mb-10 tracking-tight flex items-center gap-3">
