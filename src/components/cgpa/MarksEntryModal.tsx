@@ -14,6 +14,9 @@ import {
   Save,
   BarChart2,
   Lock,
+  ToggleLeft,
+  ToggleRight,
+  Link2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -62,9 +65,12 @@ export function MarksEntryModal({
     course.assignment_total_marks > 0 ? String(course.assignment_total_marks) : ''
   );
 
+  const [attendanceLinked, setAttendanceLinked] = useState<boolean>(course.attendance_linked);
+  const [attendanceCourseId, setAttendanceCourseId] = useState<string>(course.attendance_course_id || '');
+
   // Manual attendance % if not linked
-  const linkedSubject = course.attendance_linked && course.attendance_course_id
-    ? attendanceSubjects.find((s) => s.id === course.attendance_course_id)
+  const linkedSubject = attendanceLinked && attendanceCourseId
+    ? attendanceSubjects.find((s) => s.id === attendanceCourseId)
     : null;
   const [manualAttendance, setManualAttendance] = useState<string>(
     linkedSubject ? String(linkedSubject.attendance_percentage.toFixed(1)) : ''
@@ -105,6 +111,8 @@ export function MarksEntryModal({
     ...course,
     assignment_obtained: assignmentObtained !== '' ? Number(assignmentObtained) : 0,
     assignment_total_marks: assignmentTotal !== '' ? Number(assignmentTotal) : Number(course.assignment_total_marks),
+    attendance_linked: attendanceLinked,
+    attendance_course_id: attendanceLinked && attendanceCourseId ? attendanceCourseId : undefined,
   };
 
   const syntheticClassTests: ClassTest[] = ctForms
@@ -170,8 +178,8 @@ export function MarksEntryModal({
         assignment_total_marks: Number(assignmentTotal) || Number(course.assignment_total_marks),
         assignment_obtained: Number(assignmentObtained) || 0,
         assignment_weight: Number(course.assignment_weight),
-        attendance_linked: course.attendance_linked,
-        attendance_course_id: course.attendance_course_id || undefined,
+        attendance_linked: attendanceLinked,
+        attendance_course_id: attendanceLinked && attendanceCourseId ? attendanceCourseId : undefined,
         attendance_total_marks: Number(course.attendance_total_marks),
         attendance_threshold_percentage: Number(course.attendance_threshold_percentage),
         attendance_weight: Number(course.attendance_weight),
@@ -409,31 +417,66 @@ export function MarksEntryModal({
             {/* ── ATTENDANCE ── */}
             {Number(course.attendance_weight) > 0 && (
               <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-green-100 flex items-center justify-center shrink-0">
-                    <CalendarCheck className="w-4 h-4 text-green-700" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-black text-ink uppercase tracking-widest">Attendance</h4>
-                    <p className="text-[10px] text-ink-3 font-medium">
-                      Weight: {Number(course.attendance_weight)}% · Threshold: {Number(course.attendance_threshold_percentage)}%
-                    </p>
-                  </div>
-                </div>
-                {linkedSubject ? (
-                  <div className="flex items-center gap-3 p-4 rounded-2xl bg-green-50 border border-green-100">
-                    <CalendarCheck className="w-5 h-5 text-green-600 shrink-0" />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-green-100 flex items-center justify-center shrink-0">
+                      <CalendarCheck className="w-4 h-4 text-green-700" />
+                    </div>
                     <div>
-                      <p className="text-sm font-black text-green-800">
-                        Auto-linked: {linkedSubject.name}
-                      </p>
-                      <p className="text-xs font-bold text-green-600">
-                        Current attendance: {linkedSubject.attendance_percentage.toFixed(1)}%
+                      <h4 className="text-sm font-black text-ink uppercase tracking-widest">Attendance</h4>
+                      <p className="text-[10px] text-ink-3 font-medium">
+                        Weight: {Number(course.attendance_weight)}% · Threshold: {Number(course.attendance_threshold_percentage)}%
                       </p>
                     </div>
                   </div>
+                  {attendanceSubjects.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setAttendanceLinked(!attendanceLinked)}
+                      className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider transition-colors"
+                    >
+                      {attendanceLinked ? (
+                        <><ToggleRight className="w-5 h-5 text-green-600" /><span className="text-green-700">Linked</span></>
+                      ) : (
+                        <><ToggleLeft className="w-5 h-5 text-ink-3" /><span className="text-ink-3">Link Tracker</span></>
+                      )}
+                    </button>
+                  )}
+                </div>
+
+                {attendanceLinked ? (
+                  <div className="space-y-3 pl-0 sm:pl-11 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-ink-3 uppercase tracking-widest flex items-center gap-1">
+                        <Link2 className="w-3.5 h-3.5" /> Link to Attendance Tracker Subject
+                      </label>
+                      <select
+                        value={attendanceCourseId}
+                        onChange={(e) => setAttendanceCourseId(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-green-200 bg-white font-bold text-sm outline-none focus:border-green-500 transition-all"
+                      >
+                        <option value="">Select subject…</option>
+                        {attendanceSubjects.map((s) => (
+                          <option key={s.id} value={s.id}>
+                            {s.name} {s.course_code ? `(${s.course_code})` : ''} — {s.attendance_percentage.toFixed(1)}%
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    {attendanceCourseId && (() => {
+                      const linked = attendanceSubjects.find((s) => s.id === attendanceCourseId);
+                      return linked ? (
+                        <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-green-50 border border-green-100">
+                          <CalendarCheck className="w-4 h-4 text-green-600 shrink-0" />
+                          <span className="text-xs font-bold text-green-700">
+                            Live attendance: {linked.attendance_percentage.toFixed(1)}%
+                          </span>
+                        </div>
+                      ) : null;
+                    })()}
+                  </div>
                 ) : (
-                  <div className="space-y-1">
+                  <div className="space-y-1 pl-0 sm:pl-11">
                     <label className="text-[10px] font-black text-ink-3 uppercase tracking-widest">Attendance %</label>
                     <input
                       type="number"
