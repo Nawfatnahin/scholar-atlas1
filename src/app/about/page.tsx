@@ -4,12 +4,12 @@ import Footer from "@/components/Footer";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 font-body flex flex-col text-text-primary selection:bg-indigo-500/10 selection:text-indigo-500">
+    <div className="min-h-screen bg-bg-base font-body flex flex-col text-text-primary selection:bg-indigo-500/10 selection:text-indigo-500">
       <Navigation />
       
       <main className="flex-1 w-full">
         {/* SECTION 1 — Hero */}
-        <section className="bg-white dark:bg-gray-900 pt-32 pb-20 md:pt-40 md:pb-28">
+        <section className="bg-bg-base pt-32 pb-20 md:pt-40 md:pb-28">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="max-w-3xl mx-auto">
               <p className="text-sm font-medium uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-3">
@@ -32,21 +32,21 @@ export default function AboutPage() {
         </section>
 
         {/* SECTION 2 — Mission Statement */}
-        <section className="bg-gray-50 dark:bg-gray-800/40 py-16 md:py-20">
+        <section className="bg-bg-base py-16 md:py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <blockquote className="border-l-4 border-indigo-500 pl-6 md:pl-10">
               <p className="text-xl md:text-2xl font-medium italic text-gray-700 dark:text-gray-200">
                 &ldquo;Scholar Atlas exists because academic life shouldn&apos;t be harder than the academics themselves.&rdquo;
               </p>
               <cite className="block not-italic text-sm font-medium text-gray-500 dark:text-gray-400 mt-4">
-                &mdash; Nawfat Nahin, Founder
+                &mdash; Founder
               </cite>
             </blockquote>
           </div>
         </section>
 
         {/* SECTION 3 — Why We Built This */}
-        <section className="bg-white dark:bg-gray-900 py-16 md:py-24">
+        <section className="bg-bg-base py-16 md:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10">
               <p className="text-sm font-medium uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
@@ -76,7 +76,7 @@ export default function AboutPage() {
 
               {/* RIGHT COLUMN — 2x2 Stats Grid */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                <div className="glass-card rounded-[24px] p-6">
                   <span className="block text-3xl font-bold text-indigo-600 dark:text-indigo-400">
                     100+
                   </span>
@@ -84,7 +84,7 @@ export default function AboutPage() {
                     Students using Scholar Atlas
                   </span>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                <div className="glass-card rounded-[24px] p-6">
                   <span className="block text-3xl font-bold text-indigo-600 dark:text-indigo-400">
                     4
                   </span>
@@ -92,7 +92,7 @@ export default function AboutPage() {
                     Core tools built
                   </span>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                <div className="glass-card rounded-[24px] p-6">
                   <span className="block text-3xl font-bold text-indigo-600 dark:text-indigo-400">
                     Free
                   </span>
@@ -100,7 +100,7 @@ export default function AboutPage() {
                     Forever, no credit card
                   </span>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                <div className="glass-card rounded-[24px] p-6">
                   <span className="block text-3xl font-bold text-indigo-600 dark:text-indigo-400">
                     2025
                   </span>
@@ -114,7 +114,7 @@ export default function AboutPage() {
         </section>
 
         {/* SECTION 4 — Tools Overview */}
-        <section className="bg-gray-50 dark:bg-gray-800/40 py-16 md:py-24">
+        <section className="bg-bg-base py-16 md:py-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10">
               <p className="text-sm font-medium uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
@@ -130,7 +130,7 @@ export default function AboutPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Attendance Tracker */}
-              <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-indigo-500/50 dark:hover:border-indigo-400/50 transition-colors duration-200">
+              <div className="glass-card rounded-[24px] p-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                     <line x1="18" y1="20" x2="18" y2="10"></line>
@@ -147,7 +147,7 @@ export default function AboutPage() {
               </div>
 
               {/* Task Board */}
-              <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-indigo-500/50 dark:hover:border-indigo-400/50 transition-colors duration-200">
+              <div className="glass-card rounded-[24px] p-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                     <polyline points="9 11 12 14 22 4"></polyline>
@@ -163,7 +163,7 @@ export default function AboutPage() {
               </div>
 
               {/* CGPA Manager */}
-              <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-indigo-500/50 dark:hover:border-indigo-400/50 transition-colors duration-200">
+              <div className="glass-card rounded-[24px] p-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                     <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
@@ -179,7 +179,7 @@ export default function AboutPage() {
               </div>
 
               {/* PDF Tools */}
-              <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-indigo-500/50 dark:hover:border-indigo-400/50 transition-colors duration-200">
+              <div className="glass-card rounded-[24px] p-6">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -201,7 +201,7 @@ export default function AboutPage() {
         </section>
 
         {/* SECTION 5 — Principles */}
-        <section className="bg-white dark:bg-gray-900 py-16 md:py-20">
+        <section className="bg-bg-base py-16 md:py-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10">
               <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-white">
@@ -247,7 +247,7 @@ export default function AboutPage() {
         </section>
 
         {/* SECTION 6 — CTA */}
-        <section className="bg-gray-50 dark:bg-gray-800/40 py-20 md:py-28 text-center">
+        <section className="bg-bg-base py-20 md:py-28 text-center">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-white">
               Ready to take control of your semester?
