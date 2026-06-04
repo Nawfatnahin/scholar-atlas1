@@ -17,7 +17,16 @@ import { InitManagerModal } from './InitManagerModal';
 import { SemesterSettingsPanel } from './SemesterSettingsPanel';
 import { SemesterTabs } from './SemesterTabs';
 import { DegreeProgressBar } from './DegreeProgressBar';
-import { CGPASummaryCard } from './CGPASummaryCard';
+
+interface CGPASummaryData {
+  currentSemesterGPA: number;
+  overallCGPA: number;
+  totalCredits: number;
+  missingGPASemesters: number[];
+  currentSemester: number;
+  totalSemesters: number;
+  hasCourses: boolean;
+}
 
 interface AutoCGPACounterProps {
   courses: AutoCourse[];
@@ -28,6 +37,9 @@ interface AutoCGPACounterProps {
   semesterSetup: SemesterSetup | null;
   onSetupChange: (setup: SemesterSetup | null) => void;
   isFreeTier?: boolean;
+  onSummaryChange?: (data: CGPASummaryData) => void;
+  openSettings?: boolean;
+  onSettingsOpened?: () => void;
 }
 
 export function AutoCGPACounter({
@@ -39,6 +51,9 @@ export function AutoCGPACounter({
   semesterSetup,
   onSetupChange,
   isFreeTier,
+  onSummaryChange,
+  openSettings,
+  onSettingsOpened,
 }: AutoCGPACounterProps) {
   const isInitialized = !!semesterSetup?.initialized;
 
@@ -56,6 +71,14 @@ export function AutoCGPACounter({
       setActiveSemester(semesterSetup.current_semester);
     }
   }, [semesterSetup?.current_semester]);
+
+  // Open settings panel when triggered externally (e.g. from CGPASummaryCard in parent)
+  React.useEffect(() => {
+    if (openSettings) {
+      setShowSettings(true);
+      onSettingsOpened?.();
+    }
+  }, [openSettings, onSettingsOpened]);
 
   const [newCourse, setNewCourse] = useState({
     course_name: '',
@@ -217,6 +240,20 @@ export function AutoCGPACounter({
     return { overallCGPA, totalCredits, missingGPASemesters: missing };
   }, [semesterSetup, courses, gradeScales, globalScale, attendanceSubjects, currentSemesterGPA]);
 
+  // Bubble summary data up to parent (CGPAManager) for side-by-side layout
+  React.useEffect(() => {
+    if (!semesterSetup || !onSummaryChange) return;
+    onSummaryChange({
+      currentSemesterGPA,
+      overallCGPA,
+      totalCredits,
+      missingGPASemesters,
+      currentSemester: semesterSetup.current_semester,
+      totalSemesters: semesterSetup.total_semesters,
+      hasCourses: courses.length > 0,
+    });
+  }, [currentSemesterGPA, overallCGPA, totalCredits, missingGPASemesters, semesterSetup, courses.length, onSummaryChange]);
+
   const onTrackCount = courseBreakdowns.filter(cb => cb.onTrack).length;
   const needsImprovementCount = courseBreakdowns.filter(cb => !cb.onTrack).length;
 
@@ -327,7 +364,7 @@ export function AutoCGPACounter({
 
   return (
     <div className="space-y-6">
-      {/* Semester Header Band */}
+      {/* Semester Header Band — full width */}
       <div className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl rounded-[28px] border border-stone-200 dark:border-zinc-700/60 p-5 sm:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.2)] space-y-4">
         {/* Label row */}
         <div className="flex items-center justify-between">
@@ -363,8 +400,6 @@ export function AutoCGPACounter({
           semestersWithCourses={semestersWithCourses}
         />
       </div>
-
-      {/* Overall Summary (when current sem has courses) */}
       {courses.filter(c => c.semester_number === setup.current_semester).length > 0 && (
         <div className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl rounded-[32px] border border-stone-200 dark:border-zinc-700/60 p-6 sm:p-8 shadow-[0_10px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
           <h3 className="text-sm font-black text-[#92400e] dark:text-amber-500 uppercase tracking-[0.3em] mb-6">
@@ -639,19 +674,7 @@ export function AutoCGPACounter({
         </div>
       )}
 
-      {/* CGPA Summary Card — shown below courses when there are any */}
-      {courses.length > 0 && (
-        <CGPASummaryCard
-          currentSemesterGPA={currentSemesterGPA}
-          overallCGPA={overallCGPA}
-          totalCreditsCompleted={totalCredits}
-          targetCGPA={targetCGPA}
-          currentSemester={setup.current_semester}
-          totalSemesters={setup.total_semesters}
-          missingGPASemesters={missingGPASemesters}
-          onFillMissingGPA={() => setShowSettings(true)}
-        />
-      )}
+      {/* Semester Summary Card moved to top — removed from bottom */}
 
       {/* Modals */}
       {showSettings && semesterSetup && (
