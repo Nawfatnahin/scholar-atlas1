@@ -97,7 +97,9 @@ export default async function DashboardPage() {
               <Home className="w-5 h-5 sm:w-6 h-6" />
             </Link>
             <div className="flex items-center gap-2 sm:gap-8">
-              <h1 className="text-xl sm:text-2xl font-black text-accent tracking-tight hidden sm:block uppercase tracking-[0.1em]">Dashboard</h1>
+              <div className="hidden sm:block">
+                <h1 className="text-xl sm:text-2xl font-black text-accent tracking-tight uppercase tracking-[0.1em]">Dashboard</h1>
+              </div>
               {isAdmin && (
                 <Link 
                   href="/dashboard/admin" 
