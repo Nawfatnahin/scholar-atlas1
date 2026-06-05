@@ -258,7 +258,7 @@ export default function AboutPage() {
             </p>
             <div className="flex gap-4 justify-center flex-wrap mt-8">
               <Link
-                href="/signup"
+                href="/dashboard"
                 className="bg-[#92400e] hover:bg-[#78350f] text-white px-8 py-4 rounded-lg font-medium transition-colors text-[17px]"
               >
                 Get Started &mdash; it&apos;s free
