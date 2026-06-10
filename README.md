@@ -1,5 +1,5 @@
 # Scholar Atlas
-
+-A open source website . 
 Scholar Atlas is a comprehensive student dashboard and academic planner built for peak productivity. It seamlessly integrates attendance tracking, multi-semester CGPA forecasting, task management, and client-side PDF tools into a single, beautifully designed application.
 
 ## ✨ Features
