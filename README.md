@@ -70,5 +70,6 @@ Continuous integration is handled via GitHub Actions (`.github/workflows/deploy.
 - **Database RLS:** All database access is gated through strict Row-Level Security policies. Indexes are explicitly applied to policy filter columns to prevent sequential scans.
 - **Crawler Optimization:** `robots.ts` is configured to allow indexing by major search and AI engines (like Googlebot and ClaudeBot) while actively blocking raw training collectors (like CCBot and Bytespider) from leeching bandwidth.
 
-- ## About
+
+## About
 - It is my first project of making a dedicated working website that is helpful for me and all the others than will use this website . I created it for my personal use and I used AI to build this whole website . It is a result of my curiosity in Vibecoding.
