@@ -14,7 +14,7 @@ export async function addTask(title: string, priority: 'low' | 'medium' | 'high'
   if (!success) throw new Error("Too many requests. Please try again later.");
 
   const validation = taskSchema.safeParse({ title, status: 'todo', priority, due_date: dueDate });
-  if (!validation.success) throw new Error(validation.error.errors[0].message);
+  if (!validation.success) throw new Error((validation.error as any).errors[0].message);
   const supabase = await createClient();
   const { data: authData } = await supabase.auth.getUser();
   const user = authData?.user;
@@ -64,7 +64,7 @@ export async function updateTaskStatus(id: string, status: 'todo' | 'in-progress
   if (!success) throw new Error("Too many requests. Please try again later.");
 
   const validation = taskSchema.pick({ status: true }).safeParse({ status });
-  if (!validation.success) throw new Error(validation.error.errors[0].message);
+  if (!validation.success) throw new Error((validation.error as any).errors[0].message);
 
   const supabase = await createClient();
   // Security: getUser() verifies session server-side; ownership enforced via user_id filter

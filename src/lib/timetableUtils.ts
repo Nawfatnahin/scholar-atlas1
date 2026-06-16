@@ -11,7 +11,7 @@ export interface SubjectSlot {
 export function buildTimetableGrid(
   subjects: { id: string; name: string; color: string; schedule_days: string[]; class_time?: string }[]
 ): Record<Day, SubjectSlot[]> {
-  const grid = Object.fromEntries(DAYS.map((d) => [d, []])) as Record<Day, SubjectSlot[]>;
+  const grid = Object.fromEntries(DAYS.map((d) => [d, []])) as unknown as Record<Day, SubjectSlot[]>;
 
   for (const subject of subjects) {
     for (const day of subject.schedule_days ?? []) {

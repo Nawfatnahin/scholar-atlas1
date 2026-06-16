@@ -92,7 +92,6 @@ export function PdfToImages() {
         canvas.width = viewport.width;
 
         if (context) {
-          // @ts-expect-error - render parameters type mismatch in dynamic import
           await page.render({ canvasContext: context, viewport }).promise;
           const dataUrl = canvas.toDataURL(format);
           const base64Data = dataUrl.replace(/^data:image\/(png|jpeg);base64,/, "");

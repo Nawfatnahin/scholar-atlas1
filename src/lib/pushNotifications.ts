@@ -17,7 +17,7 @@ export async function subscribeToPush(userId: string): Promise<boolean> {
   const existing = await reg.pushManager.getSubscription();
   const subscription = existing ?? await reg.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY) as unknown as BufferSource,
   });
 
   const { endpoint, keys } = subscription.toJSON() as {

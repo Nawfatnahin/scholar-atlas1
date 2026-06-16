@@ -112,7 +112,7 @@ export function MarksEntryModal({
     assignment_obtained: assignmentObtained !== '' ? Number(assignmentObtained) : 0,
     assignment_total_marks: assignmentTotal !== '' ? Number(assignmentTotal) : Number(course.assignment_total_marks),
     attendance_linked: attendanceLinked,
-    attendance_course_id: attendanceLinked && attendanceCourseId ? attendanceCourseId : undefined,
+    attendance_course_id: attendanceLinked && attendanceCourseId ? attendanceCourseId : null,
   };
 
   const syntheticClassTests: ClassTest[] = ctForms
@@ -185,6 +185,7 @@ export function MarksEntryModal({
         id: course.id,
         course_name: course.course_name,
         course_code: course.course_code || undefined,
+        semester_number: Number(course.semester_number),
         credit_hours: Number(course.credit_hours),
         target_grade_point: Number(course.target_grade_point),
         grade_scale_id: course.grade_scale_id || undefined,
@@ -560,7 +561,7 @@ export function MarksEntryModal({
                     <p className="text-xs font-medium text-red-600 mt-1">
                       You would need{' '}
                       <span className="font-black text-red-700">
-                        {((breakdown?.requiredExamPercentage / 100) * breakdown.examWeight).toFixed(1)} / {breakdown.examWeight}
+                        {((breakdown?.requiredExamPercentage ?? 0) / 100 * (breakdown?.examWeight ?? 0)).toFixed(1)} / {breakdown?.examWeight ?? 0}
                       </span>{' '}
                       in the exam — which exceeds 100%. Sir, this goal cannot be reached with the current marks.
                     </p>
@@ -615,7 +616,7 @@ export function MarksEntryModal({
                       {(breakdown?.requiredExamPercentage ?? 0) >= 80 && (
                         <p className="text-xs font-black text-amber-600 flex items-center gap-1">
                           <AlertTriangle className="w-3.5 h-3.5" />
-                          High exam score required — aim for above {Math.max(0, (breakdown.requiredExamPercentage / 100) * breakdown.examWeight).toFixed(1)} / {breakdown.examWeight}.
+                          High exam score required — aim for above {Math.max(0, ((breakdown?.requiredExamPercentage ?? 0) / 100) * (breakdown?.examWeight ?? 0)).toFixed(1)} / {breakdown?.examWeight ?? 0}.
                         </p>
                       )}
                       {(breakdown?.requiredExamPercentage ?? 0) < 60 && (

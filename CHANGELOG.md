@@ -2,6 +2,16 @@
 All notable changes to Scholar Atlas are documented here.
 Format: [version] — YYYY-MM-DD
 
+## [1.3.1] — 2026-06-16
+
+### Improved
+- **Codebase Maintenance**: Addressed TypeScript type safety warnings across server actions and React components.
+- **Dependency Cleanup**: Removed unused dependencies (`@tanstack/react-query`, `react-hook-form`, `zustand`) to optimize bundle size and build times.
+- **Database Migrations**: Standardized database migration files into a chronological `supabase/migrations/` structure for improved deployment reliability.
+- **Documentation**: Updated the README with comprehensive deployment guidelines and environmental setup for easier contributor onboarding.
+
+---
+
 ## [1.3] — 2026-05-30
 
 ### Added

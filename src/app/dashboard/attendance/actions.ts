@@ -340,18 +340,26 @@ export async function deleteHoliday(id: string) {
 }
 
 export async function updateSubject(id: string, data: any) {
-  await checkRateLimit();
-  const supabase = await createClient();
-  const user = await getAuthenticatedUser(supabase);
+  try {
+    await checkRateLimit();
+    const supabase = await createClient();
+    const user = await getAuthenticatedUser(supabase);
 
-  const { error } = await supabase
-    .from('subjects')
-    .update(data)
-    .eq('id', id)
-    .eq('user_id', user.id);
+    const { error } = await supabase
+      .from('subjects')
+      .update(data)
+      .eq('id', id)
+      .eq('user_id', user.id);
 
-  if (error) throw new Error(`Failed to update subject: ${error.message}`);
-  revalidatePath('/dashboard/attendance');
+    if (error) {
+      return { success: false, error: `DATABASE_ERROR: ${error.message}` };
+    }
+    
+    revalidatePath('/dashboard/attendance');
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
 }
 
 export async function deleteAttendanceRecord(recordId: string) {

@@ -102,6 +102,7 @@ export function CourseSettingsModal({
         id: course.id,
         course_name: localCourse.course_name,
         course_code: localCourse.course_code || undefined,
+        semester_number: Number(localCourse.semester_number),
         credit_hours: Number(localCourse.credit_hours),
         target_grade_point: Number(localCourse.target_grade_point),
         grade_scale_id: localCourse.grade_scale_id || undefined,

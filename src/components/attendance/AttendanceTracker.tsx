@@ -32,7 +32,7 @@ function getClassesCountBetween(startDateStr: string, endDate: Date, classDays: 
   let count = 0;
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   
-  let current = new Date(start.getTime());
+  const current = new Date(start.getTime());
   while (current < endDate) {
     const dayName = dayNames[current.getDay()];
     if (classDays.includes(dayName)) {
@@ -49,7 +49,7 @@ function getPastClassDates(startDateStr: string, endDate: Date, classDays: strin
   const dates: string[] = [];
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   
-  let current = new Date(start.getTime());
+  const current = new Date(start.getTime());
   while (current < endDate) {
     const dayName = dayNames[current.getDay()];
     if (classDays.includes(dayName)) {
@@ -144,7 +144,7 @@ export function AttendanceTracker({ initialSubjects, initialHolidays }: Attendan
         console.log('[JARVIS]: Dispatching subject configuration to server...');
         
         // Generate past records if starting in the past
-        let pastRecords: Array<{ classDate: string; absenceType: 'present' | 'unexcused' }> = [];
+        const pastRecords: Array<{ classDate: string; absenceType: 'present' | 'unexcused' }> = [];
         const pastClassDates = getPastClassDates(formData.semesterStartDate, new Date(), formData.classDays);
         if (pastClassDates.length > 0) {
           // Sort chronologically

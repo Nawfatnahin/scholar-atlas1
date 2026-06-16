@@ -41,7 +41,7 @@ export default async function DashboardPage() {
     subjects: {
       name: string;
       course_code: string | null;
-    } | null;
+    };
   }
 
 

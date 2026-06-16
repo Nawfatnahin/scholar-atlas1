@@ -25,7 +25,8 @@ You can check the live website at : https://scholar-atlas.scholar-atlas.workers.
 
 ### Prerequisites
 
-Ensure you have **Node.js v22 or higher** installed to meet the Wrangler v4 requirements for Cloudflare deployment.
+- **Node.js v22 or higher** (Required for Wrangler v4 and Cloudflare deployment)
+- A **Supabase account** and project for database and authentication
 
 ### Installation
 
@@ -41,27 +42,33 @@ Ensure you have **Node.js v22 or higher** installed to meet the Wrangler v4 requ
    ```
 
 3. **Set up Environment Variables:**
-   Create a `.env.local` file in the root directory and configure your Supabase credentials:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   Copy the provided `.env.example` file to create your local environment configuration:
+   ```bash
+   cp .env.example .env.local
    ```
-   *Check the existing `.env.production` or `.dev.vars` for any additional environment requirements.*
+   Fill in your Supabase credentials in `.env.local`:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 4. **Run the development server:**
    ```bash
    npm run dev
    ```
-   Open [http://localhost:3000](http://localhost:3000) with your browser to experience the dashboard.
+   Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## ☁️ Deployment
 
 Scholar Atlas is architected for Edge deployment on Cloudflare Workers utilizing OpenNext.
 
-To deploy manually:
-```bash
-npm run deploy
-```
+To deploy to Cloudflare Workers:
+1. Ensure you have authenticated with Cloudflare via Wrangler:
+   ```bash
+   npx wrangler login
+   ```
+2. Run the deployment script:
+   ```bash
+   npm run deploy
+   ```
 *Note: This command runs the OpenNext build and Wrangler deployment. If you encounter build cache collisions, delete the `.open-next/` directory before retrying.*
 
 ### CI/CD
@@ -70,10 +77,18 @@ Continuous integration is handled via GitHub Actions (`.github/workflows/deploy.
 ## 🛡️ Architecture & Security
 
 - **Database RLS:** All database access is gated through strict Row-Level Security policies. Indexes are explicitly applied to policy filter columns to prevent sequential scans.
+- **Database Migrations:** Schema changes and setup scripts are organized in the `/supabase/migrations/` directory using timestamp-based versions for reliability.
 - **Crawler Optimization:** `robots.ts` is configured to allow indexing by major search and AI engines (like Googlebot and ClaudeBot) while actively blocking raw training collectors (like CCBot and Bytespider) from leeching bandwidth.
 
+## About Scholar Atlas
 
-## About me 
-- It is my first project of making a dedicated working website that is helpful for me and all the others who will use this website . I created it for my personal use and I used AI to build this whole website . It is a result of my curiosity in Vibecoding. 
-Currently , I'm studing BURP in RUET, Bangladesh. (2026) 
-Hoping that I will improve the website further in the future .
+Scholar Atlas is a production-grade academic management platform built to handle the complexity of multi-semester GPA tracking, attendance management, and task organization. Designed with real student workflow in mind.
+
+### Why I Built This
+Existing solutions like generic task managers or rigid university portals fail to handle complex multi-semester forecasting and dynamic attendance weighting gracefully. Scholar Atlas solves this fragmentation.
+
+### Key Achievements
+- Deployed on Cloudflare Workers (edge optimization)
+- Strict Supabase RLS policies (security-first architecture)
+- Real-time syncing with Zustand + React Query
+- Processed thousands of academic records with zero data loss

@@ -65,7 +65,7 @@ export const cgpaGradeSchema = z.object({
 });
 
 // Shared response helper for Zod errors
-export function formatZodError(error: z.ZodError) {
+export function formatZodError(error: any) {
   const firstError = error.errors[0];
   return {
     error: firstError.message,
