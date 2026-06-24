@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Inter, Space_Grotesk, Anton } from 'next/font/google';
 import { Providers } from './providers';
 import './globals.css';
 
@@ -12,6 +12,13 @@ const spaceGrotesk = Space_Grotesk({
 
 const inter = Inter({
   variable: '--font-sans',
+  subsets: ['latin'],
+  display: 'swap',
+});
+
+const anton = Anton({
+  variable: '--font-anton',
+  weight: '400',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -46,7 +53,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${anton.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <Providers>{children}</Providers>

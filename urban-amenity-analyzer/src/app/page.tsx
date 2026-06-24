@@ -75,10 +75,13 @@ export default function Home() {
   if (!selectedPlace) {
     return (
       <main className="relative bg-[var(--ink)] text-[var(--paper)] selection:bg-[var(--civic-amber)] selection:text-[var(--ink)]">
-        <div className="fine-noise absolute inset-0 opacity-40 pointer-events-none" />
+        <div className="fine-noise absolute inset-0 opacity-40 pointer-events-none z-10" />
+        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover blur-[8px] opacity-40 z-0">
+          <source src="/images/hero.mp4" type="video/mp4" />
+        </video>
         
         {/* HERO SECTION */}
-        <section className="relative flex min-h-[100svh] flex-col justify-between p-5 sm:p-8 lg:px-12 lg:py-8">
+        <section className="relative z-20 flex min-h-[100svh] flex-col justify-between p-5 sm:p-8 lg:px-12 lg:py-8">
           
           {/* HEADER */}
           <header className="grid grid-cols-2 lg:grid-cols-[1fr_auto_1fr] items-start w-full gap-8">
@@ -212,7 +215,7 @@ export default function Home() {
         </section>
 
         {/* ABOUT SECTION */}
-        <section id="about" className="relative flex min-h-[100svh] flex-col justify-center border-t border-[var(--line)] bg-[var(--ink)]">
+        <section id="about" className="relative flex min-h-[100svh] flex-col justify-between border-t border-[var(--line)] bg-[var(--ink)]">
           {/* BACKGROUND IMAGE with blur */}
           <div className="absolute inset-0 z-0 overflow-hidden">
             <Image
@@ -226,35 +229,35 @@ export default function Home() {
             <div className="absolute inset-0 bg-[rgba(7,7,6,0.65)] backdrop-blur-md" />
           </div>
 
-          <div className="relative z-10 mx-auto w-full max-w-5xl p-5 sm:p-8 lg:p-12">
+          <div className="relative z-10 w-full p-5 sm:p-8 lg:p-12 flex flex-col min-h-full justify-between">
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="mb-16 sm:mb-24"
+              className="mt-12"
             >
-              <h2 className="font-[family-name:var(--font-heading)] text-5xl sm:text-7xl lg:text-8xl font-semibold uppercase text-[var(--paper)] mb-8 tracking-tighter leading-[0.9]">
-                Measure the<br/>Invisible City.
+              <h2 className="font-[family-name:var(--font-anton)] text-6xl sm:text-8xl lg:text-[140px] uppercase text-[var(--paper)] leading-[0.85] tracking-tight">
+                LET&apos;S BUILD<br/>
+                AN EXPERIENCE<br/>
+                THAT MOVES<br/>
+                <span className="text-[var(--civic-amber)]">PEOPLE</span>
               </h2>
-              <p className="text-xl sm:text-3xl font-medium text-[var(--paper-muted)] leading-relaxed max-w-4xl tracking-tight">
-                We believe a city is only as good as what you can reach on foot. Urban Amenity is a spatial analysis tool designed to reveal the hidden infrastructure of everyday life.
-              </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
+            <div className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 w-full self-end max-w-none">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                className="flex flex-col gap-5"
+                className="flex flex-col gap-5 max-w-2xl"
               >
                 <div className="h-px w-16 bg-[var(--civic-amber)]" />
-                <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--civic-amber)]">
+                <h3 className="font-[family-name:var(--font-anton)] text-2xl uppercase tracking-widest text-[var(--civic-amber)]">
                   How it helps
                 </h3>
-                <p className="text-lg text-[var(--paper)] leading-relaxed opacity-90">
+                <p className="text-xl sm:text-2xl text-[var(--paper)] leading-relaxed font-medium">
                   By analyzing the proximity of schools, healthcare, transit, and fresh food, we expose gaps in urban planning and highlight neighborhoods that truly support human-scale living. We score accessibility based on rigorous urban metrics.
                 </p>
               </motion.div>
@@ -264,13 +267,14 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-                className="flex flex-col gap-5"
+                className="flex flex-col gap-5 max-w-2xl md:ml-auto md:text-right"
               >
-                <div className="h-px w-16 bg-[var(--civic-amber)]" />
-                <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--civic-amber)]">
+                <div className="h-px w-16 bg-[var(--civic-amber)] md:ml-auto hidden md:block" />
+                <div className="h-px w-16 bg-[var(--civic-amber)] md:hidden block" />
+                <h3 className="font-[family-name:var(--font-anton)] text-2xl uppercase tracking-widest text-[var(--civic-amber)]">
                   How to use it
                 </h3>
-                <p className="text-lg text-[var(--paper)] leading-relaxed opacity-90">
+                <p className="text-xl sm:text-2xl text-[var(--paper)] leading-relaxed font-medium">
                   Simply search for any neighborhood. Adjust the radius to reflect your walking limits, and instantly generate a comprehensive field report of essential civic services.
                 </p>
               </motion.div>
