@@ -73,7 +73,6 @@ export function MapView({ center, amenities, radius }: MapViewProps) {
         onMove={(evt) => setViewState(evt.viewState)}
         mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
         style={{ width: '100%', height: '100%' }}
-        attributionControl={true}
         reuseMaps
       >
         <NavigationControl position="bottom-right" showCompass={false} />
