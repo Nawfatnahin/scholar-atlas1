@@ -10,6 +10,8 @@ import { useAmenities } from '@/lib/hooks/useAmenities';
 import { computeOverallScore, generateSummary } from '@/lib/scoring';
 import type { GeocodedPlace } from '@/lib/types';
 import { ArrowLeft, MapPinned, MoveUpRight } from 'lucide-react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const EXAMPLE_CITIES = [
   { name: 'Manhattan', query: 'Manhattan, New York' },
@@ -141,52 +143,137 @@ export default function Home() {
         </section>
 
         {/* SCROLL TO SEARCH SECTION */}
-        <section id="search" className="relative flex min-h-[100svh] flex-col justify-center border-t border-[var(--line)] bg-[var(--background)] p-5 sm:p-8 lg:p-12">
-          <div className="mx-auto w-full max-w-4xl">
-            <div className="mb-12 text-center">
-              <div className="mb-4 inline-flex items-center justify-center gap-2">
-                <div className="h-px w-8 bg-[var(--civic-amber)]" />
-                <span className="font-editorial text-xs font-semibold uppercase tracking-[0.2em] text-[var(--civic-amber)]">
+        <section id="search" className="relative flex min-h-[100svh] flex-col justify-center border-t border-[var(--line)] bg-[var(--background)] p-5 sm:p-8 lg:p-12 overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="mx-auto w-full max-w-5xl"
+          >
+            <div className="mb-16 text-center">
+              <div className="mb-6 inline-flex items-center justify-center gap-3">
+                <div className="h-px w-10 bg-[var(--civic-amber)]" />
+                <span className="font-editorial text-sm font-semibold uppercase tracking-[0.25em] text-[var(--civic-amber)]">
                   Spatial Analysis
                 </span>
-                <div className="h-px w-8 bg-[var(--civic-amber)]" />
+                <div className="h-px w-10 bg-[var(--civic-amber)]" />
               </div>
-              <h2 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl font-semibold text-[var(--paper)] mb-4 tracking-tight">
+              <h2 className="font-[family-name:var(--font-heading)] text-5xl sm:text-7xl font-semibold text-[var(--paper)] mb-6 tracking-tight">
                 Analyze a Location
               </h2>
-              <p className="text-sm text-[var(--paper-muted)] max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg text-[var(--paper-muted)] max-w-2xl mx-auto leading-relaxed">
                 Search any neighborhood and generate a walkability report for schools, healthcare, transit, groceries, parks, and pharmacies. Adjust the radius to see how accessibility shifts.
               </p>
             </div>
 
-            <div className="editorial-panel p-6 sm:p-10 mb-8 max-w-2xl mx-auto shadow-2xl">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="editorial-panel p-8 sm:p-12 mb-10 max-w-3xl mx-auto shadow-2xl bg-[var(--ink-soft)]"
+            >
               <SearchBar
                 onPlaceSelect={handlePlaceSelect}
                 initialValue={searchInitialValue}
               />
-              <div className="mt-8 flex flex-col items-center justify-center gap-4">
-                <span className="text-xs font-medium uppercase tracking-widest text-[var(--paper-muted)]">
+              <div className="mt-10 flex flex-col items-center justify-center gap-5">
+                <span className="text-sm font-medium uppercase tracking-[0.2em] text-[var(--paper-muted)]">
                   Analysis Radius
                 </span>
                 <RadiusSelector radius={radius} onChange={setRadius} />
               </div>
-            </div>
+            </motion.div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--concrete)] mr-2">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+              className="mt-12 flex flex-wrap items-center justify-center gap-4"
+            >
+              <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--concrete)] mr-2">
                 Try Examples:
               </span>
               {EXAMPLE_CITIES.map((city) => (
                 <button
                   key={city.name}
                   onClick={() => handleChipClick(city.query)}
-                  className="focus-editorial inline-flex items-center gap-1.5 border border-[var(--line)] bg-[rgba(244,239,229,0.04)] px-4 py-2 text-xs font-medium text-[var(--paper-muted)] transition-colors hover:border-[var(--civic-amber)] hover:text-[var(--paper)]"
+                  className="focus-editorial inline-flex items-center gap-2 border border-[var(--line)] bg-[rgba(244,239,229,0.04)] px-5 py-2.5 text-sm font-medium text-[var(--paper-muted)] transition-colors hover:border-[var(--civic-amber)] hover:text-[var(--paper)]"
                   id={`chip-${city.name.toLowerCase()}`}
                 >
                   {city.name}
-                  <MoveUpRight className="h-3 w-3 opacity-70" />
+                  <MoveUpRight className="h-4 w-4 opacity-70" />
                 </button>
               ))}
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* ABOUT SECTION */}
+        <section id="about" className="relative flex min-h-[100svh] flex-col justify-center border-t border-[var(--line)] bg-[var(--ink)]">
+          {/* BACKGROUND IMAGE with blur */}
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            <Image
+              src="/images/urban_about_bg.png"
+              alt="Urban atmospheric background"
+              fill
+              className="object-cover opacity-80"
+              sizes="100vw"
+            />
+            {/* Dark overlay & blur to ensure text legibility */}
+            <div className="absolute inset-0 bg-[rgba(7,7,6,0.65)] backdrop-blur-md" />
+          </div>
+
+          <div className="relative z-10 mx-auto w-full max-w-5xl p-5 sm:p-8 lg:p-12">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="mb-16 sm:mb-24"
+            >
+              <h2 className="font-[family-name:var(--font-heading)] text-5xl sm:text-7xl lg:text-8xl font-semibold uppercase text-[var(--paper)] mb-8 tracking-tighter leading-[0.9]">
+                Measure the<br/>Invisible City.
+              </h2>
+              <p className="text-xl sm:text-3xl font-medium text-[var(--paper-muted)] leading-relaxed max-w-4xl tracking-tight">
+                We believe a city is only as good as what you can reach on foot. Urban Amenity is a spatial analysis tool designed to reveal the hidden infrastructure of everyday life.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                className="flex flex-col gap-5"
+              >
+                <div className="h-px w-16 bg-[var(--civic-amber)]" />
+                <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--civic-amber)]">
+                  How it helps
+                </h3>
+                <p className="text-lg text-[var(--paper)] leading-relaxed opacity-90">
+                  By analyzing the proximity of schools, healthcare, transit, and fresh food, we expose gaps in urban planning and highlight neighborhoods that truly support human-scale living. We score accessibility based on rigorous urban metrics.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+                className="flex flex-col gap-5"
+              >
+                <div className="h-px w-16 bg-[var(--civic-amber)]" />
+                <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--civic-amber)]">
+                  How to use it
+                </h3>
+                <p className="text-lg text-[var(--paper)] leading-relaxed opacity-90">
+                  Simply search for any neighborhood. Adjust the radius to reflect your walking limits, and instantly generate a comprehensive field report of essential civic services.
+                </p>
+              </motion.div>
             </div>
           </div>
         </section>

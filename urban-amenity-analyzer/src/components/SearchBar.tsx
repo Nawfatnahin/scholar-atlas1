@@ -122,11 +122,11 @@ export function SearchBar({ onPlaceSelect, initialValue = '' }: SearchBarProps) 
 
   return (
     <div className="relative w-full">
-      <div className="group relative flex min-h-14 items-center gap-3 border border-[var(--line)] bg-[rgba(7,7,6,0.78)] px-4 py-3 transition-colors focus-within:border-[var(--civic-amber)] focus-within:bg-[rgba(7,7,6,0.92)]">
+      <div className="group relative flex min-h-[72px] items-center gap-4 border border-[var(--line)] bg-[rgba(7,7,6,0.78)] px-6 py-4 transition-colors focus-within:border-[var(--civic-amber)] focus-within:bg-[rgba(7,7,6,0.92)]">
         {showLoading ? (
-          <Loader2 className="h-5 w-5 shrink-0 animate-spin text-[var(--civic-amber)]" />
+          <Loader2 className="h-6 w-6 shrink-0 animate-spin text-[var(--civic-amber)]" />
         ) : (
-          <Search className="h-5 w-5 shrink-0 text-[var(--paper-muted)] transition-colors group-focus-within:text-[var(--civic-amber)]" />
+          <Search className="h-6 w-6 shrink-0 text-[var(--paper-muted)] transition-colors group-focus-within:text-[var(--civic-amber)]" />
         )}
 
         <input
@@ -141,7 +141,7 @@ export function SearchBar({ onPlaceSelect, initialValue = '' }: SearchBarProps) 
               setIsOpen(true);
             }
           }}
-          className="peer min-w-0 flex-1 bg-transparent text-base text-[var(--paper)] placeholder:text-[rgba(244,239,229,0.48)] outline-none"
+          className="peer min-w-0 flex-1 bg-transparent text-xl font-medium tracking-tight text-[var(--paper)] placeholder:text-[rgba(244,239,229,0.38)] outline-none"
           id="search-input"
           autoComplete="off"
           spellCheck={false}
@@ -150,10 +150,10 @@ export function SearchBar({ onPlaceSelect, initialValue = '' }: SearchBarProps) 
         {inputValue && (
           <button
             onClick={handleClear}
-            className="focus-editorial shrink-0 p-1 text-[var(--paper-muted)] transition-colors hover:text-[var(--paper)]"
+            className="focus-editorial shrink-0 p-2 text-[var(--paper-muted)] transition-colors hover:text-[var(--paper)]"
             aria-label="Clear search"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </button>
         )}
 
