@@ -9,7 +9,6 @@ import { LoadingOverlay } from '@/components/LoadingOverlay';
 import { useAmenities } from '@/lib/hooks/useAmenities';
 import { computeOverallScore, generateSummary } from '@/lib/scoring';
 import type { GeocodedPlace } from '@/lib/types';
-import Image from 'next/image';
 import { ArrowLeft, MapPinned, MoveUpRight } from 'lucide-react';
 
 const EXAMPLE_CITIES = [
@@ -73,100 +72,143 @@ export default function Home() {
   // ─── Landing View (no place selected) ───
   if (!selectedPlace) {
     return (
-      <main className="min-h-screen overflow-hidden bg-[var(--ink)] text-[var(--paper)]">
-        <section className="relative min-h-[100svh]">
-          <Image
-            src="/images/urban-editorial-hero.png"
-            alt="Dense walkable city street with transit, sidewalks, shops, and neighborhood activity"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="hero-photo-overlay absolute inset-0" />
-          <div className="fine-noise absolute inset-0 opacity-60" />
-
-          <header className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-8 lg:px-12">
-            <a
-              href="#top"
-              className="focus-editorial text-xs font-semibold uppercase tracking-[0.28em] text-[var(--paper)]"
-            >
-              Urban Amenity
-            </a>
-            <nav aria-label="Landing navigation" className="hidden items-center gap-8 text-xs uppercase tracking-[0.22em] text-[var(--paper-muted)] sm:flex">
-              <a className="focus-editorial transition-colors hover:text-[var(--paper)]" href="#method">Method</a>
-              <a className="focus-editorial transition-colors hover:text-[var(--paper)]" href="#search">Analyze</a>
-            </nav>
-          </header>
-
-          <div id="top" className="relative z-10 grid min-h-[calc(100svh-76px)] content-between px-5 pb-8 sm:px-8 lg:px-12">
-            <div className="grid gap-8 pt-12 lg:grid-cols-[minmax(0,1fr)_380px] lg:items-end lg:gap-16 lg:pt-20">
-              <div className="max-w-5xl">
-                <p className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-[var(--civic-amber)]">
-                  Neighborhood access report
-                </p>
-                <h1 className="font-[family-name:var(--font-heading)] text-[clamp(3rem,10vw,8.5rem)] font-semibold uppercase leading-[0.86] tracking-normal text-[var(--paper)]">
-                  Read the city by what is within reach.
-                </h1>
+      <main className="relative bg-[var(--ink)] text-[var(--paper)] selection:bg-[var(--civic-amber)] selection:text-[var(--ink)]">
+        <div className="fine-noise absolute inset-0 opacity-40 pointer-events-none" />
+        
+        {/* HERO SECTION */}
+        <section className="relative flex min-h-[100svh] flex-col justify-between p-5 sm:p-8 lg:px-12 lg:py-8">
+          
+          {/* HEADER */}
+          <header className="grid grid-cols-2 lg:grid-cols-[1fr_auto_1fr] items-start w-full gap-8">
+            <div className="font-editorial text-xl font-bold tracking-tighter text-[var(--paper)] leading-none">
+              URBAN<br/>AMENITY
+            </div>
+            
+            <div className="hidden lg:flex flex-col items-center gap-6">
+              <nav aria-label="Landing navigation" className="flex items-center gap-8 text-[11px] font-semibold tracking-wide text-[var(--paper)]">
+                <a className="focus-editorial transition-colors hover:text-[var(--paper-muted)]" href="#search">Search</a>
+                <a className="focus-editorial transition-colors hover:text-[var(--paper-muted)]" href="#method">Method</a>
+                <a className="focus-editorial transition-colors hover:text-[var(--paper-muted)]" href="#">About</a>
+              </nav>
+              
+              <div className="max-w-md text-center text-xs font-medium leading-relaxed text-[var(--paper)] opacity-80">
+                We build spatial analysis tools that finally match the complexity of the cities behind them.
+                <br/><br/>
+                For established neighborhoods whose walkability hasn&apos;t been measured by what they&apos;ve built.
               </div>
-
-              <aside className="editorial-panel max-w-xl p-5 sm:p-6 lg:mb-2">
-                <p className="text-sm leading-6 text-[var(--paper-muted)]">
-                  Search any neighborhood and generate a walkability report for schools, healthcare, transit, groceries, parks, and pharmacies.
-                </p>
-                <div id="search" className="mt-5">
-                  <SearchBar
-                    onPlaceSelect={handlePlaceSelect}
-                    initialValue={searchInitialValue}
-                  />
-                </div>
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--concrete)]">
-                    Try
-                  </span>
-                  {EXAMPLE_CITIES.map((city) => (
-                    <button
-                      key={city.name}
-                      onClick={() => handleChipClick(city.query)}
-                      className="focus-editorial inline-flex items-center gap-1 border border-[var(--line)] bg-[rgba(244,239,229,0.04)] px-3 py-1.5 text-xs font-medium text-[var(--paper-muted)] transition-colors hover:border-[var(--civic-amber)] hover:text-[var(--paper)]"
-                      id={`chip-${city.name.toLowerCase()}`}
-                    >
-                      {city.name}
-                      <MoveUpRight className="h-3 w-3" />
-                    </button>
-                  ))}
-                </div>
-              </aside>
             </div>
 
-            <div id="method" className="mt-10 grid border-t border-[var(--line)] pt-5 sm:grid-cols-3">
-              {METHOD_NOTES.map((note) => (
-                <div key={note.label} className="border-[var(--line)] py-3 sm:border-r sm:px-5 first:sm:pl-0 last:sm:border-r-0">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--concrete)]">
-                    {note.label}
-                  </p>
-                  <p className="mt-1 text-sm text-[var(--paper)]">{note.value}</p>
-                </div>
+            <div className="flex justify-end">
+              <a href="#search" className="focus-editorial flex items-center gap-2 border border-[var(--line)] bg-[rgba(244,239,229,0.05)] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--paper)] transition-colors hover:bg-[var(--paper)] hover:text-[var(--ink)]">
+                Start Search <MoveUpRight className="h-3 w-3" />
+              </a>
+            </div>
+          </header>
+
+          {/* MASSIVE SVG TEXT */}
+          <div className="flex-1 flex items-center justify-center my-12 w-full overflow-hidden">
+            <svg viewBox="0 0 1200 400" className="w-full h-auto text-[var(--paper)] fill-current" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <mask id="text-mask">
+                  <rect width="100%" height="100%" fill="white" />
+                  <path d="M-100,200 C100,350 300,350 500,200 C700,50 900,50 1100,200 C1300,350 1500,350 1700,200 L1700,400 L-100,400 Z" fill="black" opacity="0.6" />
+                </mask>
+              </defs>
+              <text x="50%" y="170" textAnchor="middle" className="font-[family-name:var(--font-heading)] font-bold tracking-tighter" style={{ fontSize: '180px' }}>
+                URBAN
+              </text>
+              <text x="50%" y="340" textAnchor="middle" className="font-[family-name:var(--font-heading)] font-bold tracking-tighter" style={{ fontSize: '180px' }} mask="url(#text-mask)">
+                AMENITY
+              </text>
+              <path d="M-100,200 C100,350 300,350 500,200 C700,50 900,50 1100,200 C1300,350 1500,350 1700,200" fill="none" stroke="var(--civic-amber)" strokeWidth="6" className="opacity-80" />
+            </svg>
+          </div>
+
+          {/* FOOTER OF HERO */}
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-[1fr_2fr]">
+            <div className="flex flex-col justify-end">
+              <div className="mb-1 text-3xl font-semibold text-[var(--paper)] tabular-nums">15+</div>
+              <p className="text-xs text-[var(--paper-muted)] leading-relaxed max-w-xs">
+                Minute city framework parameters from disruptive urban models to neighborhood access standards.
+              </p>
+            </div>
+            <div className="flex items-end sm:justify-end">
+              <h2 className="font-[family-name:var(--font-heading)] text-2xl sm:text-3xl lg:text-[40px] font-medium leading-[1.1] text-[var(--paper)] max-w-3xl sm:text-right">
+                Great neighborhoods <span className="text-[var(--paper-muted)]">changing the world deserve</span> a metric <span className="text-[var(--paper-muted)]">as powerful as what they&apos;ve built.</span> Most cities we analyze have <span className="text-[var(--paper-muted)]">hidden walkability potential.</span>
+              </h2>
+            </div>
+          </div>
+        </section>
+
+        {/* SCROLL TO SEARCH SECTION */}
+        <section id="search" className="relative flex min-h-[100svh] flex-col justify-center border-t border-[var(--line)] bg-[var(--background)] p-5 sm:p-8 lg:p-12">
+          <div className="mx-auto w-full max-w-4xl">
+            <div className="mb-12 text-center">
+              <div className="mb-4 inline-flex items-center justify-center gap-2">
+                <div className="h-px w-8 bg-[var(--civic-amber)]" />
+                <span className="font-editorial text-xs font-semibold uppercase tracking-[0.2em] text-[var(--civic-amber)]">
+                  Spatial Analysis
+                </span>
+                <div className="h-px w-8 bg-[var(--civic-amber)]" />
+              </div>
+              <h2 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl font-semibold text-[var(--paper)] mb-4 tracking-tight">
+                Analyze a Location
+              </h2>
+              <p className="text-sm text-[var(--paper-muted)] max-w-2xl mx-auto leading-relaxed">
+                Search any neighborhood and generate a walkability report for schools, healthcare, transit, groceries, parks, and pharmacies. Adjust the radius to see how accessibility shifts.
+              </p>
+            </div>
+
+            <div className="editorial-panel p-6 sm:p-10 mb-8 max-w-2xl mx-auto shadow-2xl">
+              <SearchBar
+                onPlaceSelect={handlePlaceSelect}
+                initialValue={searchInitialValue}
+              />
+              <div className="mt-8 flex flex-col items-center justify-center gap-4">
+                <span className="text-xs font-medium uppercase tracking-widest text-[var(--paper-muted)]">
+                  Analysis Radius
+                </span>
+                <RadiusSelector radius={radius} onChange={setRadius} />
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--concrete)] mr-2">
+                Try Examples:
+              </span>
+              {EXAMPLE_CITIES.map((city) => (
+                <button
+                  key={city.name}
+                  onClick={() => handleChipClick(city.query)}
+                  className="focus-editorial inline-flex items-center gap-1.5 border border-[var(--line)] bg-[rgba(244,239,229,0.04)] px-4 py-2 text-xs font-medium text-[var(--paper-muted)] transition-colors hover:border-[var(--civic-amber)] hover:text-[var(--paper)]"
+                  id={`chip-${city.name.toLowerCase()}`}
+                >
+                  {city.name}
+                  <MoveUpRight className="h-3 w-3 opacity-70" />
+                </button>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="grid gap-8 border-t border-[var(--line)] bg-[var(--paper)] px-5 py-10 text-[var(--ink)] sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:px-12">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--concrete)]">
-              Civic scan
-            </p>
-            <h2 className="mt-3 font-[family-name:var(--font-heading)] text-3xl font-semibold uppercase leading-none sm:text-5xl">
-              A field report for everyday access.
-            </h2>
+        {/* FOOTER */}
+        <footer id="method" className="border-t border-[var(--line)] bg-[var(--ink)] py-8 px-5 sm:px-8 lg:px-12 text-center">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--paper-muted)] mb-4">
+            Methodology & Sources
+          </p>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
+            {METHOD_NOTES.map((note) => (
+              <div key={note.label} className="text-center">
+                <span className="block text-[10px] font-semibold uppercase tracking-widest text-[var(--civic-amber)]">
+                  {note.label}
+                </span>
+                <span className="mt-1 block text-sm text-[var(--paper)]">
+                  {note.value}
+                </span>
+              </div>
+            ))}
           </div>
-          <div className="grid gap-4 text-sm leading-6 text-[#3b3933] sm:grid-cols-3">
-            <p>Estimate proximity to daily needs with a 15-minute city lens.</p>
-            <p>See gaps where essential services are beyond a practical walk.</p>
-            <p>Use map evidence and category scores to compare neighborhood conditions.</p>
-          </div>
-        </section>
+        </footer>
       </main>
     );
   }
