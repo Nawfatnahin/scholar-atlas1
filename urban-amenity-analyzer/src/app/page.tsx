@@ -84,7 +84,7 @@ export default function Home() {
         <section className="relative z-20 flex min-h-[100svh] flex-col justify-between p-5 sm:p-8 lg:px-12 lg:py-8">
           
           {/* HEADER */}
-          <header className="grid grid-cols-2 lg:grid-cols-[1fr_auto_1fr] items-start w-full gap-8">
+          <header className="absolute top-0 left-0 right-0 z-50 grid grid-cols-2 lg:grid-cols-[1fr_auto_1fr] items-start w-full gap-8 p-5 sm:p-8 lg:px-12 bg-[rgba(7,7,6,0.7)] backdrop-blur-md border-b border-white/5">
             <div className="font-editorial text-xl font-bold tracking-tighter text-[var(--paper)] leading-none">
               URBAN<br/>AMENITY
             </div>
@@ -93,7 +93,7 @@ export default function Home() {
               <nav aria-label="Landing navigation" className="flex items-center gap-8 text-[11px] font-semibold tracking-wide text-[var(--paper)]">
                 <a className="focus-editorial transition-colors hover:text-[var(--paper-muted)]" href="#search">Search</a>
                 <a className="focus-editorial transition-colors hover:text-[var(--paper-muted)]" href="#method">Method</a>
-                <a className="focus-editorial transition-colors hover:text-[var(--paper-muted)]" href="#">About</a>
+                <a className="focus-editorial transition-colors hover:text-[var(--paper-muted)]" href="#about">About</a>
               </nav>
               
               <div className="max-w-md text-center text-xs font-medium leading-relaxed text-[var(--paper)] opacity-80">
@@ -110,23 +110,19 @@ export default function Home() {
             </div>
           </header>
 
-          {/* MASSIVE SVG TEXT */}
-          <div className="flex-1 flex items-center justify-center my-12 w-full overflow-hidden">
-            <svg viewBox="0 0 1200 400" className="w-full h-auto text-[var(--paper)] fill-current" preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <mask id="text-mask">
-                  <rect width="100%" height="100%" fill="white" />
-                  <path d="M-100,200 C100,350 300,350 500,200 C700,50 900,50 1100,200 C1300,350 1500,350 1700,200 L1700,400 L-100,400 Z" fill="black" opacity="0.6" />
-                </mask>
-              </defs>
-              <text x="50%" y="170" textAnchor="middle" className="font-[family-name:var(--font-heading)] font-bold tracking-tighter" style={{ fontSize: '180px' }}>
-                URBAN
-              </text>
-              <text x="50%" y="340" textAnchor="middle" className="font-[family-name:var(--font-heading)] font-bold tracking-tighter" style={{ fontSize: '180px' }} mask="url(#text-mask)">
-                AMENITY
-              </text>
-              <path d="M-100,200 C100,350 300,350 500,200 C700,50 900,50 1100,200 C1300,350 1500,350 1700,200" fill="none" stroke="var(--civic-amber)" strokeWidth="6" className="opacity-80" />
-            </svg>
+          {/* MASSIVE TEXT */}
+          <div className="flex-1 flex flex-col items-center justify-center text-center mt-32 mb-12 w-full z-20 px-4">
+            <h1 className="font-[family-name:var(--font-archivo-black)] text-6xl sm:text-8xl md:text-[8rem] lg:text-[11rem] uppercase leading-[0.85] tracking-tighter text-[var(--paper)] drop-shadow-2xl">
+              URBAN<br/>AMENITY<br/>ANALYZER
+            </h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="mt-12 max-w-4xl font-[family-name:var(--font-anton)] text-2xl sm:text-4xl lg:text-5xl text-[var(--civic-amber)] uppercase tracking-wide leading-tight drop-shadow-lg"
+            >
+              Let&apos;s build an experience that moves people
+            </motion.p>
           </div>
 
           {/* FOOTER OF HERO */}
@@ -146,7 +142,19 @@ export default function Home() {
         </section>
 
         {/* SCROLL TO SEARCH SECTION */}
-        <section id="search" className="relative flex min-h-[100svh] flex-col justify-center border-t border-[var(--line)] bg-[var(--background)] p-5 sm:p-8 lg:p-12 overflow-hidden">
+        <section id="search" className="relative flex min-h-[100svh] flex-col justify-center border-t border-[var(--line)] bg-[var(--ink)] p-5 sm:p-8 lg:p-12 overflow-hidden">
+          {/* BACKGROUND IMAGE with blur */}
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            <Image
+              src="/images/search_bg.png"
+              alt="Search section abstract map background"
+              fill
+              className="object-cover opacity-50 blur-[12px] scale-105"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-[rgba(7,7,6,0.6)] backdrop-blur-sm" />
+          </div>
+
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -238,10 +246,9 @@ export default function Home() {
               className="mt-12"
             >
               <h2 className="font-[family-name:var(--font-anton)] text-6xl sm:text-8xl lg:text-[140px] uppercase text-[var(--paper)] leading-[0.85] tracking-tight">
-                LET&apos;S BUILD<br/>
-                AN EXPERIENCE<br/>
-                THAT MOVES<br/>
-                <span className="text-[var(--civic-amber)]">PEOPLE</span>
+                MEASURE THE<br/>
+                INVISIBLE<br/>
+                <span className="text-[var(--civic-amber)]">CITY.</span>
               </h2>
             </motion.div>
 

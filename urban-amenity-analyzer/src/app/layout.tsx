@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk, Anton } from 'next/font/google';
+import { Inter, Space_Grotesk, Anton, Archivo_Black } from 'next/font/google';
 import { Providers } from './providers';
 import './globals.css';
 
@@ -18,6 +18,13 @@ const inter = Inter({
 
 const anton = Anton({
   variable: '--font-anton',
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
+
+const archivoBlack = Archivo_Black({
+  variable: '--font-archivo-black',
   weight: '400',
   subsets: ['latin'],
   display: 'swap',
@@ -53,7 +60,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${anton.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${anton.variable} ${archivoBlack.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <Providers>{children}</Providers>
