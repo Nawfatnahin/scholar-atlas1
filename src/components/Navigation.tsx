@@ -98,7 +98,7 @@ export default function Navigation() {
         )}
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-12">
           <Link href="/#features" onClick={(e) => handleScrollTo(e, "features")} className="text-sm font-semibold text-ink-2 hover:text-accent transition-colors">Features</Link>
           <Link href="/#how" onClick={(e) => handleScrollTo(e, "how")} className="text-sm font-semibold text-ink-2 hover:text-accent transition-colors">How it works</Link>
           <Link href="/#pricing" onClick={(e) => handleScrollTo(e, "pricing")} className="text-sm font-semibold text-ink-2 hover:text-accent transition-colors">Pricing</Link>
