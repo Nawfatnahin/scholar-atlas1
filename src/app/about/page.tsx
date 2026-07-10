@@ -22,10 +22,9 @@ export default function AboutPage() {
                 </span>
               </h1>
               <p className="text-[17px] leading-relaxed text-gray-600 dark:text-gray-300 mt-4">
-                Scholar Atlas started as a frustration with fragmented tools &mdash;
-                separate apps for attendance, tasks, grades and documents.
-                This platform brings all of it into one focused, distraction-free space
-                built specifically for the university student.
+                Scholar Atlas began from a simple frustration with messy and disconnected tools. 
+                It was exhausting to use separate apps for attendance, tasks, grades, and documents. 
+                This platform brings everything into one clean space designed specifically for university students.
               </p>
             </div>
           </div>
@@ -252,7 +251,7 @@ export default function AboutPage() {
               </Link>
               <Link
                 href="/#features"
-                className="bg-gray-200/60 dark:bg-gray-800/60 border border-gray-300/50 dark:border-gray-600/50 hover:border-[#a67c52] dark:hover:border-[#c49a6c] text-gray-700 dark:text-gray-300 hover:text-[#a67c52] dark:hover:text-[#c49a6c] px-8 py-4 rounded-lg font-medium transition-colors text-[17px]"
+                className="bg-gray-50/80 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200/80 dark:border-gray-800/80 hover:border-[#a67c52]/50 dark:hover:border-[#c49a6c]/50 text-gray-700 dark:text-gray-300 hover:text-[#a67c52] dark:hover:text-[#c49a6c] hover:bg-white dark:hover:bg-gray-900 px-8 py-4 rounded-xl font-medium transition-all duration-300 shadow-sm hover:shadow text-[17px]"
               >
                 Explore features
               </Link>
