@@ -31,19 +31,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* SECTION 2 — Mission Statement */}
-        <section className="bg-bg-base py-16 md:py-20">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <blockquote className="border-l-4 border-[#a67c52] pl-6 md:pl-10">
-              <p className="text-[21px] md:text-[25px] font-medium italic text-gray-700 dark:text-gray-200">
-                &ldquo;Scholar Atlas exists because academic life shouldn&apos;t be harder than the academics themselves.&rdquo;
-              </p>
-              <cite className="block not-italic text-[15px] font-medium text-gray-500 dark:text-gray-400 mt-4">
-                &mdash; Founder
-              </cite>
-            </blockquote>
-          </div>
-        </section>
 
         {/* SECTION 3 — Why We Built This */}
         <section className="bg-bg-base py-16 md:py-24">
@@ -265,7 +252,7 @@ export default function AboutPage() {
               </Link>
               <Link
                 href="/#features"
-                className="border border-gray-300 dark:border-gray-600 hover:border-[#a67c52] dark:hover:border-[#c49a6c] text-gray-700 dark:text-gray-300 hover:text-[#a67c52] dark:hover:text-[#c49a6c] px-8 py-4 rounded-lg font-medium transition-colors text-[17px]"
+                className="bg-gray-200/60 dark:bg-gray-800/60 border border-gray-300/50 dark:border-gray-600/50 hover:border-[#a67c52] dark:hover:border-[#c49a6c] text-gray-700 dark:text-gray-300 hover:text-[#a67c52] dark:hover:text-[#c49a6c] px-8 py-4 rounded-lg font-medium transition-colors text-[17px]"
               >
                 Explore features
               </Link>
