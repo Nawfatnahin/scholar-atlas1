@@ -20,13 +20,16 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) {
-        setError(error.message);
+      if (authError) {
+        const msg = typeof authError.message === 'string' && authError.message.length > 0
+          ? authError.message
+          : "Unable to connect to the authentication server. Please try again later.";
+        setError(msg);
         setLoading(false);
       } else if (data?.session) {
         // Wait briefly to ensure cookies are written before navigating
@@ -39,7 +42,11 @@ export default function LoginPage() {
         setLoading(false);
       }
     } catch (err: unknown) {
-      setError((err as Error)?.message || "An unexpected error occurred during login.");
+      const raw = (err as Error)?.message;
+      const msg = typeof raw === 'string' && raw.length > 0 && raw !== '{}'
+        ? raw
+        : "Unable to connect to the authentication server. Please try again later.";
+      setError(msg);
       setLoading(false);
     }
   };

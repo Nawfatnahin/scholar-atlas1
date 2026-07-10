@@ -64,12 +64,16 @@ export const cgpaGradeSchema = z.object({
     .optional(),
 });
 
-// Shared response helper for Zod errors
+// Shared response helper for Zod errors (compatible with Zod v3 .errors and v4 .issues)
 export function formatZodError(error: any) {
-  const firstError = error.errors[0];
+  const issues = error.issues || error.errors || [];
+  const firstError = issues[0];
+  if (!firstError) {
+    return { error: "Validation failed", field: "" };
+  }
   return {
     error: firstError.message,
-    field: firstError.path.join("."),
+    field: firstError.path?.join(".") || "",
   };
 }
 
