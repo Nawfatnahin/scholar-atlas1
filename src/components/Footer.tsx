@@ -1,24 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { User } from "@supabase/supabase-js";
 
 export default function Footer() {
-  const [user, setUser] = useState<User | null>(null);
   const pathname = usePathname();
   const isFirstPage = pathname === "/";
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const supabase = createClient();
-      const { data } = await supabase.auth.getUser();
-      setUser(data?.user || null);
-    };
-    checkUser();
-  }, []);
 
   return (
     <footer className="pt-12 pb-8 border-t border-border-strong">
@@ -60,10 +47,10 @@ export default function Footer() {
             <div>
               <h4 className="text-[12px] font-bold uppercase tracking-wider text-ink-3 mb-3.5">Product</h4>
               <div className="flex flex-col gap-2">
-                <Link href={user ? "/tools/pdf" : "/signup"} className="text-[14px] text-ink-2 hover:text-ink transition-colors">PDF Tools</Link>
-                <Link href={user ? "/dashboard/attendance" : "/signup"} className="text-[14px] text-ink-2 hover:text-ink transition-colors">Attendance</Link>
-                <Link href={user ? "/dashboard/tasks" : "/signup"} className="text-[14px] text-ink-2 hover:text-ink transition-colors">Task Tracker</Link>
-                <Link href={user ? "/dashboard/cgpa" : "/signup"} className="text-[14px] text-ink-2 hover:text-ink transition-colors">CGPA Manager</Link>
+              <Link href="/tools/pdf" className="text-[14px] text-ink-2 hover:text-ink transition-colors">PDF Tools</Link>
+                <Link href="/dashboard/attendance" className="text-[14px] text-ink-2 hover:text-ink transition-colors">Attendance</Link>
+                <Link href="/dashboard/tasks" className="text-[14px] text-ink-2 hover:text-ink transition-colors">Task Tracker</Link>
+                <Link href="/dashboard/cgpa" className="text-[14px] text-ink-2 hover:text-ink transition-colors">CGPA Manager</Link>
               </div>
             </div>
           </div>
